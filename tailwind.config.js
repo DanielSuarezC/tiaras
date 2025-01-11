@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,ts}",],
+  content: [
+    "./src/**/*.{html,ts}",
+    "./node_modules/flowbite/**/*.js",
+  ],
   darkMode: 'class',
   theme: {
     extend: {
@@ -16,7 +19,8 @@ module.exports = {
           "700":"#E3B278",
           "800":"#C4955A",
           "900":"#A57444",
-          "950":"#7A502A"},
+          "950":"#7A502A"
+        },
         'pallete': {//botones y componentes
           100: '#FDE7E6',
           200: '#FDE7E6',
@@ -27,10 +31,13 @@ module.exports = {
           700: '#8E3434',
           800: '#6B2423',
           900: '#490D0B',
+          "sections": '#C69D75',
         },
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
 

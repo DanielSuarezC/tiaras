@@ -5,11 +5,13 @@ import { InventoriesComponent } from './domains/administrador/pages/inventories/
 import { ClientsComponent } from './domains/administrador/pages/clients/clients.component';
 
 import { CatalogComponent } from './domains/vendedor/pages/catalog/catalog.component';
-import { DetailProductComponent } from './domains/vendedor/pages/detail-product/detail-product.component';
+import { DetailProductComponent } from './domains/vendedor/pages/catalog/detail-product/detail-product.component';
 import { CancellationsComponent } from './domains/vendedor/pages/cancellations/cancellations.component';
 import { OrdersHistoryComponent } from './domains/vendedor/pages/orders-history/orders-history.component';
 import { NotFoundComponent } from './domains/shared/pages/not-found/not-found.component';
 import { LayoutVendedorComponent } from './domains/vendedor/components/layout-vendedor/layout-vendedor.component';
+import { DetailOrderComponent } from './domains/vendedor/pages/orders-history/detail-order/detail-order.component';
+import { DetailCancellationComponent } from './domains/vendedor/pages/cancellations/detail-cancellation/detail-cancellation.component';
 
 export const routes: Routes = [
     {
@@ -49,6 +51,14 @@ export const routes: Routes = [
             {
                 path:'orders-history',
                 component: OrdersHistoryComponent
+            },
+            {
+                path:'orders-history/detail-order',
+                component: DetailOrderComponent    
+            },
+            {
+                path:'cancellations/detail-cancellation',
+                component: DetailCancellationComponent
             }
         ]
     },

@@ -5,7 +5,7 @@ import { CartService } from '../../../shared/services/cart/cart.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLinkActive, RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -18,7 +18,7 @@ export class HeaderComponent {
   total = this.cartService.total; //signal(0);
 
   toogleSideMenu(){
-    this.hideSideMenu.update(prevState => !prevState);  
+    this.hideSideMenu.update(prevState => !prevState);
   }
 
 }
