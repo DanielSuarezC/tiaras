@@ -1,8 +1,8 @@
-<nav class="bg-pallete-sections border-gray-200 dark:bg-gray-900">
+<!-- <nav class="bg-pallete-sections border-gray-200 dark:bg-gray-900">
   <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
       <a class="">
           <img src="../../../../../assets/logo_tiarascol.png" class="logo" alt="tiaras logo" />
-          <!-- <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span> -->
+          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span> 
       </a>
       <div class="flex items-center space-x-6 rtl:space-x-reverse">
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -88,23 +88,13 @@ class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-a
       </svg>
     </button>
   </div>
-  @for (product of cart(); track product) {
-    <div>
-      <br>
-        <a href="#" class="block max-w-sm p-6 py-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-          <p class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{product.title}}</p>
-          <img src="{{product.images?.[0]}}" alt="image" class="w-full h-48 object-cover mb-4">
-          <p class="font-normal text-gray-700 dark:text-gray-400">{{product.price}}</p>
-        </a>
-      </div>
-    }
 
     <div class="flex justify-between items-center mt-4">
       <p class="text-xl">Total</p>
       <p class="text-xl">{{total()}}</p>
     </div>
 
-<!-- <nav>
+ <nav>
     <div
       class="w-full flex flex-wrap items-center justify-between mx-auto py-4"
       >
@@ -208,3 +198,215 @@ class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-a
                       <p class="text-xl">Total</p>
                       <p class="text-xl">{{total()}}</p>
                     </div> -->
+<!-- <nav class=" bg-pallete-sections dark:bg-gray-800 antialiased"> -->
+<nav class="fixed top-0 left-0 w-full bg-pallete-sections dark:bg-gray-800 antialiased z-50">
+  <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
+    <div class="flex items-center justify-between">
+
+      <!-- logo-header -->
+      <div class="flex items-center space-x-8">
+        <div class="shrink-0">
+          <a href="#" title="" class="">
+            <img class="block w-auto h-8 dark:hidden" src="../../../../../assets/logo_tiarascol.png" alt="">
+          </a>
+        </div>
+        <!-- menu items large screen -->
+        <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
+          <li>
+            <a routerLink="/vendedor/catalog" routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }"
+              class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Catálogo
+            </a>
+          </li>
+          <li class="shrink-0">
+            <a routerLink="/vendedor/orders-history" routerLinkActive="underline"
+              class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Historial de pedidos
+            </a>
+          </li>
+          <li class="shrink-0">
+            <a routerLink="/vendedor/cancellations" routerLinkActive="underline"
+              class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Cancelaciones y reembolsos
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- Cart and user menu button -->
+      <div class="flex items-center lg:space-x-2">
+
+        <!-- Cart menu button  -->
+        <!-- <button id="myCartDropdownButton1" (click)="isOpenCart = !isOpenCart" cdkOverlayOrigin #cartOverlay="cdkOverlayOrigin"
+          data-dropdown-toggle="myCartDropdown1" type="button"
+          class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+          <span class="sr-only">
+            Cart
+          </span>
+          <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+          </svg>
+          <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">8</div>
+          <span class="hidden sm:flex">My Cart</span>
+          <svg class="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m19 9-7 7-7-7" />
+          </svg>
+        </button> -->
+        
+        <button id="myCartDropdownButton1" (click)="isOpenCart = !isOpenCart" cdkOverlayOrigin #cartOverlay="cdkOverlayOrigin" type="button" class="relative inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+          <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+          fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+        </svg>
+          <span class="sr-only">Notifications</span>
+          Messages
+            <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-tiaras-wine border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">{{cart().length}}</div>
+            <svg class="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m19 9-7 7-7-7" />
+          </svg>
+          </button>
+  
+        <!-- cart overlay  -->
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="cartOverlay" [cdkConnectedOverlayOpen]="isOpenCart" >
+            <div class="overflow-y-scroll">
+            
+            <div
+            class=" z-10 mx-auto max-w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800">
+            <!-- Iterar sobre los productos -->
+            @for (product of cart(); track product) {
+              <div class="grid grid-cols-[auto_1fr_auto] gap-4 items-center">
+                <!-- Información del producto -->
+                <div class="truncate">
+                  <a href="#"
+                    class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline"
+                    title="{{product.title}}">
+                    {{product.title}}
+                  </a>
+                  <p class="mt-0.5 text-sm font-normal text-gray-500 dark:text-gray-400">
+                    {{product.price | currency: '$': 'symbol':'1.0'}}
+                  </p>
+                </div>
+        
+                <!-- Cantidad -->
+                <!-- <p class="text-sm font-normal text-gray-500 dark:text-gray-400 justify-self-end">
+                  Qty: 1
+                </p> -->
+        
+                <!-- Botón de eliminar -->
+                <div class="flex items-center justify-end gap-2">
+                  <button type="button" (click)="removeItemProduct(product.id)"
+                    class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
+                    <span class="sr-only">Remove</span>
+                    <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                      viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                        d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+            }
+              
+
+              <!-- Total -->
+              <div class="flex justify-between items-center mt-4">
+                <p class="text-lg font-medium">Subtotal</p>
+                <p class="text-lg font-semibold">{{ subTotal() | currency: '$': 'symbol':'1.0'}}</p>
+              </div>
+        
+              <!-- Botón de carrito a detalle -->
+              <a 
+                (click)="navigateToCarritoDetalle()"
+                class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                role="button">Carrito a detalle</a>
+            </div>
+          </div>
+          </ng-template>
+              
+        <!-- User menu button  -->
+        <button id="userDropdownButton1" (click)="isOpenAccount = !isOpenAccount" cdkOverlayOrigin
+          #AccountOverlay="cdkOverlayOrigin" data-dropdown-toggle="userDropdown1" type="button"
+          class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+          <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-width="2"
+              d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          </svg>
+          Cuenta
+          <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m19 9-7 7-7-7" />
+          </svg>
+        </button>
+        <!-- user Overlay  -->
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="AccountOverlay"
+          [cdkConnectedOverlayOpen]="isOpenAccount">
+          <div id="userDropdown1"
+            class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
+            <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+              <li><a href="#" title=""
+                  class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                  Mi cuenta </a></li>
+              <li><a title=""
+                  class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                  Cambiar contraseña </a></li>
+
+            </ul>
+
+            <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
+              <a href="#" title=""
+                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                Cerrar Sesión </a>
+            </div>
+          </div>
+
+        </ng-template>
+
+
+        <!-- menu items movil screen  -->
+        <button type="button" (click)="isOpenMenuMovil = !isOpenMenuMovil" cdkOverlayOrigin
+          #menuMovilOverlay="cdkOverlayOrigin" data-collapse-toggle="ecommerce-navbar-menu-1"
+          aria-controls="ecommerce-navbar-menu-1" aria-expanded="false"
+          class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
+          <span class="sr-only">
+            Open Menu
+          </span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
+          </svg>
+        </button>
+
+      </div>
+    </div>
+    <!-- movil screen overlay  -->
+    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="menuMovilOverlay"
+      [cdkConnectedOverlayOpen]="isOpenMenuMovil">
+      <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
+        <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
+          <li>
+            <a routerLink="/vendedor/catalog" class="hover:text-primary-700 dark:hover:text-primary-500">Catálogo</a>
+          </li>
+          <li>
+            <a routerLink="/vendedor/orders-history"
+              class="hover:text-primary-700 dark:hover:text-primary-500">Historial
+              de pedidos</a>
+          </li>
+          <li>
+            <a routerLink="/vendedor/cancellations"
+              class="hover:text-primary-700 dark:hover:text-primary-500">Cancelaciones y reembolsos</a>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
+  </div>
+</nav>

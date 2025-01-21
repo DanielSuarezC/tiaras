@@ -2,3 +2,11 @@
     height: 80px;
     width: 180px;
 }
+
+.left{
+    margin-left: 65%;
+}
+
+.left-80pct{
+    margin-left: 80%;
+}

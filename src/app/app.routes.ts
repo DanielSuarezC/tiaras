@@ -12,6 +12,9 @@ import { NotFoundComponent } from './domains/shared/pages/not-found/not-found.co
 import { LayoutVendedorComponent } from './domains/vendedor/components/layout-vendedor/layout-vendedor.component';
 import { DetailOrderComponent } from './domains/vendedor/pages/orders-history/detail-order/detail-order.component';
 import { DetailCancellationComponent } from './domains/vendedor/pages/cancellations/detail-cancellation/detail-cancellation.component';
+import { MaintenanceComponent } from './domains/shared/pages/maintenance/maintenance.component';
+import { CartComponent } from './domains/vendedor/pages/catalog/cart/cart.component';
+
 
 export const routes: Routes = [
     {
@@ -59,8 +62,16 @@ export const routes: Routes = [
             {
                 path:'cancellations/detail-cancellation',
                 component: DetailCancellationComponent
+            },
+            {
+                path:'cart',
+                component: CartComponent
             }
         ]
+    },
+    {
+        path:'maintence',
+        component: MaintenanceComponent
     },
     {
         path: '**',

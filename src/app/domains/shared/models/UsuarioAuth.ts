@@ -5,4 +5,5 @@ export class UsuarioAuth {
     email?: string;
     password?: string;
     rol?: RolAuth;
+    token?:string;
 }

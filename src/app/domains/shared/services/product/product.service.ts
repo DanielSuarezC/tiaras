@@ -11,7 +11,7 @@ export class ProductService {
 
   constructor() { }
 
-  getProducts(category_id?: string){
+   getProducts(category_id?: string){
     const url = new URL('https://api.escuelajs.co/api/v1/products');
     if(category_id){
       // console.log(`category_id dentro del método getProducts: ${category_id}`);

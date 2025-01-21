@@ -26,16 +26,11 @@ export class CatalogComponent implements OnInit{
   
   ngOnInit(){
     this.getCategories();
-
-  }
-
-  public method(){
-    return console.log(this.products());
+    console.log(this.categories());
   }
 
   ngOnChanges(changes: SimpleChanges){
     this.getProducts(); 
-    console.log(this.products());
   }
 
   addToCart(product: Product){

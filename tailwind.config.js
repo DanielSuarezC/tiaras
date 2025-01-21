@@ -8,6 +8,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        //la paleta de colores de la marca
+        'tiaras': {
+          cream: "#FBF6E4",
+          peach: "#F0CD98",
+          beige: "#C69D75",
+          wine: "#490D0B",
+        },
         primary: {//texto
           "50":"#FFF9F2",
           "100":"#FFF1E0",
@@ -31,13 +38,15 @@ module.exports = {
           700: '#8E3434',
           800: '#6B2423',
           900: '#490D0B',
-          "sections": '#C69D75',
+          "sections": '#C69D75',//color predeterminado para las barras de navegación y footer
         },
+
       }
     },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    require('@tailwindcss/forms'),
   ],
 }
 
