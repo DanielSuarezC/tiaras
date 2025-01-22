@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
       // Marcar todos los campos como tocados para mostrar los errores
       this.form1.markAllAsTouched();
       Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
+      this.blockUI?.stop();
       return;
     }
   
@@ -112,12 +113,13 @@ export class LoginComponent implements OnInit {
       } else {
         this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
           mensaje: 'Error de validación. ' + value, textoBoton: 'Aceptar' }});
-
       }
       this.blockUI?.stop();
     }, error => {
       this.blockUI?.stop();
-      console.log(error);
+      this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
+        mensaje: 'Error de validación. ' + error.message, textoBoton: 'Aceptar' }});
+
       // this.dialog.open(MensajeComponent, {data: {titulo: 'Error', mensaje: error.message, textoBoton: 'Aceptar' }});
     });
   }
