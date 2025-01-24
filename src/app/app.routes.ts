@@ -14,6 +14,7 @@ import { DetailOrderComponent } from './domains/vendedor/pages/orders-history/de
 import { DetailCancellationComponent } from './domains/vendedor/pages/cancellations/detail-cancellation/detail-cancellation.component';
 import { MaintenanceComponent } from './domains/shared/pages/maintenance/maintenance.component';
 import { CartComponent } from './domains/vendedor/pages/catalog/cart/cart.component';
+import { OrderComponent } from './domains/vendedor/pages/orders-history/order/order.component';
 
 
 export const routes: Routes = [
@@ -66,6 +67,10 @@ export const routes: Routes = [
             {
                 path:'cart',
                 component: CartComponent
+            },
+            {
+                path: 'order-register',
+                component: OrderComponent
             }
         ]
     },

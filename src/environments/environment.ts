@@ -6,7 +6,7 @@ export const environment = {
   production: true,
   urlServices: 'http://localhost:3000/',
   nombreCookieToken: 'tiaras_colombia',
-  duracionMinutosCookieToken: 5,
+  duracionMinutosCookieToken: 60,
   urlAplicacion: 'http://localhost:4200/'
 };
 

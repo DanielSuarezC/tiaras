@@ -21,29 +21,29 @@ export class AppComponent {
   token = '';
 
   ngOnInit(): void {
-    //console.debug(window.location.toString());
-    if (window.location.toString() === this.baseUrl + '') {
-      console.log('entro a la condicion de url base ');
-    } else {
-      this.token = this.cookieService.get(environment.nombreCookieToken);
-      console.log(`entro a la condicion de validacion del token ${this.token}`);
-      if (this.token === null || !this.token || this.token === undefined || this.token === '') {
-        this.route.navigate(['']);
-      } else {
-        // this.usuarioService.consultarUsuarioValidado().subscribe( value => {
-        //   if (value.isError === 'N') {
-        //     const usuario = value.datos as Usuario;
-        //     if (usuario === null || usuario.id === 0) {
-        //       window.location.href = this.baseUrl + '#/login';
-        //     }
-        //   } else {
-        //     window.location.href = this.baseUrl + '#/login';
-        //   }
-        // }, error => {
-        //   window.location.href = this.baseUrl + '#/login';
-        // });
-      }
-    }
+    // //console.debug(window.location.toString());
+    // if (window.location.toString() === this.baseUrl + '') {
+      
+    // } else {
+    //   this.token = this.cookieService.get(environment.nombreCookieToken);
+     
+    //   if (this.token === null || !this.token || this.token === undefined || this.token === '') {
+    //     this.route.navigate(['']);
+    //   } else {
+    //     // this.usuarioService.consultarUsuarioValidado().subscribe( value => {
+    //     //   if (value.isError === 'N') {
+    //     //     const usuario = value.datos as Usuario;
+    //     //     if (usuario === null || usuario.id === 0) {
+    //     //       window.location.href = this.baseUrl + '#/login';
+    //     //     }
+    //     //   } else {
+    //     //     window.location.href = this.baseUrl + '#/login';
+    //     //   }
+    //     // }, error => {
+    //     //   window.location.href = this.baseUrl + '#/login';
+    //     // });
+    //   }
+    // }
   }
 
   ngOnDestroy() {

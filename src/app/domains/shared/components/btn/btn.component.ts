@@ -22,9 +22,9 @@ export class BtnComponent {
   //       },
   get colors(){
     return {
-      ' text-pallete-900 bg-primary-600 hover:bg-primary-700': this.color === 'peach',
-      ' focus:ring-primary-300 ': this.color === 'peach',
-      ' dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800': this.color ==='peach',
+      'text-pallete-900 bg-primary-600 hover:bg-primary-700': this.color === 'peach',
+      'focus:ring-primary-300 ': this.color === 'peach',
+      'dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800': this.color ==='peach',
       ' text-white bg-tiaras-wine hover:bg-primary-700': this.color === 'wine',
       ' focus:ring-tiaras-wine ': this.color === 'wine',
       ' dark:bg-tiaras-wine dark:hover:bg-primary-700 dark:focus:ring-primary-800': this.color ==='wine',

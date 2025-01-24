@@ -1,204 +1,4 @@
-<!-- <nav class="bg-pallete-sections border-gray-200 dark:bg-gray-900">
-  <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
-      <a class="">
-          <img src="../../../../../assets/logo_tiarascol.png" class="logo" alt="tiaras logo" />
-          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span> 
-      </a>
-      <div class="flex items-center space-x-6 rtl:space-x-reverse">
-        <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <div class="flex items-center">
-            <button  (click)="toogleSideMenu()" class="p-2 border rounded relative" >
-              <div class="absolute -top-2 -left-2 rounded h-5 w-5 bg-black text-white text-xs">{{cart().length}}</div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6"
-                >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-      </div>
-  </div>
-</nav>
-<nav class="bg-pallete-sections dark:bg-gray-700">
-  <div class="max-w-screen-xl px-4 py-3 mx-auto">
-      <div class="flex items-center">
-          <ul class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm">
-              <li>
-                  <a [routerLink]="'/vendedor/catalog'" 
-                     routerLinkActive="underline"
-                     [routerLinkActiveOptions]="{ exact: true }"  
-                     class="text-center text-gray-900 dark:text-white hover:underline" 
-                     aria-current="page">
-                     Catálogo
-                  </a>
-              </li>
-              <li>
-                  <a 
-                  routerLink="/vendedor/orders-history" 
-                  routerLinkActive="underline"
-                  class="text-center text-gray-900 dark:text-white hover:underline">
-                    Historial de pedidos
-                  </a>
-              </li>
-              <li>
-                  <a 
-                  routerLink="/vendedor/cancellations" 
-                  routerLinkActive="underline"
-                  class="text-center text-gray-900 dark:text-white hover:underline">
-                    Cancelaciones y reembolsos
-                  </a>
-              </li>
-          </ul>
-      </div>
-  </div>
-</nav>
 
-
-
-<div
-class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-auto transition-transform bg-white translate-x-full"
-[class.translate-x-full]="hideSideMenu()"
->
-<div class="flex justify-between items-center">
-  <p class="text-xl">My Cart</p>
-  <button (click)="toogleSideMenu()">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-      >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
-  </div>
-
-    <div class="flex justify-between items-center mt-4">
-      <p class="text-xl">Total</p>
-      <p class="text-xl">{{total()}}</p>
-    </div>
-
- <nav>
-    <div
-      class="w-full flex flex-wrap items-center justify-between mx-auto py-4"
-      >
-      <div class="flex items-center space-x-8">
-        <a  class="flex items-center ">
-          <img
-            src="../../../../../assets/logo_tiarascol.png"
-            class="h-20 mr-3"
-            alt="Tiaras Logo"
-            />
-            <span class="self-center text-xl font-semibold whitespace-nowrap"
-              >Tiaras Colombia</span
-              >
-            </a>
-            <ul class="flex space-x-6">
-              <li>
-                <a
-                  routerLink="/vendedor/catalog"
-                  routerLinkActive="underline"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  class="block hover:underline"
-                  aria-current="page"
-                  >Catálogo</a
-                  >
-                </li>
-                <li>
-                  <a
-                    routerLink="/vendedor/orders-history"
-                    routerLinkActive="underline"
-                    class="block hover:underline"
-                    >Historial de Pedidos</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      routerLink="/vendedor/cancellations"
-                      routerLinkActive="underline"
-                      class="block hover:underline"
-                      >Cancelaciones y Reembolsos</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-                <div class="flex items-center">
-                  <button class="p-2 border rounded relative" >
-                    <div class="absolute -top-2 -left-2 rounded h-5 w-5 bg-black text-white text-xs" (click)="toogleSideMenu()">1</div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-6 h-6"
-                      >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </nav>
-  
-              <div
-                class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-auto transition-transform bg-white translate-x-full"
-                [class.translate-x-full]="hideSideMenu()"
-                >
-                <div class="flex justify-between items-center">
-                  <p class="text-xl">My Cart</p>
-                  <button (click)="toogleSideMenu()">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-6 h-6"
-                      >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  @for (product of cart(); track product) {
-                    <div>
-                      <br>
-                        <a href="#" class="block max-w-sm p-6 py-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                          <p class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{product.title}}</p>
-                          <img src="{{product.images?.[0]}}" alt="image" class="w-full h-48 object-cover mb-4">
-                          <p class="font-normal text-gray-700 dark:text-gray-400">{{product.price}}</p>
-                        </a>
-                      </div>
-                    }
-  
-                    <div class="flex justify-between items-center mt-4">
-                      <p class="text-xl">Total</p>
-                      <p class="text-xl">{{total()}}</p>
-                    </div> -->
-<!-- <nav class=" bg-pallete-sections dark:bg-gray-800 antialiased"> -->
 <nav class="fixed top-0 left-0 w-full bg-pallete-sections dark:bg-gray-800 antialiased z-50">
   <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
     <div class="flex items-center justify-between">
@@ -236,25 +36,6 @@ class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-a
       <div class="flex items-center lg:space-x-2">
 
         <!-- Cart menu button  -->
-        <!-- <button id="myCartDropdownButton1" (click)="isOpenCart = !isOpenCart" cdkOverlayOrigin #cartOverlay="cdkOverlayOrigin"
-          data-dropdown-toggle="myCartDropdown1" type="button"
-          class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-          <span class="sr-only">
-            Cart
-          </span>
-          <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-            fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-          </svg>
-          <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">8</div>
-          <span class="hidden sm:flex">My Cart</span>
-          <svg class="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m19 9-7 7-7-7" />
-          </svg>
-        </button> -->
         
         <button id="myCartDropdownButton1" (click)="isOpenCart = !isOpenCart" cdkOverlayOrigin #cartOverlay="cdkOverlayOrigin" type="button" class="relative inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
           <svg class="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -332,8 +113,8 @@ class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-a
           </ng-template>
               
         <!-- User menu button  -->
-        <button id="userDropdownButton1" (click)="isOpenAccount = !isOpenAccount" cdkOverlayOrigin
-          #AccountOverlay="cdkOverlayOrigin" data-dropdown-toggle="userDropdown1" type="button"
+        <button  (click)="isOpenAccount = !isOpenAccount" cdkOverlayOrigin
+          #AccountOverlay="cdkOverlayOrigin"  type="button"
           class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
           <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             fill="none" viewBox="0 0 24 24">
@@ -350,10 +131,10 @@ class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-a
         <!-- user Overlay  -->
         <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="AccountOverlay"
           [cdkConnectedOverlayOpen]="isOpenAccount">
-          <div id="userDropdown1"
+          <div
             class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
             <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
-              <li><a href="#" title=""
+              <li><a title=""
                   class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
                   Mi cuenta </a></li>
               <li><a title=""
@@ -363,7 +144,7 @@ class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-a
             </ul>
 
             <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
-              <a href="#" title=""
+              <a title=""
                 class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
                 Cerrar Sesión </a>
             </div>
@@ -374,7 +155,7 @@ class="fixed border-l-4 top-0 right-0 bg-red z-40 w-72 h-screen p-4 overflow-y-a
 
         <!-- menu items movil screen  -->
         <button type="button" (click)="isOpenMenuMovil = !isOpenMenuMovil" cdkOverlayOrigin
-          #menuMovilOverlay="cdkOverlayOrigin" data-collapse-toggle="ecommerce-navbar-menu-1"
+          #menuMovilOverlay="cdkOverlayOrigin" 
           aria-controls="ecommerce-navbar-menu-1" aria-expanded="false"
           class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
           <span class="sr-only">

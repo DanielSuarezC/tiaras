@@ -26,8 +26,14 @@ export class CartService {
 
   constructor() { }
 
-  addTocart(product: Product){
-    this.cart.update(prevState => [...prevState, product]);
+  addTocart(product: Product | undefined){
+    if (product) {
+      this.cart.update(prevState => [...prevState, product]);
+    }
+  }
+
+  productExists(id: number | undefined){
+    return this.cart().some(cartItem => cartItem.id === id);
   }
 
   removeItem(productId: number | undefined) {

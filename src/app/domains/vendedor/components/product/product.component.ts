@@ -5,6 +5,7 @@ import { Product } from '../../../shared/models/Product';
 import { TimeAgoPipePipe } from '../../../shared/pipes/time-ago-pipe.pipe';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../shared/services/cart/cart.service';
+// import { BtnComponent } from '../../components/btn/btn.component';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -27,12 +28,10 @@ export class ProductComponent {
   productExists = false;
 
   addToCardHandler(){
-    console.log('Add to cart');
-    this.productExists = this.cart().some(cartItem => cartItem.id === this.product.id);
-    if (this.productExists) {
+    if(this.cartService.productExists(this.product.id)){
       Swal.fire('Product already in cart', 'El producto ya se encuentra en el carrito', 'warning');
     }else{
-      this.addToCart.emit(this.product);
+      this.cartService.addTocart(this.product);
     }
   }
 
