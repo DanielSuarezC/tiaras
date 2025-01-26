@@ -1,6 +1,6 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CartService } from '../../../shared/services/cart/cart.service';
+import { CartService } from '../../../shared/models/product/services/cart.service';
 import { CommonModule } from '@angular/common';
 import { OverlayModule } from '@angular/cdk/overlay';
 import {ScrollingModule} from '@angular/cdk/scrolling';

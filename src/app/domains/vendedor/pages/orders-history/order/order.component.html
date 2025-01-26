@@ -4,10 +4,6 @@
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Agregue un nuevo pedido</h2>
         <form [formGroup]="form1" (ngSubmit)="onSubmit()">
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                <!-- <div class="sm:col-span-2">
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
-                    <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required="">
-                </div> -->
                 <div class="w-full">
                     <label for="idCliente" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id cliente</label>
                     <input type="number" formControlName="idCliente" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="id del cliente">
@@ -16,7 +12,6 @@
                     <label for="evento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Evento</label>
                     <input type="text" formControlName="evento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="evento">
                 </div>
-
                 <div>
                 <label for="fechaPedido" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de pedido</label>
                 <div class="relative max-w-sm">
@@ -47,42 +42,39 @@
                     <label for="valorPagado" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor pagado</label>
                     <input type="number" formControlName="valorPagado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12" >
                 </div>
-                <div>
+                <!-- <div>
                     <label for="valorRestante" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor restante</label>
                     <input type="number" formControlName="valorRestante" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12" required="">
-                </div>
+                </div> -->
   
-                <div>
+                <!-- <div>
                     <label for="evento" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Evento</label>
                     <select id="evento" formControlName="evento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option selected="">Seleccione evento</option>
                         <option value="Boda">Boda</option>
                         <option value="Quinceañero">Quinceañero</option>
                     </select>
-                </div>
+                </div> -->
                 <div>
                   <label for="estadoPago" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado de Pago</label>
                   <select id="estadoPago" formControlName="estadoPago" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                      <option selected="">Seleccione estado de pago</option>
-                      <option value="TV">TV/Monitors</option>
-                      <option value="PC">PC</option>
-                      <option value="GA">Gaming/Console</option>
-                      <option value="PH">Phones</option>
+                      <option value="Pendiente">Pendiente</option>
+                      <option value="50% Pagado">50% Pagado</option>
+                      <option value="100% Pagado">100% Pagado</option>
                   </select>
               </div>
               <div>
                 <label for="estadoPedido"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado del Pedido</label>
                 <select id="estadoPedido" formControlName="estadoPedido" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                    <option selected="">Select category</option>
-                    <option value="TV">TV/Monitors</option>
-                    <option value="PC">PC</option>
-                    <option value="GA">Gaming/Console</option>
-                    <option value="PH">Phones</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En proceso">En proceso</option>
+                    <option value="Terminado">Terminado</option>
+                    <option value="Incidencia">Incidencia</option>
                 </select>
             </div>
             </div>
             <button type="submit" class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                Add product
+                Finalizar pedido
             </button>
         </form>
     </div>
