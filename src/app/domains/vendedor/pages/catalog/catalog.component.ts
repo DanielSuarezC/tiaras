@@ -1,9 +1,9 @@
 import { Component, inject, Input, OnInit, signal, SimpleChange, SimpleChanges } from '@angular/core';
 import { ProductComponent } from '../../components/product/product.component'; 
 import { Product } from '../../../shared/models/Product';
-import { CartService } from '../../../shared/services/cart/cart.service';
-import { ProductService } from '../../../shared/services/product/product.service'; 
-import { CategoryService } from '../../../shared/services/category/category.service';
+import { CartService } from '../../../shared/models/product/services/cart.service';
+import { ProductService } from '../../../shared/models/product/services/product.service'; 
+import { CategoryService } from '../../../shared/models/categorias/services/category.service'; 
 import { Category } from '../../../shared/models/category';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';

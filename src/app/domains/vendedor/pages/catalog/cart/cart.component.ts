@@ -1,11 +1,12 @@
 import { Component, inject, signal, SimpleChanges, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Product } from '../../../../shared/models/Product';
-import { CartService } from '../../../../shared/services/cart/cart.service';
-import { ProductService } from '../../../../shared/services/product/product.service';
+import { CartService } from '../../../../shared/models/product/services/cart.service';
+import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from '../../../../../app.component';
 import generatePDF from '../../../../shared/components/pdf';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart',
@@ -24,6 +25,7 @@ export class CartComponent{
     total = this.cartService.total; //signal(0);
     subTotal = this.cartService.subTotal; //signal(0);
     shipment = this.cartService.getShipment();//10000
+    createItemDto = this.cartService.createItemDto;
    
     ngOnInit(){
       
@@ -50,10 +52,26 @@ export class CartComponent{
           console.error(error);
         }
       });
-      
     }
     removeItemProduct(productId: number | undefined) {
       return this.cartService.removeItem(productId);
+    }
+
+    cantidadEspecifica(idProducto: number | undefined){
+      return this.cartService.cantidadEspecifica(idProducto);
+    }
+
+    incrementQuantity(idProducto: number | undefined){
+      return this.cartService.incrementQuantity(idProducto);
+    }
+
+    decrementQuantity(idProducto: number | undefined){
+      const cantidad = this.cantidadEspecifica(idProducto);
+      if(cantidad && cantidad > 1){
+        return this.cartService.decrementQuantity(idProducto);
+      }else{
+        Swal.fire('Warning','La cantidad mínima es 1','warning');
+      }
     }
     
     onGeneratePDF(){

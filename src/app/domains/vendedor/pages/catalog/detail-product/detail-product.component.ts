@@ -1,7 +1,7 @@
 import { Component, inject, Input, signal } from '@angular/core';
 import { Product } from '../../../../shared/models/Product';
-import { ProductService } from '../../../../shared/services/product/product.service';
-import { CartService } from '../../../../shared/services/cart/cart.service';
+import { ProductService } from '../../../../shared/models/product/services/product.service';
+import { CartService } from '../../../../shared/models/product/services/cart.service';
 import { CommonModule } from '@angular/common';
 import { BtnComponent } from '../../../../shared/components/btn/btn.component';
 import Swal from 'sweetalert2';
