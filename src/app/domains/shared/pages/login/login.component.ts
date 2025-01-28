@@ -34,14 +34,15 @@ export class LoginComponent implements OnInit {
   // password = new FormControl('', [Validators.required, Validators.minLength(8)]);
   
   private fb = inject(FormBuilder);
-  public form1: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]]
-  });
   private authService = inject(AuthService);
   private cookieService = inject(CookieService);
   route = inject(Router);
   dialog = inject(Dialog);
+  public form1: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]]
+  });
+
 
   mostrarFormulario?: boolean;
   email?: string;

@@ -16,6 +16,7 @@ import { MaintenanceComponent } from './domains/shared/pages/maintenance/mainten
 import { CartComponent } from './domains/vendedor/pages/catalog/cart/cart.component';
 import { OrderComponent } from './domains/vendedor/pages/orders-history/order/order.component';
 import { UsersComponent } from './domains/administrador/pages/users/users.component';
+import { authGuard } from './domains/shared/models/auth/guard/auth.guard';
 
 
 export const routes: Routes = [
@@ -29,20 +30,16 @@ export const routes: Routes = [
         children:[
             {
                 path:'inventories',
-                component: InventoriesComponent
+                component: InventoriesComponent, canActivate: [authGuard] 
             },
             {
                 path:'clients',
-                component: ClientsComponent
+                component: ClientsComponent, canActivate: [authGuard]
             },
             {
                 path:'users',
-                component: UsersComponent
-            }
-
-
-
-            
+                component: UsersComponent, canActivate: [authGuard]
+            }           
         ]
     },
     {
@@ -51,35 +48,35 @@ export const routes: Routes = [
         children:[
             {
                 path:'catalog',
-                component: CatalogComponent
+                component: CatalogComponent, canActivate: [authGuard]
             },
             {
                 path:'product/:id',
-                component: DetailProductComponent
+                component: DetailProductComponent, canActivate: [authGuard]
             },
             {
                 path:'cancellations',
-                component: CancellationsComponent
+                component: CancellationsComponent, canActivate: [authGuard]
             },
             {
                 path:'orders-history',
-                component: OrdersHistoryComponent
+                component: OrdersHistoryComponent, canActivate: [authGuard]
             },
             {
                 path:'orders-history/detail-order',
-                component: DetailOrderComponent    
+                component: DetailOrderComponent, canActivate: [authGuard]
             },
             {
                 path:'cancellations/detail-cancellation',
-                component: DetailCancellationComponent
+                component: DetailCancellationComponent, canActivate: [authGuard]
             },
             {
                 path:'cart',
-                component: CartComponent
+                component: CartComponent, canActivate: [authGuard]
             },
             {
                 path: 'order-register',
-                component: OrderComponent
+                component: OrderComponent, canActivate: [authGuard]
             }
         ]
     },

@@ -13,19 +13,21 @@
         <!-- menu items large screen -->
         <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
           <li>
-            <a routerLink="/vendedor/catalog" routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }"
+            <a routerLink="/vendedor/catalog" (click)="cerrarMenus()"   routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }"
               class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
               Catálogo
             </a>
           </li>
           <li class="shrink-0">
             <a routerLink="/vendedor/orders-history" routerLinkActive="underline"
+            (click)="cerrarMenus()"
               class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
               Historial de pedidos
             </a>
           </li>
           <li class="shrink-0">
             <a routerLink="/vendedor/cancellations" routerLinkActive="underline"
+            (click)="cerrarMenus()"
               class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
               Cancelaciones y reembolsos
             </a>
@@ -175,15 +177,17 @@
       <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
         <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
           <li>
-            <a routerLink="/vendedor/catalog" class="hover:text-primary-700 dark:hover:text-primary-500">Catálogo</a>
+            <a routerLink="/vendedor/catalog" (click)="cerrarMenus()" class="hover:text-primary-700 dark:hover:text-primary-500">Catálogo</a>
           </li>
           <li>
             <a routerLink="/vendedor/orders-history"
+            (click)="cerrarMenus()" 
               class="hover:text-primary-700 dark:hover:text-primary-500">Historial
               de pedidos</a>
           </li>
           <li>
             <a routerLink="/vendedor/cancellations"
+            (click)="cerrarMenus()" 
               class="hover:text-primary-700 dark:hover:text-primary-500">Cancelaciones y reembolsos</a>
           </li>
         </ul>

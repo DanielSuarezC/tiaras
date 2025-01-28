@@ -35,5 +35,13 @@ export class HeaderComponent {
     this.route.navigate(['/vendedor/cart']);
   }
 
+  cerrarMenus(){
+    if(this.isOpenCart || this.isOpenMenuMovil || this.isOpenAccount){
+      this.isOpenCart = false;
+      this.isOpenMenuMovil = false;
+      this.isOpenAccount = false;
+    }
+  }
+
 
 }
