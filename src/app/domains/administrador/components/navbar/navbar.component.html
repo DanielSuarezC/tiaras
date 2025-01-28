@@ -12,12 +12,24 @@
           </div>
           <!-- menu items large screen -->
           <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
-            <li>
-              <a routerLink="/administrador/inventories" routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }"
-                class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
-                Inicio
-              </a>
-            </li>
+            <ul class="space-y-2">
+              <!-- Gestión de Inventario -->
+              <li>
+                <a
+                
+                  routerLinkActive="underline"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="isOpeninventario = !isOpeninventario"
+                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
+                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
+                >
+                  Gestión de Productos
+                </a>
+              </li>
+            
+            </ul>
+            
+     
             <li class="shrink-0">
               <a routerLink="/administrador/clients" routerLinkActive="underline"
                 class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
@@ -32,6 +44,55 @@
             </li>
           </ul>
         </div>
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="inventarioOverlay"
+          [cdkConnectedOverlayOpen]="isOpeninventario">
+          <div
+            class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
+            <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+              <li>
+                <a
+                  routerLink="/administrador/inventories"
+                  routerLinkActive="underline"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="isOpeninventario = !isOpeninventario"
+                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
+                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
+                >
+                  Gestión de Productos
+                </a>
+              </li>
+       
+              <li>
+                <a
+                  routerLink="/administrador/insumos"
+                  routerLinkActive="underline"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="isOpeninventario = !isOpeninventario"
+                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
+                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
+                >
+                  Gestión de Insumos
+                </a>
+              </li>
+              
+              <li>
+                <a
+                  routerLink="/administrador/category"
+                  routerLinkActive="underline"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="isOpeninventario = !isOpeninventario"
+                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
+                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
+                >
+                  Gestión de Categorias
+                </a>
+              </li>
+            </ul>
+          </div>
+        
+
+
+        </ng-template>
         <!-- Cart and user menu button -->
         <div class="flex items-center lg:space-x-2">
   

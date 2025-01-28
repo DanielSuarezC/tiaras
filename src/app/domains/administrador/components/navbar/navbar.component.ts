@@ -13,4 +13,5 @@ import {OverlayModule} from '@angular/cdk/overlay';
 export class NavbarComponent {
   isOpenAccount = false;
   isOpenMenuMovil = false;
+  isOpeninventario = false;
 }
