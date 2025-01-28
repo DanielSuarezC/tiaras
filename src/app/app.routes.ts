@@ -16,6 +16,14 @@ import { MaintenanceComponent } from './domains/shared/pages/maintenance/mainten
 import { CartComponent } from './domains/vendedor/pages/catalog/cart/cart.component';
 import { OrderComponent } from './domains/vendedor/pages/orders-history/order/order.component';
 import { UsersComponent } from './domains/administrador/pages/users/users.component';
+import { AddclientsComponent } from './domains/administrador/pages/clients/addclients/addclients.component';
+import { AddusersComponent } from './domains/administrador/pages/users/addusers/addusers.component';
+import { AddproductsComponent } from './domains/administrador/pages/inventories/addproducts/addproducts.component';
+import { InsumosComponent } from './domains/administrador/pages/insumos/insumos.component';
+import { CategoryComponent } from './domains/administrador/pages/category/category.component';
+import { AddcategoryComponent } from './domains/administrador/pages/category/addcategory/addcategory.component';
+import { AddinsumosComponent } from './domains/administrador/pages/insumos/addinsumos/addinsumos.component';
+
 
 
 export const routes: Routes = [
@@ -38,7 +46,39 @@ export const routes: Routes = [
             {
                 path:'users',
                 component: UsersComponent
-            }
+            },
+            {
+                path:'addclients',
+                component: AddclientsComponent
+            },
+
+            {
+                path:'addusers',
+                component: AddusersComponent
+            },
+            {
+                path:'addproducts',
+                component: AddproductsComponent
+            },  
+         {
+                path:'insumos',
+                component: InsumosComponent
+            },     {
+                path:'category',
+                component: CategoryComponent
+            },
+             {
+            path:'addcategory',
+            component: AddcategoryComponent
+        },
+         {
+        path:'addinsumos',
+        component: AddinsumosComponent
+    }
+
+        
+        
+            
 
 
 

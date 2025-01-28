@@ -1,27 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import {OverlayModule} from '@angular/cdk/overlay';
-
-
-
 import { RouterModule } from '@angular/router';
 
-
 @Component({
-  selector: 'app-users',
+  selector: 'app-insumos',
   standalone: true,
-  imports: [OverlayModule,RouterModule,CommonModule],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.css'
+  imports: [CommonModule,OverlayModule,RouterModule],
+  templateUrl: './insumos.component.html',
+  styleUrl: './insumos.component.css'
 })
-export class UsersComponent {
-  isOpenActions = false;
-   isOpenFilters = false;
-   isOpenDropdown = false;
-   isOpenDropdown1 = false;
-   mobileMenu = signal(true);
+export class InsumosComponent {
+ isOpenActions = false;
+  isOpenFilters = false;
+  isOpenDropdown = false;
+  isOpenDropdown1 = false;
+  mobileMenu = signal(true);
 
-   toogleMenu(){
+  toogleMenu(){
     this.mobileMenu.update(prevState => !prevState);
   }
   // Método para cerrar el dropdown
