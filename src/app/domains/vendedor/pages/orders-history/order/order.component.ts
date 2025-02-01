@@ -7,28 +7,35 @@ import { BlockUIModule, NgBlockUI, BlockUI } from 'ng-block-ui';
 import Swal from 'sweetalert2';
 import { CreatePedidoDto } from '../../../../shared/models/pedidos/dto/CreatePedidoDto';
 import { CreateItemDto } from '../../../../shared/models/pedidos/dto/CreateItemDto';
+import { PedidosService } from '../../../../shared/models/pedidos/services/pedidos.service';
+import { MensajeComponent } from '../../../../shared/components/mensaje/mensaje.component'; 
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, BlockUIModule],
+  imports: [ReactiveFormsModule, CommonModule, BlockUIModule, DialogModule],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css'
 })
 export class OrderComponent {
 
-    @BlockUI() blockUI?: NgBlockUI;
+  @BlockUI() blockUI?: NgBlockUI;
   // products = signal<Product[]>([]);
-    private fb = inject(FormBuilder);
-    private cartService = inject(CartService);
-    private productService = inject(ProductService);
+  private fb = inject(FormBuilder);
+  private cartService = inject(CartService);
+  private productService = inject(ProductService);
+  private pedidoService = inject(PedidosService);
+  private dialog = inject(Dialog);
+  private cookieService = inject(CookieService);
 
-    createItemDto: CreateItemDto[] = [];
-
-    cart = this.cartService.cart; //signal<Product[]>([]);
-    total = this.cartService.total; //signal(0);
-    subTotal = this.cartService.subTotal; //signal(0);
-    shipment = this.cartService.getShipment();//10000
+  cart = this.cartService.cart; //signal<Product[]>([]);
+  total = this.cartService.total; //signal(0);
+  subTotal = this.cartService.subTotal; //signal(0);
+  shipment = this.cartService.getShipment();
+  createItemDto = this.cartService.createItemDto;//signal<CreateItemDto[]>([]);
 
   public form1: FormGroup = this.fb.group({
     idCliente: ['', Validators.required],
@@ -36,86 +43,53 @@ export class OrderComponent {
     fechaPedido: ['', Validators.required],
     fechaEntrega: ['', Validators.required],
     valorTotal: ['', Validators.required],
-    valorPagado: ['', Validators.required],
-    estadoPago: ['', Validators.required],
     estadoPedido: ['', Validators.required]
   });
 
-  ngOnInit(){
-    this.form1.get('fechaPedido')?.setValue(new Date());
+  ngOnInit() {
+    this.form1.get('fechaPedido')?.setValue(new Date().toISOString().substring(0, 10));
+    this.form1.get('fechaPedido')?.disable();
     this.form1.get('valorTotal')?.setValue(this.total());
     this.cart()
   }
 
-  onSubmit(){
-    //  this.blockUI?.start();
-    //     if (this.form1.invalid) {
-    //       // Marcar todos los campos como tocados para mostrar los errores
-    //       this.form1.markAllAsTouched();
-    //       Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
-    //       this.blockUI?.stop();
-    //       return;
-    //     }else{
-    //       Swal.fire('Registro exitoso', 'Pedido guardado', 'success');
-    //       // idCliente?: number;
-    //     //     evento?: string;
-    //     //     fechaPedido?: Date;
-    //     //     fechaEntrega?: Date;
-    //     //     valorTotal?: number;
-    //     //     valorPagado?: number;
-    //     //     estadoPago?: 'Pendiente' | '50% Pagado' |'100% Pagado' ;
-    //     //     estadoPedido?: 'Pendiente' | 'En Proceso' | 'Terminado' |  'Incidencia';
-    //     //     items?: CreateItemDto[];
+  onSubmit() {
+    this.blockUI?.start();
+    if (this.form1.invalid) {
+      // Marcar todos los campos como tocados para mostrar los errores
+      this.form1.markAllAsTouched();
+      Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
+      this.blockUI?.stop();
+      return;
+    } else {
+      const createPedidoDto = new CreatePedidoDto();
+      const token = this.cookieService.get(environment.nombreCookieToken);
+      createPedidoDto.idCliente = this.form1.get('idCliente')?.value;
+      createPedidoDto.evento = this.form1.get('evento')?.value;
+      createPedidoDto.fechaEntrega = this.form1.get('fechaEntrega')?.value;
+      createPedidoDto.valorTotal = this.form1.get('valorTotal')?.value;
+      createPedidoDto.estadoPedido = this.form1.get('estadoPedido')?.value;
+      createPedidoDto.items = this.createItemDto();
       
-    //     const createPedidoDto = new CreatePedidoDto();
-        
-    //     createItemDto.idProducto = this.cart().id;
-    //     createPedidoDto.idCliente = this.form1.get('idCliente')?.value;
-    //     createPedidoDto.evento = this.form1.get('evento')?.value;
-    //     createPedidoDto.fechaPedido = this.form1.get('fechaPedido')?.value;
-    //     createPedidoDto.fechaEntrega = this.form1.get('fechaEntrega')?.value;
-    //     createPedidoDto.valorTotal = this.form1.get('valorTotal')?.value;
-    //     createPedidoDto.valorPagado = this.form1.get('valorPagado')?.value;
-    //     createPedidoDto.estadoPago = this.form1.get('estadoPago')?.value;
-    //     createPedidoDto.estadoPedido = this.form1.get('estadoPedido')?.value;
-    //     createPedidoDto.items = 
-        
-    //     this.authService.login(newUserLoginDto).subscribe( value => {
-    //       console.log(value);
-    //       if (value != null) {
-    //         //leyendo el token decodificado
-    //         this.paylod = jwtDecode(value.access_token);
-    //         console.log(this.paylod.rol);
-          
-    //           const fecha = new Date();
-    //           fecha.setMinutes(fecha.getMinutes() + environment.duracionMinutosCookieToken);
-    //           this.cookieService.set(environment.nombreCookieToken,value.access_token, fecha);
-    //           this.blockUI?.stop();
-    //           switch (this.paylod.rol) {
-    //             case 'ADMINISTRADOR':
-    //               this.form1.reset();
-    //               this.route.navigate(['/administrador/inventories']);
-    //               break;
-    //               case 'VENDEDOR':
-    //               this.form1.reset();
-    //               this.route.navigate(['/vendedor/catalog']);
-    //               break;
-    //           }
-            
-    //       } else {
-    //         this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
-    //           mensaje: 'Error de validación. ' + value, textoBoton: 'Aceptar' }});
-    //       }
-    //       this.blockUI?.stop();
-    //     }, error => {
-    //       this.blockUI?.stop();
-    //       this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
-    //         mensaje: 'Error de validación. ' + error.message, textoBoton: 'Aceptar' }});
-    
-    //       // this.dialog.open(MensajeComponent, {data: {titulo: 'Error', mensaje: error.message, textoBoton: 'Aceptar' }});
-    //     });
+      this.pedidoService.createPedido(createPedidoDto, token).subscribe({
+        next: (value) => {
+          console.log(value);
+          Swal.fire('Registro exitoso', 'Pedido guardado', 'success');
+          this.blockUI?.stop();
+        },
+        error: (error) => {
+          console.error(error);
+          this.dialog.open(MensajeComponent, {
+            data: {
+              titulo: 'Error',
+              mensaje: 'Error. ' + error.message, textoBoton: 'Aceptar'
+            }
+          });
+          this.blockUI?.stop();
         }
+      });
+    }
 
-        
-  
+
+  }
 }

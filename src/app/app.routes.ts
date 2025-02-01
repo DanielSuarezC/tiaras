@@ -23,108 +23,105 @@ import { InsumosComponent } from './domains/administrador/pages/insumos/insumos.
 import { CategoryComponent } from './domains/administrador/pages/category/category.component';
 import { AddcategoryComponent } from './domains/administrador/pages/category/addcategory/addcategory.component';
 import { AddinsumosComponent } from './domains/administrador/pages/insumos/addinsumos/addinsumos.component';
+import { authGuard } from './domains/shared/models/auth/guard/auth.guard';
 
 
 
 export const routes: Routes = [
     {
-        path:'',
+        path: '',
         component: LoginComponent
     },
     {
         path: 'administrador',
         component: LayoutComponent,
-        children:[
+        children: [
             {
-                path:'inventories',
+                path: 'inventories',
                 component: InventoriesComponent
             },
             {
-                path:'clients',
+                path: 'clients',
                 component: ClientsComponent
             },
             {
-                path:'users',
+                path: 'users',
                 component: UsersComponent
             },
             {
-                path:'addclients',
+                path: 'addclients',
                 component: AddclientsComponent
             },
-
             {
-                path:'addusers',
+                path: 'addusers',
                 component: AddusersComponent
             },
             {
-                path:'addproducts',
+                path: 'addproducts',
                 component: AddproductsComponent
-            },  
-         {
-                path:'insumos',
+            },
+            {
+                path: 'insumos',
                 component: InsumosComponent
-            },     {
-                path:'category',
+            }, 
+            {
+                path: 'category',
                 component: CategoryComponent
             },
-             {
-            path:'addcategory',
-            component: AddcategoryComponent
-        },
-         {
-        path:'addinsumos',
-        component: AddinsumosComponent
-    }
-
-        
-        
-            
+            {
+                path: 'addcategory',
+                component: AddcategoryComponent
+            },
+            {
+                path: 'addinsumos',
+                component: AddinsumosComponent
+            }
 
 
 
-            
+
         ]
     },
     {
-        path:'vendedor',
+        path: 'vendedor',
         component: LayoutVendedorComponent,
-        children:[
+        children: [
             {
-                path:'catalog',
-                component: CatalogComponent
+                path: 'catalog',
+                component: CatalogComponent, canActivate: [authGuard]
             },
             {
-                path:'product/:id',
-                component: DetailProductComponent
+                path: 'product/:id',
+                component: DetailProductComponent, canActivate: [authGuard]
             },
             {
-                path:'cancellations',
-                component: CancellationsComponent
+                path: 'cancellations',
+                component: CancellationsComponent, canActivate: [authGuard]
             },
             {
-                path:'orders-history',
-                component: OrdersHistoryComponent
+                path: 'orders-history',
+                component: OrdersHistoryComponent, canActivate: [authGuard]
             },
             {
-                path:'orders-history/detail-order',
-                component: DetailOrderComponent    
+                path: 'orders-history/detail-order',
+                component: DetailOrderComponent, canActivate: [authGuard]
             },
             {
-                path:'cancellations/detail-cancellation',
-                component: DetailCancellationComponent
+                path: 'cancellations/detail-cancellation',
+                component: DetailCancellationComponent, canActivate: [authGuard]
             },
             {
-                path:'cart',
-                component: CartComponent
+                path: 'cart',
+                component: CartComponent, canActivate: [authGuard]
             },
             {
                 path: 'order-register',
-                component: OrderComponent
+                component: OrderComponent, canActivate: [authGuard]
             }
         ]
     },
     {
-        path:'maintence',
+        path: 'maintence',
         component: MaintenanceComponent
     },
     {

@@ -29,7 +29,7 @@ export class ProductComponent {
 
   addToCardHandler(){
     if(this.cartService.productExists(this.product.id)){
-      Swal.fire('Product already in cart', 'El producto ya se encuentra en el carrito', 'warning');
+      Swal.fire('Info', 'El producto ya se encuentra en el carrito.', 'warning');
     }else{
       this.cartService.addTocart(this.product);
     }

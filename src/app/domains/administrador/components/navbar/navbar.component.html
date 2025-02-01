@@ -16,14 +16,13 @@
               <!-- Gestión de Inventario -->
               <li>
                 <a
-                
                   routerLinkActive="underline"
                   [routerLinkActiveOptions]="{ exact: true }"
                   (click)="isOpeninventario = !isOpeninventario"
                   cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
-                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
+                  class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500 cursor-pointer"
                 >
-                  Gestión de Productos
+                  Gestión de Inventario
                 </a>
               </li>
             
@@ -32,21 +31,24 @@
      
             <li class="shrink-0">
               <a routerLink="/administrador/clients" routerLinkActive="underline"
+              (click)="isOpeninventario = false"
                 class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
                 Gestion de clientes
               </a>
             </li>
             <li class="shrink-0">
               <a routerLink="/administrador/users" routerLinkActive="underline"
+              (click)="isOpeninventario = false"
                 class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
                 Administracion de usuarios
               </a>
             </li>
           </ul>
         </div>
+        <!-- overlay inventario  -->
         <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="inventarioOverlay"
           [cdkConnectedOverlayOpen]="isOpeninventario">
-          <div
+          <!-- <div
             class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
             <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
               <li>
@@ -88,8 +90,23 @@
                 </a>
               </li>
             </ul>
+          </div> -->
+          <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
+            <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
+              <li>
+                <a routerLink="/administrador/inventories" (click)="isOpeninventario = false" class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de productos</a>
+              </li>
+              <li>
+                <a routerLink="/administrador/insumos" (click)="isOpeninventario = false" 
+                  class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Insumos
+                </a>
+              </li>
+              <li>
+                <a routerLink="/administrador/category" (click)="isOpeninventario = false"
+                  class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de categorías</a>
+              </li>
+            </ul>
           </div>
-        
 
 
         </ng-template>
@@ -125,7 +142,6 @@
                 <li><a title=""
                     class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
                     Cambiar contraseña </a></li>
-  
               </ul>
   
               <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -134,7 +150,6 @@
                   Cerrar Sesión </a>
               </div>
             </div>
-  
           </ng-template>
   
   
@@ -160,7 +175,13 @@
         <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
           <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
             <li>
-              <a routerLink="/administrador/inventories" class="hover:text-primary-700 dark:hover:text-primary-500">Inicio</a>
+              <a routerLink="/administrador/inventories" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de productos</a>
+            </li>
+            <li>
+              <a routerLink="/administrador/insumos" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de insumos</a>
+            </li>
+            <li>
+              <a routerLink="/administrador/category" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de categorías</a>
             </li>
             <li>
               <a routerLink="/administrador/clients"

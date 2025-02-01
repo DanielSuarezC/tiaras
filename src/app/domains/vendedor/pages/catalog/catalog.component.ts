@@ -5,16 +5,17 @@ import { CartService } from '../../../shared/models/product/services/cart.servic
 import { ProductService } from '../../../shared/models/product/services/product.service'; 
 import { CategoryService } from '../../../shared/models/categorias/services/category.service'; 
 import { Category } from '../../../shared/models/category';
-import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgBlockUI, BlockUIModule, BlockUI } from 'ng-block-ui';
 import { Dialog } from '@angular/cdk/dialog';
 import { MensajeComponent } from '../../../shared/components/mensaje/mensaje.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, ProductComponent, RouterLink, BlockUIModule],
+  imports: [CommonModule, ProductComponent, RouterModule, BlockUIModule, OverlayModule],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css'
 })
@@ -25,6 +26,8 @@ export class CatalogComponent implements OnInit{
   private productService = inject(ProductService);
   private categorieService = inject(CategoryService);
   private dialog = inject(Dialog);
+
+  isOpenFilter = false;
 
   @Input() category_id?: string;
   @BlockUI('categories-block') blockUICategories?: NgBlockUI;
