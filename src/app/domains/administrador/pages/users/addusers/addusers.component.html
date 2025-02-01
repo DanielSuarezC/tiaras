@@ -1,0 +1,82 @@
+<section class="bg-white dark:bg-gray-900">
+  <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+    <h2 class="text-lg font-semibold text-gray-900">Personal Information</h2>
+    <p class="mt-1 text-sm text-gray-600">Use a permanent address where you can receive mail.</p>
+    <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+      <!-- First Name -->
+      <div class="sm:col-span-2">
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
+        <input type="text" name="first-name" id="first-name" autocomplete="given-name"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          placeholder="Type product name" required="">
+      </div>
+
+      <!-- Last name -->
+      <div class="sm:col-span-2">
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+        <input type="text" name="first-name" id="first-name" autocomplete="given-name"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          placeholder="Type product name" required="">
+      </div>
+
+      <!-- Phone Number -->
+      <div class="sm:col-span-4">
+        <label for="phone" class="block text-sm font-medium text-gray-900">Phone Number</label>
+        <div class="mt-2">
+          <input id="phone" name="phone" type="tel" autocomplete="tel"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm">
+        </div>
+      </div>
+
+      <!-- Email Address -->
+      <div class="sm:col-span-4">
+        <label for="email" class="block text-sm font-medium text-gray-900">Email address</label>
+        <div class="mt-2">
+          <input id="email" name="email" type="email" autocomplete="email"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm">
+        </div>
+      </div>
+
+
+
+      <!-- password -->
+      <div class="sm:col-span-3">
+        <label for="last-name" class="block text-sm font-medium text-gray-900">Password</label>
+        <div class="mt-2">
+          <input type="text" name="last-name" id="last-name" autocomplete="family-name"
+            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm">
+        </div>
+      </div>
+
+
+
+      <!-- Rol -->
+      <div class="sm:col-span-3">
+        <label for="Rol" class="block text-sm font-medium text-gray-900">Rol</label>
+        <div class="mt-2 grid grid-cols-1">
+          <select id="country" name="country" autocomplete="country-name"
+            class="w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm">
+            <option>Vendedor
+            <option>Administrador
+
+          </select>
+          <svg class="pointer-events-none text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Save Button -->
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+      <button type="submit"
+        class="rounded-md bg-[#F0CD98] px-3 py-2 text-sm font-semibold text-[#490D0B] shadow-xs hover:bg-[#F0CD98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        Save
+      </button>
+    </div>
+  </div>

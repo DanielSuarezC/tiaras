@@ -16,62 +16,102 @@ import { MaintenanceComponent } from './domains/shared/pages/maintenance/mainten
 import { CartComponent } from './domains/vendedor/pages/catalog/cart/cart.component';
 import { OrderComponent } from './domains/vendedor/pages/orders-history/order/order.component';
 import { UsersComponent } from './domains/administrador/pages/users/users.component';
+import { AddclientsComponent } from './domains/administrador/pages/clients/addclients/addclients.component';
+import { AddusersComponent } from './domains/administrador/pages/users/addusers/addusers.component';
+import { AddproductsComponent } from './domains/administrador/pages/inventories/addproducts/addproducts.component';
+import { InsumosComponent } from './domains/administrador/pages/insumos/insumos.component';
+import { CategoryComponent } from './domains/administrador/pages/category/category.component';
+import { AddcategoryComponent } from './domains/administrador/pages/category/addcategory/addcategory.component';
+import { AddinsumosComponent } from './domains/administrador/pages/insumos/addinsumos/addinsumos.component';
 import { authGuard } from './domains/shared/models/auth/guard/auth.guard';
+
 
 
 export const routes: Routes = [
     {
-        path:'',
+        path: '',
         component: LoginComponent
     },
     {
         path: 'administrador',
         component: LayoutComponent,
-        children:[
+        children: [
             {
-                path:'inventories',
-                component: InventoriesComponent, canActivate: [authGuard] 
+                path: 'inventories',
+                component: InventoriesComponent
             },
             {
-                path:'clients',
-                component: ClientsComponent, canActivate: [authGuard]
+                path: 'clients',
+                component: ClientsComponent
             },
             {
-                path:'users',
-                component: UsersComponent, canActivate: [authGuard]
-            }           
+                path: 'users',
+                component: UsersComponent
+            },
+            {
+                path: 'addclients',
+                component: AddclientsComponent
+            },
+            {
+                path: 'addusers',
+                component: AddusersComponent
+            },
+            {
+                path: 'addproducts',
+                component: AddproductsComponent
+            },
+            {
+                path: 'insumos',
+                component: InsumosComponent
+            }, 
+            {
+                path: 'category',
+                component: CategoryComponent
+            },
+            {
+                path: 'addcategory',
+                component: AddcategoryComponent
+            },
+            {
+                path: 'addinsumos',
+                component: AddinsumosComponent
+            }
+
+
+
+
         ]
     },
     {
-        path:'vendedor',
+        path: 'vendedor',
         component: LayoutVendedorComponent,
-        children:[
+        children: [
             {
-                path:'catalog',
+                path: 'catalog',
                 component: CatalogComponent, canActivate: [authGuard]
             },
             {
-                path:'product/:id',
+                path: 'product/:id',
                 component: DetailProductComponent, canActivate: [authGuard]
             },
             {
-                path:'cancellations',
+                path: 'cancellations',
                 component: CancellationsComponent, canActivate: [authGuard]
             },
             {
-                path:'orders-history',
+                path: 'orders-history',
                 component: OrdersHistoryComponent, canActivate: [authGuard]
             },
             {
-                path:'orders-history/detail-order',
+                path: 'orders-history/detail-order',
                 component: DetailOrderComponent, canActivate: [authGuard]
             },
             {
-                path:'cancellations/detail-cancellation',
+                path: 'cancellations/detail-cancellation',
                 component: DetailCancellationComponent, canActivate: [authGuard]
             },
             {
-                path:'cart',
+                path: 'cart',
                 component: CartComponent, canActivate: [authGuard]
             },
             {
@@ -81,7 +121,7 @@ export const routes: Routes = [
         ]
     },
     {
-        path:'maintence',
+        path: 'maintence',
         component: MaintenanceComponent
     },
     {

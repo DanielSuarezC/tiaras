@@ -1,6 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Category } from '../../category'; 
+import { environment } from '../../../../../../environments/environment';
+import { Observable } from 'rxjs';
+import { Categoria } from '../entities/Categoria';
+import { CreateCategoriaDto } from '../dto/CreateCategoriaDto';
+import { UpdateCategoriaDto } from '../dto/UpdateCategoriaDto';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +13,43 @@ import { Category } from '../../category';
 export class CategoryService {
 
   private http = inject(HttpClient);
+  baseUrl = environment.urlServices + 'categorias';
 
   constructor() { }
 
   getAll(){
     return this.http.get<Category[]>('https://api.escuelajs.co/api/v1/categories');
   }
+
+  public findAll(token: string | undefined): Observable<Categoria[]> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+    });
+      return this.http.get<Categoria[]>(this.baseUrl, {headers});
+    }
+  
+    public findOne(idCategoria: number, token: string | undefined): Observable<Categoria> {
+      let params = new HttpParams();
+      if (idCategoria != null) {
+      params = params.set('id', idCategoria + '');
+      }
+      const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+      });
+      return this.http.get<Categoria>(this.baseUrl, { params, headers });
+    }
+  
+    public create(createCategoriaDto: CreateCategoriaDto, token: string | undefined): Observable<any> {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+      });
+      return this.http.post(this.baseUrl, createCategoriaDto, {headers});
+    }
+  
+    public update(idCategoria: number, updateCategoriaDto: UpdateCategoriaDto, token: string | undefined): Observable<any> {
+      const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+      });
+      return this.http.patch(this.baseUrl + '/' + idCategoria, updateCategoriaDto, { headers });
+    }
 }
