@@ -8,7 +8,8 @@
         </div>
         <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           @for (category of categories(); track category) {
-          <a routerLink="/vendedor/catalog" [queryParams]="{category_id: category.id}"
+          <!-- <a routerLink="/vendedor/catalog" [queryParams]="{category_id: category.id}" -->
+          <a 
             class="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
 
             <svg class="me-2 h-4 w-4 shrink-0 text-gray-900 dark:text-white" aria-hidden="true"
@@ -17,7 +18,7 @@
                 d="M12 15v5m-3 0h6M4 11h16M5 15h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1Z">
               </path>
             </svg>
-            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ category.name }} </span>
+            <span class="text-sm font-medium text-gray-900 dark:text-white">{{ category.nombre }} </span>
           </a>
           }
         </div>
@@ -50,7 +51,7 @@
     <!-- Products -->
     <div *blockUI="'products-block'">
       <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-        @for (product of products(); track product) {
+        @for (product of productos(); track product) {
         <app-product [product]="product" (addToCart)="addToCart($event)" />
         }
       </div>

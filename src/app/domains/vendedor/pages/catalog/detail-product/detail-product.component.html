@@ -50,7 +50,7 @@
           <!-- Miniaturas -->
           <div class="flex items-center justify-center mt-1">
             <div class="grid grid-cols-3 gap-1 sm:grid-cols-5 lg:grid-cols-3">
-              @for (image of product()?.images; track image; let i = $index) {
+              @for (image of product()?.imagenes; track image; let i = $index) {
                 <img
                   alt="ecommerce"
                   class="object-cover object-center rounded border-2 border-gray-200"
@@ -66,20 +66,25 @@
         <!-- Sección de información del producto -->
         <div class="w-full lg:w-2/3 mt-5 lg:mt-0">
           <!-- Categoría -->
-          <h2 class="text-sm title-font text-gray-500 tracking-widest text-center lg:text-left">
-            {{ product()?.category?.name | uppercase }}
-          </h2>
+          @for (categorias of product()?.categorias; track product) {
+            <h2 class="text-sm title-font text-gray-500 tracking-widest text-center lg:text-left">
+              {{ categorias.nombre| uppercase }}
+            </h2>
+          }
+          <!-- <h2 *ngFor="let product of product(); let i = index" class="text-sm title-font text-gray-500 tracking-widest text-center lg:text-left">
+            {{ product()?.categorias | uppercase }}
+          </h2> -->
           <!-- Título -->
           <h1 class="text-gray-900 text-3xl title-font font-medium mb-1 text-center lg:text-left">
-            {{ product()?.title }}
+            {{ product()?.nombre }}
           </h1>
           <!-- Descripción -->
           <p class="leading-relaxed text-justify lg:text-left">
-            {{ product()?.description }}
+            {{ product()?.descripcion }}
           </p>
           <!-- Precio -->
           <p class="title-font font-medium text-2xl text-gray-900 mt-5 text-center lg:text-left">
-            {{ product()?.price | currency: '$ ':'symbol':'1.0' }}
+            {{ product()?.precio | currency: '$ ':'symbol':'1.0' }}
           </p>
           <!-- Botón -->
           <div class="flex justify-center lg:justify-start py-2 pb-10">

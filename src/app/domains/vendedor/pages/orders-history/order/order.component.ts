@@ -12,11 +12,13 @@ import { MensajeComponent } from '../../../../shared/components/mensaje/mensaje.
 import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../../../environments/environment';
+import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
+import { BtnComponent } from '../../../../shared/components/btn/btn.component';
 
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, BlockUIModule, DialogModule],
+  imports: [ReactiveFormsModule, CommonModule, BlockUIModule, DialogModule, BtnComponent],
   templateUrl: './order.component.html',
   styleUrl: './order.component.css'
 })
@@ -26,10 +28,10 @@ export class OrderComponent {
   // products = signal<Product[]>([]);
   private fb = inject(FormBuilder);
   private cartService = inject(CartService);
-  private productService = inject(ProductService);
   private pedidoService = inject(PedidosService);
   private dialog = inject(Dialog);
   private cookieService = inject(CookieService);
+  private mensaje = inject(MensajeService);
 
   cart = this.cartService.cart; //signal<Product[]>([]);
   total = this.cartService.total; //signal(0);
@@ -58,7 +60,8 @@ export class OrderComponent {
     if (this.form1.invalid) {
       // Marcar todos los campos como tocados para mostrar los errores
       this.form1.markAllAsTouched();
-      Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
+      // Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
+      this.mensaje.showMessage('Formulario inválido','Formulario inválido' ,'error');
       this.blockUI?.stop();
       return;
     } else {
@@ -74,7 +77,8 @@ export class OrderComponent {
       this.pedidoService.createPedido(createPedidoDto, token).subscribe({
         next: (value) => {
           console.log(value);
-          Swal.fire('Registro exitoso', 'Pedido guardado', 'success');
+          // Swal.fire('Registro exitoso', 'Pedido guardado', 'success');
+          this.mensaje.showMessage('Registro exitoso', 'Pedido guardado', 'success');
           this.blockUI?.stop();
         },
         error: (error) => {
@@ -88,8 +92,13 @@ export class OrderComponent {
           this.blockUI?.stop();
         }
       });
-    }
-
-
+    }  
+  }
+  clearCart(){
+    this.cartService.clearCart();
+      this.cart = this.cartService.cart;
+      this.total = this.cartService.total;
+      this.subTotal = this.cartService.subTotal;
+      this.createItemDto = this.cartService.createItemDto;
   }
 }

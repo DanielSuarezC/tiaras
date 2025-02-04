@@ -11,6 +11,11 @@ import { NgBlockUI, BlockUIModule, BlockUI } from 'ng-block-ui';
 import { Dialog } from '@angular/cdk/dialog';
 import { MensajeComponent } from '../../../shared/components/mensaje/mensaje.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { Producto } from '../../../shared/models/product/entities/Producto';
+import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../../../environments/environment';
+import { Categoria } from '../../../shared/models/categorias/entities/Categoria';
+import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 
 @Component({
   selector: 'app-catalog',
@@ -20,47 +25,52 @@ import { OverlayModule } from '@angular/cdk/overlay';
   styleUrl: './catalog.component.css'
 })
 export class CatalogComponent implements OnInit{
-  products = signal<Product[]>([]);
-  categories = signal<Category[]>([]);
+  productos = signal<Producto[]>([]);
+  categories = signal<Categoria[]>([]);
   private cartService = inject(CartService);
   private productService = inject(ProductService);
   private categorieService = inject(CategoryService);
+  private cookieService = inject(CookieService);
+  private mensaje = inject(MensajeService);
   private dialog = inject(Dialog);
 
   isOpenFilter = false;
+  token?: string;
 
   @Input() category_id?: string;
   @BlockUI('categories-block') blockUICategories?: NgBlockUI;
   @BlockUI('products-block') blockUIProducts?: NgBlockUI;
   
-  ngOnInit(){  
+  ngOnInit(){
+    this.token = this.cookieService.get(environment.nombreCookieToken);
     this.getCategories();
-    console.log(this.categories());
+    this.getProducts();
   }
   
   ngOnChanges(changes: SimpleChanges){
     this.getProducts(); 
   }
-
-  addToCart(product: Product){
-  //  this.cart.update(prevState => [...prevState, product]);
-  this.cartService.addTocart(product);
+  
+  addToCart(product: Producto){
+    //  this.cart.update(prevState => [...prevState, product]);
+    this.cartService.addTocart(product);
   }
-
+  
   private getProducts(category_id?: string){
     // console.log(`category_id: ${category_id}`);
     this.blockUIProducts?.start('Loading...');
-    this.productService.getProducts(this.category_id)
+    this.productService.findAll(this.token)
     .subscribe({
-      next: (products) => {
-        this.products.set(products);
+      next: (data: any[]) => {
+        this.productos.set(data[0]);
         this.blockUIProducts?.stop();
         // console.log(products);
       },
       error: (error) => {
         this.blockUIProducts?.stop();
-         this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
-                  mensaje: 'Error de obtención de datos. ' + error.message, textoBoton: 'Aceptar' }});
+        //  this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
+        //           mensaje: 'Error de obtención de datos. ' + error.message, textoBoton: 'Aceptar' }});
+        this.mensaje.showMessage('Error', `Error de obtención de datos. ${error.message}`, 'error');
       }
     });
     
@@ -68,7 +78,7 @@ export class CatalogComponent implements OnInit{
 
   private getCategories(){
     // this.blockUICategories?.start('Loading...');
-    this.categorieService.getAll()
+    this.categorieService.findAll(this.token)
     .subscribe({
       next: (data) => {
         this.categories.set(data);

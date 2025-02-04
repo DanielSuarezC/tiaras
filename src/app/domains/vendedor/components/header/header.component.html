@@ -6,7 +6,7 @@
       <!-- logo-header -->
       <div class="flex items-center space-x-8">
         <div class="shrink-0">
-          <a href="#" title="" class="">
+          <a title="" class="">
             <img class="block w-auto h-8 dark:hidden" src="../../../../../assets/logo_tiarascol.png" alt="">
           </a>
         </div>
@@ -68,11 +68,11 @@
                 <div class="truncate">
                   <a href="#"
                     class="truncate text-sm font-semibold leading-none text-gray-900 dark:text-white hover:underline"
-                    title="{{product.title}}">
-                    {{product.title}}
+                    title="{{product.nombre}}">
+                    {{product.nombre}}
                   </a>
                   <p class="mt-0.5 text-sm font-normal text-gray-500 dark:text-gray-400">
-                    {{product.price | currency: '$': 'symbol':'1.0'}}
+                    {{product.precio | currency: '$': 'symbol':'1.0'}}
                   </p>
                 </div>
         
@@ -83,7 +83,7 @@
         
                 <!-- Botón de eliminar -->
                 <div class="flex items-center justify-end gap-2">
-                  <button type="button" (click)="removeItemProduct(product.id)"
+                  <button type="button" (click)="removeItemProduct(product.idProducto)"
                     class="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
                     <span class="sr-only">Remove</span>
                     <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -146,8 +146,8 @@
             </ul>
 
             <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
-              <a title=""
-                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+              <a title="" routerLink="/"
+                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
                 Cerrar Sesión </a>
             </div>
           </div>

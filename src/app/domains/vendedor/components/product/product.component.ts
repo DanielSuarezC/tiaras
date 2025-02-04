@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
 import { CartService } from '../../../shared/models/product/services/cart.service';
 // import { BtnComponent } from '../../components/btn/btn.component';
 import Swal from 'sweetalert2';
+import { Producto } from '../../../shared/models/product/entities/Producto';
 
 @Component({
   selector: 'app-product',
@@ -17,7 +18,7 @@ import Swal from 'sweetalert2';
 })
 export class ProductComponent {
 
-  @Input({required: true}) product!: Product;
+  @Input({required: true}) product!: Producto;
 
   @Output() addToCart = new EventEmitter();
 
@@ -28,7 +29,7 @@ export class ProductComponent {
   productExists = false;
 
   addToCardHandler(){
-    if(this.cartService.productExists(this.product.id)){
+    if(this.cartService.productExists(this.product.idProducto)){
       Swal.fire('Info', 'El producto ya se encuentra en el carrito.', 'warning');
     }else{
       this.cartService.addTocart(this.product);
