@@ -10,11 +10,12 @@ import { CreateInsumoDto } from '../../../../shared/models/insumos/dto/CreateIns
 import { MensajeComponent } from '../../../../shared/components/mensaje/mensaje.component'; 
 import { Validator } from 'class-validator';
 import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
+import { BtnComponent } from '../../../../shared/components/btn/btn.component';
 
 @Component({
   selector: 'app-addinsumos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, DialogModule],
+  imports: [CommonModule, ReactiveFormsModule, DialogModule, BtnComponent],
   templateUrl: './addinsumos.component.html',
   styleUrl: './addinsumos.component.css'
 })
@@ -43,15 +44,6 @@ export class AddinsumosComponent {
     this.token = this.cookieService.get(environment.nombreCookieToken);
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.fileName = file.name;
-      this.fileUploaded = true;
-      this.form1.patchValue({ imagen: file }); // Almacena el archivo en el formulario
-      this.form1.get('imagen')?.updateValueAndValidity();
-    }
-  }
   onFileSelect(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -63,15 +55,16 @@ export class AddinsumosComponent {
   }
   onSubmit() {
     if (this.form1.invalid || !this.selectedFile) {
+      Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
       return;
     }
-
+    
     const formData = new FormData();
     formData.append('insumo', JSON.stringify(this.form1.value));
     formData.append('imagen', this.selectedFile);
     this.insumoService.crear(formData, this.token).subscribe(
       response => {
-        console.log('Insumo creado:', response);
+        // console.log('Insumo creado:', response);
         this.mensaje.showMessage('Insumo creado', 'Insumo creado con éxito', 'success');
         this.form1.reset();
         this.selectedFile = null;

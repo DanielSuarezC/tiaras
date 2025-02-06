@@ -52,4 +52,11 @@ export class CategoryService {
       });
       return this.http.patch(this.baseUrl + '/' + idCategoria, updateCategoriaDto, { headers });
     }
+
+    public findByNombre(nombre: string, token: string | undefined):Observable<any>{
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+        });
+        return this.http.get(this.baseUrl + '/by-name/' + nombre, { headers });
+    }
 }

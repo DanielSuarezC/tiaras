@@ -3,13 +3,15 @@ import { Product } from '../../Product';
 import { ProductComponent } from '../../../../vendedor/components/product/product.component';
 import { CreateItemDto } from '../../pedidos/dto/CreateItemDto';
 import Swal from 'sweetalert2';
+import { Producto } from '../entities/Producto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   
-  cart = signal<Product[]>([]);
+  // cart = signal<Product[]>([]);
+  cart = signal<Producto[]>([]);
   createItemDto = signal<CreateItemDto[]>([]);
   private shipment = 18000;
 
@@ -17,8 +19,8 @@ export class CartService {
     const cart = this.cart();
     const createItemDto = this.createItemDto();
     return cart.reduce((acumulado, product) => {
-      const cantidad = createItemDto.find(item => item.idProducto === product.id)?.cantidad || 1;
-      return acumulado + ((product?.price || 0) * cantidad);
+      const cantidad = createItemDto.find(item => item.idProducto === product.idProducto)?.cantidad || 1;
+      return acumulado + ((product?.precio || 0) * cantidad);
     }, 0);
   });
 
@@ -33,10 +35,10 @@ export class CartService {
 
   constructor() { }
 
-  addTocart(product: Product | undefined, cantidad: number = 1){
+  addTocart(product: Producto | undefined, cantidad: number = 1){
     if (product) {
       this.cart.update(prevState => [...prevState, product]);
-      this.createItemDto.update(prevState => [...prevState, {idProducto: product.id, cantidad: cantidad}]);
+      this.createItemDto.update(prevState => [...prevState, {idProducto: product.idProducto, cantidad: cantidad}]);
     }
   }
 
@@ -44,11 +46,11 @@ export class CartService {
     return this.createItemDto().find(item => item.idProducto === idProducto)?.cantidad;
   }
   productExists(id: number | undefined){
-    return this.cart().some(cartItem => cartItem.id === id);
+    return this.cart().some(cartItem => cartItem.idProducto === id);
   }
 
   removeItem(productId: number | undefined) {
-    this.cart.update(prevState => prevState.filter(product => product.id !== productId));
+    this.cart.update(prevState => prevState.filter(product => product.idProducto !== productId));
   }
 
   incrementQuantity(idProducto: number | undefined) {
@@ -77,5 +79,10 @@ export class CartService {
 
   setShipment(shipment: number){
     this.shipment = shipment;
+  }
+
+  clearCart(){
+    this.cart.update(() => []);
+    this.createItemDto.update(() => []);
   }
 }

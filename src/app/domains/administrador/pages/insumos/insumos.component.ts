@@ -46,13 +46,6 @@ export class InsumosComponent {
         },
         error: (error) => {
           // this.blockUICategories?.stop();
-          
-          // this.dialog.open(MensajeComponent, {
-          //   data: {
-          //     titulo: 'Error',
-          //     mensaje: 'Error de obtención de datos. ' + error.message, textoBoton: 'Aceptar'
-          //   }
-          // });
           Swal.fire('Error', `Error de obtención de datos.  ${error.message}`, 'error');
         }
       });

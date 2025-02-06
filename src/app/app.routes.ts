@@ -18,12 +18,12 @@ import { OrderComponent } from './domains/vendedor/pages/orders-history/order/or
 import { UsersComponent } from './domains/administrador/pages/users/users.component';
 import { AddclientsComponent } from './domains/administrador/pages/clients/addclients/addclients.component';
 import { AddusersComponent } from './domains/administrador/pages/users/addusers/addusers.component';
-import { AddproductsComponent } from './domains/administrador/pages/inventories/addproducts/addproducts.component';
 import { InsumosComponent } from './domains/administrador/pages/insumos/insumos.component';
 import { CategoryComponent } from './domains/administrador/pages/category/category.component';
 import { AddcategoryComponent } from './domains/administrador/pages/category/addcategory/addcategory.component';
 import { AddinsumosComponent } from './domains/administrador/pages/insumos/addinsumos/addinsumos.component';
 import { authGuard } from './domains/shared/models/auth/guard/auth.guard';
+import { CrearProductoComponent } from './domains/administrador/pages/inventories/crear-producto/crear-producto.component';
 
 
 
@@ -38,48 +38,44 @@ export const routes: Routes = [
         children: [
             {
                 path: 'inventories',
-                component: InventoriesComponent
+                component: InventoriesComponent, canActivate: [authGuard]
             },
             {
                 path: 'clients',
-                component: ClientsComponent
+                component: ClientsComponent, canActivate: [authGuard]
             },
             {
                 path: 'users',
-                component: UsersComponent
+                component: UsersComponent, canActivate: [authGuard]
             },
             {
                 path: 'addclients',
-                component: AddclientsComponent
+                component: AddclientsComponent, canActivate: [authGuard]
             },
             {
                 path: 'addusers',
-                component: AddusersComponent
+                component: AddusersComponent, canActivate: [authGuard]
             },
             {
                 path: 'addproducts',
-                component: AddproductsComponent
+                component: CrearProductoComponent, canActivate: [authGuard]
             },
             {
                 path: 'insumos',
-                component: InsumosComponent
+                component: InsumosComponent, canActivate: [authGuard]
             }, 
             {
                 path: 'category',
-                component: CategoryComponent
+                component: CategoryComponent, canActivate: [authGuard]
             },
             {
                 path: 'addcategory',
-                component: AddcategoryComponent
+                component: AddcategoryComponent, canActivate: [authGuard]
             },
             {
                 path: 'addinsumos',
-                component: AddinsumosComponent
+                component: AddinsumosComponent, canActivate: [authGuard]
             }
-
-
-
-
         ]
     },
     {

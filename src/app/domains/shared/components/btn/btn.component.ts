@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-btn',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './btn.component.html',
   styleUrl: './btn.component.css'
 })
@@ -12,6 +14,9 @@ export class BtnComponent {
 
     @Input() type: 'button' | 'submit' | 'reset' = 'button';
     @Input() color: string = 'peach';
+    @Input() routerLink: string = '';
+
+    @Output() clicked = new EventEmitter<void>();
 
   //los colores disponibles son en base a la paleta de colores de la marca:
   // 'tiaras': {
@@ -29,5 +34,9 @@ export class BtnComponent {
       ' focus:ring-tiaras-wine ': this.color === 'wine',
       ' dark:bg-tiaras-wine dark:hover:bg-primary-700 dark:focus:ring-primary-800': this.color ==='wine',
     };
+  }
+
+  onClick() {
+    this.clicked.emit(); // Emite el evento
   }
 }

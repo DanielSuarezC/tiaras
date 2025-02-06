@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MensajeService {
+
+  private route = inject(Router);
 
   constructor() { }
 
@@ -55,6 +58,29 @@ export class MensajeService {
         });
         break
     }
+  }
+
+  showClientValidate(){
+    Swal.fire({
+      title: "Información del cliente",
+      icon: "info",
+      text: "Antes de proceder al pedido, registre nuevo cliente",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Registrar",
+      confirmButtonColor: "#C69D75",
+      denyButtonText: `Ya ha comprado antes`,
+      denyButtonColor: "##F0CD98",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        // Swal.fire("Saved!", "", "success");
+        this.route.navigate(['/administrador/addclients']);
+      } else if (result.isDenied) {
+        this.route.navigate(['/vendedor/order-register']);
+        // Swal.fire("Changes are not saved", "", "info");
+      }
+    });
   }
 
 }

@@ -8,18 +8,19 @@ import Swal from 'sweetalert2';
 import { create } from 'domain';
 import { CreateCategoriaDto } from '../../../../shared/models/categorias/dto/CreateCategoriaDto';
 import { Dialog } from '@angular/cdk/dialog';
-import { MensajeComponent } from '../../../../shared/components/mensaje/mensaje.component'; 
+import { MensajeComponent } from '../../../../shared/components/mensaje/mensaje.component';
+import { BtnComponent } from '../../../../shared/components/btn/btn.component';
 
 @Component({
   selector: 'app-addcategory',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,BtnComponent],
   templateUrl: './addcategory.component.html',
   styleUrl: './addcategory.component.css'
 })
 export class AddcategoryComponent {
 
-  
+
   private categoryService = inject(CategoryService);
   private cookieService = inject(CookieService);
   private dialog = inject(Dialog);
@@ -30,16 +31,12 @@ export class AddcategoryComponent {
 
   private token: string | undefined;
 
-  ngOnInit(){
+  ngOnInit() {
   }
-  
-  onSubmit(){
-    this.createCategory();
-  }
-  
-  createCategory(){
+
+  onSubmit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
-    if(this.form1.invalid){
+    if (this.form1.invalid) {
       this.form1.markAllAsTouched();
       Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
       // this.blockUI?.stop();
@@ -61,6 +58,7 @@ export class AddcategoryComponent {
           Swal.fire('Error', `Error de obtención de datos.  ${error.message}`, 'error');
         }
       });
-    }
-  
+  }
+
+
 }
