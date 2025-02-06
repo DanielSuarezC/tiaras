@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { Producto } from '../../../../shared/models/product/entities/Producto';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../../../environments/environment';
+import { Categoria } from '../../../../shared/models/categorias/entities/Categoria';
 
 @Component({
   selector: 'app-detail-product',
@@ -18,29 +19,38 @@ import { environment } from '../../../../../../environments/environment';
 })
 export class DetailProductComponent {
   @Input() id?: string;
-  product = signal<Producto | null>(null);
+  // product = signal<Producto | null>(null);
+  product: Producto = new Producto();
+  // categories = signal<any[] | undefined>([]);
+  categorias: string[] = [];
   cover = signal('');
   private productService = inject(ProductService);
   private cartService = inject(CartService);
   private cookieService = inject(CookieService);
   cart = this.cartService.cart; //signal<Product[]>([]);
 
-  token?: string; 
+  token?: string;
+
+  baseUrl = environment.urlServices + 'uploads/';
 
   ngOnInit() {
-  this.token = this.cookieService.get(environment.nombreCookieToken);
-
+    this.token = this.cookieService.get(environment.nombreCookieToken);
+    this.getProduct();
+    // console.log(this.categories());
   }
 
-  getProduct(){
+  getProduct() {
     if (this.id) {
-      this.productService.findOne(this.token, this.id)
+      this.productService.findOne(this.id, this.token)
         .subscribe({
-          next: (product) => {
-            // console.log(product);
-            this.product.set(product);
+          next: (product: Producto) => {
+            console.log(product.categorias);
+            this.product = product;
+            this.categorias = product.categorias as string[];
+            // this.product.set(product);
+            // this.categories.set(product.categorias || undefined); 
             if (product.imagenes && product.imagenes.length > 0) {
-              this.cover.set(product.imagenes[0]);
+              this.cover.set(this.baseUrl + product.imagenes[0]);
             }
           }
         }
@@ -49,17 +59,19 @@ export class DetailProductComponent {
   }
 
   changeCover(image: string) {
+    image = this.baseUrl + image;
     this.cover.set(image);
   }
 
   addToCart() {
-    const product = this.product();
-    if (this.cartService.productExists(product?.idProducto)) {
+    // const product = this.product();
+    // const product = this.product();
+    if (this.cartService.productExists(this.product?.idProducto)) {
       Swal.fire('Product already in cart', 'El producto ya se encuentra en el carrito', 'warning');
-    } else if (product) {
-        this.cartService.addTocart(product);
-      }
+    } else if (this.product) {
+      this.cartService.addTocart(this.product);
     }
-  
+  }
+
 
 }

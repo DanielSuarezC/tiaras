@@ -1,8 +1,8 @@
 <div class="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
     <div class="h-56 w-full">
         <a [routerLink]="['/vendedor/product', product.idProducto]">
-            <img class="h-auto max-w-full rounded-lg mx-auto dark:hidden" [src]="product.imagenes" [alt]="product.nombre" />
-            <img class="mx-auto hidden h-full dark:block" [src]="product.imagenes?.[0]" [alt]="product.nombre" />
+            <img class="h-auto max-w-full rounded-lg mx-auto dark:hidden" [src]="this.baseUrl +product.imagenes" [alt]="product.nombre" />
+            <img class="mx-auto hidden h-full dark:block" [src]="'http://localhost:3000/tiaras/api/uploads/' + product.imagenes?.[0]" [alt]="product.nombre" />
         </a>
     </div>
         <div class="pt-6">

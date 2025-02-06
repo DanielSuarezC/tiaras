@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, inject, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Inject, inject, Output, Signal, signal } from '@angular/core';
 import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -48,14 +48,17 @@ export class CrearProductoComponent {
   // Cambiar las signals para usar tipos correctos
   insumosAgregados = signal<{ idInsumo: number, cantidad: number }[]>([]);
   categoriasAgregadas = signal<number[]>([]);
+  // categoriasAgregadas = signal<Categoria[]>([]);
   categorias = signal<Categoria[]>([]);
   private token: string | undefined;
+  size = signal<number>(0);
 
  
 
   ngOnInit(){
     this.token = this.cookieService.get(environment.nombreCookieToken);
     this.getCategoriesByName();
+    // console.log(this.getNombreCategoria(1));
     
   }
   // Actualizar onSubmit
@@ -72,6 +75,7 @@ export class CrearProductoComponent {
       nombre: this.form1.value.nombre!,
       descripcion: this.form1.value.descripcion!,
       precio: +this.form1.value.precio!,
+      // categorias: this.categoriasAgregadas().length == 0 ? []: this.categoriasAgregadas().map(categoria => categoria.idCategoria).filter((id): id is number => id !== undefined),
       categorias: this.categoriasAgregadas(),
       insumos: this.insumosAgregados()
     };
@@ -145,19 +149,36 @@ export class CrearProductoComponent {
 
   // Modificar método agregarCategoria
   agregarCategoria() {
-    const idCategoria = this.form1.get('idCategoria')?.value;
-    if (!idCategoria) {
+    // const categoria = this.categorias().find(c => c.idCategoria == this.form1.get('idCategoria')?.value);
+    // const categoria = this.form1.get('idCategoria')?.value as Categoria;
+    const categoria = this.form1.get('idCategoria')?.value;
+    console.log(this.form1.get('idCategoria')?.value);
+    if (!categoria) {
       Swal.fire('Error', 'Seleccione una categoría', 'error');
       return;
     }
 
-    this.categoriasAgregadas.update(cats => [...cats, +idCategoria]);
+    this.categoriasAgregadas.update(cats => [...cats, +categoria]);
     this.form1.get('idCategoria')?.reset();
   }
 
   // Obtener nombre de categoría
-  getNombreCategoria(idCategoria: number): string {
-    return this.categorias().find(c => c.idCategoria === idCategoria)?.nombre || 'Categoría desconocida';
+  getNombreCategoria(idCategoria: number | undefined): string {
+    if (!idCategoria) {
+      return 'Categoría desconocida';
+    }
+    this.categoriaService.findOne(idCategoria, this.token).subscribe({
+      next: (data) => {
+        console.log(data);
+        return data.nombre || 'Categoría desconocida';
+      },
+      error: (error) => {
+        console.log(error);
+        return 'Categoría desconocida';
+      }
+    });
+    return 'Categoría desconocida';
+    // return this.categorias().find(c => c.idCategoria === idCategoria)?.nombre || 'Categoría desconocida';
   }
 
   private getCategories(){
@@ -179,8 +200,16 @@ export class CrearProductoComponent {
     // this.blockUICategories?.start('Loading...');
     this.categoriaService.findByNombre(this.nombreCategoria,this.token)
     .subscribe({
-      next: (data) => {
+      next: (data: Categoria[]) => {
+        console.log('data',data);
         this.categorias.set(data);
+        console.log('categorias',this.categorias());
+
+        if (this.categorias().length > 0) {
+          this.form1.patchValue({
+            idCategoria: this.categorias()[0].idCategoria?.toString()
+          });
+        }
         // this.blockUICategories?.stop();
       },
       error: (error) => {
@@ -205,9 +234,16 @@ export class CrearProductoComponent {
   }
 
   buscarCategoria(dato: string){
+    this.form1.get('idCategoria')?.setValue('');
     this.categorias.set([]);
     this.nombreCategoria = dato;
     this.getCategoriesByName();
-    console.log(`dato: ${dato} `);
+    this.size.set(this.categorias().length);
+  if (this.categorias().length > 0 && this.categorias().length <= 5) {
+    const selectElement = document.getElementById('categoria') as HTMLSelectElement;
+    if (selectElement) {
+    selectElement.size = this.categorias().length;
+    }
+  }
   }
 }

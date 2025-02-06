@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, OnDestroy, Input } from '@angular/core';
 import { debounceTime, Subject, Subscription } from 'rxjs';
 @Component({
   selector: 'app-input',
@@ -10,6 +10,8 @@ import { debounceTime, Subject, Subscription } from 'rxjs';
 export class InputComponent implements OnInit, OnDestroy {
   private debouncer: Subject<string> = new Subject<string>();
   private debouncerSubscription?: Subscription;
+
+  @Input() placeholder: string = '';
 
   @Output()
   public onDebounce: EventEmitter<string> = new EventEmitter<string>();

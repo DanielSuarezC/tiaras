@@ -34,6 +34,7 @@ export class CatalogComponent implements OnInit{
   private mensaje = inject(MensajeService);
   private dialog = inject(Dialog);
 
+  selectCategory: string = 'All';
   isOpenFilter = false;
   token?: string;
 
@@ -47,9 +48,9 @@ export class CatalogComponent implements OnInit{
     this.getProducts();
   }
   
-  ngOnChanges(changes: SimpleChanges){
-    this.getProducts(); 
-  }
+  // ngOnChanges(changes: SimpleChanges){
+  //   this.getProducts(); 
+  // }
   
   addToCart(product: Producto){
     //  this.cart.update(prevState => [...prevState, product]);

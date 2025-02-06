@@ -100,11 +100,11 @@ export class ProductService {
   public findOne(idProducto: string | undefined, token: string | undefined): Observable<Producto> {
     let params = new HttpParams();
     if (idProducto != null) {
-      params = params.set('id', idProducto + '');
+      params = params.set('idProducto', idProducto + '');
     }
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
-    return this.http.get<Producto>(this.baseUrl, { params, headers });
+    return this.http.get<Producto>(this.baseUrl + '/' + idProducto, { headers });
   }
 }

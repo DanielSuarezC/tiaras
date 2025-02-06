@@ -1,22 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, Output, output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
-import { Product } from '../../../shared/models/Product';
-import { TimeAgoPipePipe } from '../../../shared/pipes/time-ago-pipe.pipe';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../shared/models/product/services/cart.service';
-// import { BtnComponent } from '../../components/btn/btn.component';
 import Swal from 'sweetalert2';
 import { Producto } from '../../../shared/models/product/entities/Producto';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, RouterLink, TimeAgoPipePipe],
+  imports: [CommonModule, RouterLink],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css'
 })
 export class ProductComponent {
+
+  baseUrl = environment.urlServices + 'uploads/';
 
   @Input({required: true}) product!: Producto;
 

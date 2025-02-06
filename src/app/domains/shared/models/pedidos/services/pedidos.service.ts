@@ -28,7 +28,7 @@ export class PedidosService {
     return this.http.get<pedido>(this.baseUrl, { params });
   }
 
-  public createPedido(createPedidoDto: CreatePedidoDto, token: string): Observable<any> {
+  public createPedido(createPedidoDto: CreatePedidoDto, token: string | undefined): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });

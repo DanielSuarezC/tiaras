@@ -38,7 +38,7 @@ export class ClientesService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
-    return this.http.get<cliente>(this.baseUrl, { params, headers });
+    return this.http.get<cliente>(this.baseUrl + '/' + idCliente, { headers });
   }
 
   public update(idCliente: number, updateClienteDto: UpdateClienteDto, token: string | undefined): Observable<any> {
@@ -46,5 +46,13 @@ export class ClientesService {
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
     return this.http.put(this.baseUrl + '/' + idCliente, updateClienteDto, { headers });
+  }
+
+  public findByCedula(cedula: string | undefined, token: string | undefined):Observable<cliente[]>{
+    
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+    });
+    return this.http.get<cliente[]>(this.baseUrl +'/cedula/' + cedula, { headers });
   }
 }
