@@ -36,7 +36,6 @@ export class DetailProductComponent {
   ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
     this.getProduct();
-    // console.log(this.categories());
   }
 
   getProduct() {

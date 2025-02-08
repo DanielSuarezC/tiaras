@@ -1,415 +1,367 @@
-<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-      <div class="mx-auto max-w-5xl">
-        <div class="gap-4 sm:flex sm:items-center sm:justify-between">
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">My orders</h2>
-  
-          <div class="mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
-            <div>
-              <label for="order-type" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select order type</label>
-              <select id="order-type" class="block w-full min-w-[8rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                <option selected>All orders</option>
-                <option value="pre-order">Pre-order</option>
-                <option value="transit">In transit</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
+<section class=" dark:bg-gray-900 p-3 sm:p-5">
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <!-- Start coding here -->
+        <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                <div class="w-full md:w-1/2">
+                    <h1 class="font-medium ">Historial de pedidos</h1>
+                </div>
+                <div
+                    class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                    <div></div>
+                    <div class="flex items-center space-x-3 w-full md:w-auto">
+                        <button id="actionsDropdownButton" (click)="isOpenFilters = !isOpenFilters" cdkOverlayOrigin
+                            #filterOverlay="cdkOverlayOrigin" data-dropdown-toggle="actionsDropdown"
+                            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                            type="button">
+
+                            Filter
+                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                            </svg>
+                        </button>
+                        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="filterOverlay"
+                            [cdkConnectedOverlayOpen]="isOpenFilters" (backdropClick)="closeFilter()">
+
+                            <div id="filterDropdown"
+                                class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+                                <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose brand</h6>
+                                <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
+                                    <li class="flex items-center">
+                                        <input id="apple" type="checkbox" value=""
+                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="apple"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Apple
+                                            (56)</label>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <input id="fitbit" type="checkbox" value=""
+                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="fitbit"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Microsoft
+                                            (16)</label>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <input id="razor" type="checkbox" value=""
+                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="razor"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Razor
+                                            (49)</label>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <input id="nikon" type="checkbox" value=""
+                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="nikon"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nikon
+                                            (12)</label>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <input id="benq" type="checkbox" value=""
+                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                        <label for="benq"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">BenQ
+                                            (74)</label>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </ng-template>
+                    </div>
+                </div>
             </div>
-  
-            <span class="inline-block text-gray-500 dark:text-gray-400"> from </span>
-  
-            <div>
-              <label for="duration" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select duration</label>
-              <select id="duration" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                <option selected>this week</option>
-                <option value="this month">this month</option>
-                <option value="last 3 months">the last 3 months</option>
-                <option value="lats 6 months">the last 6 months</option>
-                <option value="this year">this year</option>
-              </select>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">Id Pedido</th>
+                            <th scope="col" class="px-4 py-3">Cliente</th>
+                            <th scope="col" class="px-4 py-3">Fecha de pedido</th>
+                            <th scope="col" class="px-4 py-3">Fecha de entrega</th>
+                            <th scope="col" class="px-4 py-3">Valor total</th>
+                            <th scope="col" class="px-4 py-3">Valor pagado</th>
+                            <th scope="col" class="px-4 py-3">Estado del pago</th>
+                            <th scope="col" class="px-4 py-3">Estado del pedido</th>
+                            <th scope="col" class="px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pedido of pedidos(); let i = index" class="border-b dark:border-gray-700">
+                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ pedido.idPedido }}
+                            </td>
+                            <td class="px-4 py-3">{{pedido.cliente?.nombre}}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaPedido }}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaEntrega }}</td>
+                            <td class="px-4 py-3">{{ pedido.valorTotal }}</td>
+                            <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
+                            <td class="px-4 py-3">{{ pedido.estadoPago }}</td>
+                            <td class="px-4 py-3">{{ pedido.estadoPedido }}</td>
+                            <td class="px-4 py-3 flex items-center justify-end">
+                                <button (click)="toggleDropdown(i)" cdkOverlayOrigin #dropdownOverlay="cdkOverlayOrigin"
+                                    type="button"
+                                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100">
+                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                            </td>
+                            <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="dropdownOverlay"
+                                [cdkConnectedOverlayOpen]="openDropdownIndex === i" (backdropClick)="closeDropdown()">
+
+                                <div id="apple-imac-20-dropdown"
+                                    class="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                    <div class="py-1">
+                                        <a [routerLink]="['/vendedor/detail-order', pedido.idPedido]"
+                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
+                                        ver detalle de pedido
+                                        </a>
+                                        <a (click)="editProducto(pedido)"
+                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
+                                            Editar
+                                        </a>
+                                        <a (click)="deleteProducto(pedido.idPedido || 0)"
+                                            class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+                                            Eliminar
+                                        </a>
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-          </div>
+
+            <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+                aria-label="Table navigation">
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Showing
+                    <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
+                    of
+                    <span class="font-semibold text-gray-900 dark:text-white">1000</span>
+                </span>
+                <ul class="inline-flex items-stretch -space-x-px">
+                    <li>
+                        <a href="#"
+                            class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <span class="sr-only">Previous</span>
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+                    </li>
+                    <li>
+                        <a href="#" aria-current="page"
+                            class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <span class="sr-only">Next</span>
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-  
-        <div class="mt-6 flow-root sm:mt-8">
-          <div class="divide-y divide-gray-200 dark:divide-gray-700">
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB127364372</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">20.12.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$4,756</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
-                  </svg>
-                  Pre-order
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg border border-red-700 px-3 py-2 text-center text-sm font-medium text-red-700 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900 lg:w-auto">Cancel order</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB125467980</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">11.12.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$499</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                  </svg>
-                  In transit
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg border border-red-700 px-3 py-2 text-center text-sm font-medium text-red-700 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300 dark:border-red-500 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white dark:focus:ring-red-900 lg:w-auto">Cancel order</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB139485607</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">08.12.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$85</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Confirmed
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB137364371</a>
-                </dd>
-              </dl> 
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">16.11.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$119</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Confirmed
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB134567890</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">02.11.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$2,056</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Confirmed
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB146284623</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">26.09.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$180</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                  </svg>
-                  Cancelled
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB145967376</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">17.07.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$756</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Confirmed
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB148756352</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">30.06.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$235</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Confirmed
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB159873546</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">04.06.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$90</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                  </svg>
-                  Cancelled
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a href="#" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-  
-            <div class="flex flex-wrap items-center gap-y-4 py-6">
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Order ID:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">
-                  <a href="#" class="hover:underline">#FWB156475937</a>
-                </dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Date:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">11.02.2023</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Price:</dt>
-                <dd class="mt-1.5 text-base font-semibold text-gray-900 dark:text-white">$1,845</dd>
-              </dl>
-  
-              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                <dt class="text-base font-medium text-gray-500 dark:text-gray-400">Status:</dt>
-                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Confirmed
-                </dd>
-              </dl>
-  
-              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                <button type="button" class="w-full rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto">Order again</button>
-                <a [routerLink]="['/vendedor/orders-history/detail-order']" routerLinkActive="router-link-active"  class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 lg:w-auto">View details</a>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <nav class="mt-6 flex items-center justify-center sm:mt-8" aria-label="Page navigation example">
-          <ul class="flex h-8 items-center -space-x-px text-sm">
-            <li>
-              <a href="#" class="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span class="sr-only">Previous</span>
-                <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-            </li>
-            <li>
-              <a href="#" aria-current="page" class="z-10 flex h-8 items-center justify-center border border-primary-300 bg-primary-50 px-3 leading-tight text-primary-600 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span class="sr-only">Next</span>
-                <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
-                </svg>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
     </div>
-  </section>
+</section>
+
+<!-- Filter modal -->
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="filterOverlay" [cdkConnectedOverlayOpen]="isOpenFilters">
+    <form [formGroup]="form1" (ngSubmit)="OnSubmit()" method="get" id="filterModal" tabindex="-1" aria-hidden="true"
+        class=" top-0 z-50 h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
+        <div class="relative h-full w-full max-w-xl md:h-auto">
+            <!-- Modal content -->
+            <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
+                <!-- Modal header -->
+                <div class="flex items-start justify-between rounded-t p-4 md:p-5">
+                    <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filtros</h3>
+                    <button type="button" (click)="isOpenFilters = !isOpenFilters"
+                        class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-toggle="filterModal">
+                        <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18 17.94 6M18 18 6.06 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="px-4 md:px-5">
+                    <div id="myTabContent">
+                        <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel"
+                            aria-labelledby="brand-tab">
+                            <div class="space-y-2">
+                                <div>
+                                    <app-input (onDebounce)="buscarCliente($event)" [placeholder]="'1068418546'">Busque
+                                        cliente por cédula (Completa) </app-input>
+                                </div>
+                                <div>
+                                    <label for="idCliente"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Clientes</label>
+                                    <select id="idCliente" formControlName="idCliente"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option *ngFor="let cliente of clientes()" [value]="cliente.idCliente">
+                                            {{cliente.nombre}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del pedido
+                                </h5>
+
+                                <div class="flex items-center">
+                                    <input id="canon" type="checkbox" value="Pendiente" formControlName="estadoPedido"
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                    <label for="canon"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Pendiente
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="cisco" type="checkbox" value="En Proceso" 
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                    <label for="cisco"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> En Proceso
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="cowon" type="checkbox" value="Terminado"
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                    <label for="cowon"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Terminado
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="clevo" type="checkbox" value="Incidencia"
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                    <label for="clevo"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Incidencia
+                                    </label>
+                                </div>
+
+                            </div>
+
+                            <div class="space-y-2">
+                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del pago
+                                </h5>
+
+                                <div class="flex items-center">
+                                    <input id="dell" type="checkbox" value="Pendiente" formControlName="estadoPago"
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                    <label for="dell" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                        Pendiente
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="dogfish" type="checkbox" value="50% Pagado"
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                    <label for="dogfish"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 50% Pagado
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="dyson" type="checkbox" value="100% Pagado"
+                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                    <label for="dyson"
+                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 100% Pagado
+                                    </label>
+                                </div>
+
+                            </div>
+
+                            <div class="space-y-2">
+                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de pedido
+                                </h5>
+
+                                <div class="relative max-w-sm">
+                                    <div
+                                        class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input datepicker formControlName="fechaPedido" type="date"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Fecha de pedido">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de entrega
+                                </h5>
+
+                                <div class="relative max-w-sm">
+                                    <div
+                                        class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input datepicker formControlName="fechaEntrega" type="date"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Fecha de pedido">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                        <!-- Modal footer -->
+                <div class="flex items-center space-x-4 rounded-b p-4 dark:border-gray-600 md:p-5">
+                    <button type="submit" class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-800 dark:focus:ring-primary-800">Filtrar</button>
+                    <button type="reset" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
