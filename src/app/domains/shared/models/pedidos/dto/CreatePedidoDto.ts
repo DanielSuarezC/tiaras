@@ -2,7 +2,7 @@ import { CreateItemDto } from "./CreateItemDto";
 
 export class CreatePedidoDto {
     idCliente?: number;
-    cedula?:string;
+    cedula?: number;
     evento?: string;
     fechaEntrega?: Date;
     valorTotal?: number;

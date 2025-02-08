@@ -43,11 +43,12 @@ export class OrderComponent {
   shipment = this.cartService.getShipment();
   createItemDto = this.cartService.createItemDto;//signal<CreateItemDto[]>([]);
   clientes = signal<cliente[]>([]);
+  createPedidoDto = new CreatePedidoDto();
   cedula?: string;
   token?: string;
 
   public form1: FormGroup = this.fb.group({
-    idCliente: ['', Validators.required],
+    cedula: ['', Validators.required],
     evento: ['', Validators.required],
     fechaPedido: ['', Validators.required],
     fechaEntrega: ['', Validators.required],
@@ -74,42 +75,51 @@ export class OrderComponent {
       this.blockUI?.stop();
       return;
     } else {
-      const createPedidoDto = new CreatePedidoDto();
+    
+      this.createPedidoDto.cedula = Number(this.form1.get('cedula')?.value);
+      this.createPedidoDto.evento = this.form1.get('evento')?.value;
+      this.createPedidoDto.fechaEntrega = this.form1.get('fechaEntrega')?.value;
+      this.createPedidoDto.valorTotal = this.form1.get('valorTotal')?.value;
+      this.createPedidoDto.estadoPedido = this.form1.get('estadoPedido')?.value;
+      this.createPedidoDto.items = this.createItemDto();
       
-      createPedidoDto.idCliente = this.form1.get('idCliente')?.value;
-      createPedidoDto.evento = this.form1.get('evento')?.value;
-      createPedidoDto.fechaEntrega = this.form1.get('fechaEntrega')?.value;
-      createPedidoDto.valorTotal = this.form1.get('valorTotal')?.value;
-      createPedidoDto.estadoPedido = this.form1.get('estadoPedido')?.value;
-      createPedidoDto.items = this.createItemDto();
-
-      if(this.form1.get('fechaEntrega')?.value >= this.form1.get('fechaPedido')?.value){
-        // Swal.fire('Error', 'La fecha de entrega no puede ser menor a la fecha de pedido', 'error');
-        this.mensaje.showMessage('Error', 'La fecha de entrega no puede ser menor a la fecha de pedido', 'error');
+      if(this.form1.get('fechaEntrega')?.value <= this.form1.get('fechaPedido')?.value){
+        this.mensaje.showMessage('Error', 'La fecha de entrega no puede ser menor o igual a la fecha de pedido', 'error');
         this.blockUI?.stop();
         return;
+      }else if(this.cart().length === 0){
+        this.mensaje.showMessage('Error', 'El carrito no puede estar vacío', 'error');
+        this.blockUI?.stop();
+        return;
+      }else{
+        this.createPedido(); 
       }
-      
-      // this.pedidoService.createPedido(createPedidoDto, this.token).subscribe({
-      //   next: (value) => {
-      //     console.log(value);
-      //     // Swal.fire('Registro exitoso', 'Pedido guardado', 'success');
-      //     this.mensaje.showMessage('Registro exitoso', 'Pedido guardado', 'success');
-      //     this.blockUI?.stop();
-      //   },
-      //   error: (error) => {
-      //     console.error(error);
-      //     this.dialog.open(MensajeComponent, {
-      //       data: {
-      //         titulo: 'Error',
-      //         mensaje: 'Error. ' + error.message, textoBoton: 'Aceptar'
-      //       }
-      //     });
-      //     this.blockUI?.stop();
-      //   }
-      // });
-    }  
+    }
   }
+
+  private createPedido(){
+    this.pedidoService.createPedido(this.createPedidoDto, this.token).subscribe({
+      next: (value) => {
+        console.log(value);
+        // Swal.fire('Registro exitoso', 'Pedido guardado', 'success');
+        this.mensaje.showMessage('Registro exitoso', 'Pedido guardado', 'success');
+        this.form1.reset();
+        this.clearCart();
+        this.blockUI?.stop();
+      },
+      error: (error) => {
+        console.error(error);
+        this.dialog.open(MensajeComponent, {
+          data: {
+            titulo: 'Error',
+            mensaje: 'Error. ' + error.message, textoBoton: 'Aceptar'
+          }
+        });
+        this.blockUI?.stop();
+      }
+    });
+  }  
+  
 
   private getClientesByCedula(){
     // this.blockUICategories?.start('Loading...');

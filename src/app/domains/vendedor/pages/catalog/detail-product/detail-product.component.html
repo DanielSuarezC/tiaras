@@ -29,12 +29,13 @@
         <!-- Sección de información del producto -->
         <div class="w-full lg:w-2/3 mt-5 lg:mt-0">
           <!-- Categoría -->
-          @for (cat of categorias; track cat) {
-            <h2 class="text-sm title-font text-gray-500 tracking-widest text-center lg:text-left">
-              {{ cat | uppercase }}
-            </h2>
-          }
-          <!-- <h2 *ngFor="let product of product(); let i = index" class="text-sm title-font text-gray-500 tracking-widest text-center lg:text-left">
+          <div class="flex flex-wrap justify-center lg:justify-start space-x-2">
+            @for (cat of categorias; track cat) {
+              <h2 class="text-sm title-font text-gray-500 tracking-widest">
+                {{ cat | uppercase }}
+              </h2>
+            }
+          </div>      <!-- <h2 *ngFor="let product of product(); let i = index" class="text-sm title-font text-gray-500 tracking-widest text-center lg:text-left">
             {{ product()?.categorias | uppercase }}
           </h2> -->
           <!-- Título -->

@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { Producto } from '../../../../shared/models/product/entities/Producto';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -30,6 +31,8 @@ export class CartComponent{
     subTotal = this.cartService.subTotal; //signal(0);
     shipment = this.cartService.getShipment();//10000
     createItemDto = this.cartService.createItemDto;
+
+    baseUrl = environment.urlServices + 'uploads/';
 
     isOpenModal = false;
    
