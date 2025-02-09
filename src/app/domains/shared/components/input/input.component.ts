@@ -19,7 +19,7 @@ export class InputComponent implements OnInit, OnDestroy {
   ngOnInit(){
     this.debouncerSubscription = this.debouncer
     .pipe(debounceTime(500))
-    .subscribe((value:string)=> this.onDebounce.emit(value));
+    .subscribe((value: string) => this.onDebounce.emit(value));
   }
 
   ngOnDestroy(){
