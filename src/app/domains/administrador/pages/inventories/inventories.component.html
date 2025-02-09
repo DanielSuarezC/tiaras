@@ -116,7 +116,7 @@
                             <td class="px-4 py-3">{{producto.nombre}}</td>
                             <td class="px-4 py-3">{{ producto.descripcion }}</td>
                             <td class="px-4 py-3">{{ producto.precio }}</td>
-                            <td class="px-4 py-3"><img class="h-auto max-w-full rounded-lg mx-auto dark:hidden" [src]="'http://localhost:3000/tiaras/api/uploads/' +producto.imagenes" [alt]="producto.nombre"></td>
+                            <td class="px-4 py-3"><img class="h-auto max-w-full rounded-lg mx-auto dark:hidden" [src]="'http://localhost:3000/tiaras/api/uploads/' + producto.imagenes?.[0]" [alt]="producto.nombre"></td>
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button (click)="toggleDropdown(i)" cdkOverlayOrigin #dropdownOverlay="cdkOverlayOrigin"
                                     type="button"
