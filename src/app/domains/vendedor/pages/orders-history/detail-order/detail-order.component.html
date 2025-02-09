@@ -24,8 +24,8 @@
                   <td class="whitespace-nowrap py-4 md:w-[384px]">
                     <div class="flex items-center gap-4">
                       <a  class="flex items-center aspect-square w-10 h-10 shrink-0">
-                        <img class="h-auto w-full max-h-full dark:hidden" [src]="this.baseUrl + item.producto.imagenes" [alt]="item.producto.nombre" />
-                        <img class="hidden h-auto w-full max-h-full dark:block" [src]="this.baseUrl + item.producto.imagenes" [alt]="item.producto.nombre" />
+                        <img class="h-auto w-full max-h-full dark:hidden" [src]="'http://localhost:3000/tiaras/api/uploads/' + item.producto.imagenes?.[0]" [alt]="item.producto.nombre" />
+                        <img class="hidden h-auto w-full max-h-full dark:block" [src]="'http://localhost:3000/tiaras/api/uploads/' + item.producto.imagenes?.[0]" [alt]="item.producto.nombre" />
                       </a>
                       <a class="hover:underline">{{item.producto.nombre | uppercase}}</a>
                     </div>

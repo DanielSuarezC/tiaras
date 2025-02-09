@@ -1,13 +1,8 @@
 import { Component, inject, Input, signal } from '@angular/core';
-// import { pedido as Pedido } from '../../../../shared/models/pedidos/entities/pedido';
-import { cliente } from '../../../../shared/models/clientes/entities/cliente';
 import { environment } from '../../../../../../environments/environment';
 import { PedidosService } from '../../../../shared/models/pedidos/services/pedidos.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
-import { InputComponent } from '../../../../shared/components/input/input.component';
-import { Producto } from '../../../../shared/models/product/entities/Producto';
-import { Item } from '../../../../shared/models/pedidos/entities/item';
 import { Pedido } from '../../../../shared/models/pedidos/entities/Pedido.interface';
 
 @Component({
