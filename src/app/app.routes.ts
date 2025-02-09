@@ -28,6 +28,7 @@ import { administradorGuard } from './domains/shared/models/auth/guard/administr
 
 
 
+
 export const routes: Routes = [
     {
         path: '',
