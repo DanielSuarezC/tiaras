@@ -1,7 +1,7 @@
 import { Producto } from "../../product/entities/Producto";
 
 export class Categoria {
-    idCategoria?: number;
+    id_categoria?: number;
     nombre?: string;
     productos?: Producto[];
 }
