@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Inject, inject, Output, Signal, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../../../shared/models/categorias/services/category.service';
 import { Categoria } from '../../../../shared/models/categorias/entities/Categoria';
 import { CookieService } from 'ngx-cookie-service';
@@ -20,8 +20,7 @@ import { BtnComponent } from '../../../../shared/components/btn/btn.component';
   templateUrl: './crear-producto.component.html',
   styleUrl: './crear-producto.component.css'
 })
-export class CrearProductoComponent {
-
+export class CrearProductoComponent implements OnInit {
   // Inyectar servicios
   private categoriaService = inject(CategoryService);
   private productoService = inject(ProductService);
@@ -39,46 +38,43 @@ export class CrearProductoComponent {
     cantidadInsumo: [''],
   });
 
-
-  //variables
+  /* Variables */
   fileUploaded = false;
   fileName = '';
   selectedFile: File[] = [];
   nombreCategoria = '';
-  // Cambiar las signals para usar tipos correctos
   insumosAgregados = signal<{ idInsumo: number, cantidad: number }[]>([]);
-  categoriasAgregadas = signal<number[]>([]);
-  // categoriasAgregadas = signal<Categoria[]>([]);
+  categoriasAgregadas = signal<Categoria[]>([]);
   categorias = signal<Categoria[]>([]);
   private token: string | undefined;
   size = signal<number>(0);
 
+  constructor() { }
  
 
   ngOnInit(){
     this.token = this.cookieService.get(environment.nombreCookieToken);
-    this.getCategoriesByName();
-    // console.log(this.getNombreCategoria(1));
-    
   }
-  // Actualizar onSubmit
+
+  /* Enviar Formulario */
   async onSubmit() {
-    if (this.form1.invalid ||
+    /* if (this.form1.invalid ||
       this.categoriasAgregadas().length === 0 ||
       this.selectedFile.length === 0
     ) {
       this.marcarErrores();
       return;
-    }
+    } */
 
     const productoData: CreateProductoDto = {
       nombre: this.form1.value.nombre!,
       descripcion: this.form1.value.descripcion!,
       precio: +this.form1.value.precio!,
-      // categorias: this.categoriasAgregadas().length == 0 ? []: this.categoriasAgregadas().map(categoria => categoria.idCategoria).filter((id): id is number => id !== undefined),
-      categorias: this.categoriasAgregadas(),
+      categorias: this.categoriasAgregadas().map(categoria => categoria.id_categoria),
       insumos: this.insumosAgregados()
     };
+
+    console.log({ productoData });
 
     try {
       this.productoService.crearProducto(
@@ -88,13 +84,11 @@ export class CrearProductoComponent {
       ).subscribe({
         next: () => {
           this.mensaje.showMessage('Éxito', 'Producto creado correctamente', 'success');
-        },
-        error: (error) => {
+        }, error: (error) => {
           this.mostrarError(error);
-      }}
-    );
+        }
+      });
 
-      // this.mostrarExito();
       this.resetFormulario();
     } catch (error) {
       this.mostrarError(error);
@@ -126,8 +120,6 @@ export class CrearProductoComponent {
     this.fileUploaded = false;
   }
 
-
-
   // Modificar método agregarInsumo
   agregarInsumo() {
     const idInsumo = this.form1.get('idInsumo')?.value;
@@ -148,18 +140,14 @@ export class CrearProductoComponent {
   }
 
   // Modificar método agregarCategoria
-  agregarCategoria() {
-    // const categoria = this.categorias().find(c => c.idCategoria == this.form1.get('idCategoria')?.value);
-    // const categoria = this.form1.get('idCategoria')?.value as Categoria;
-    const categoria = this.form1.get('idCategoria')?.value;
-    console.log(this.form1.get('idCategoria')?.value);
-    if (!categoria) {
-      Swal.fire('Error', 'Seleccione una categoría', 'error');
-      return;
-    }
+  agregarCategoria(categoria: Categoria) {
+    this.categoriasAgregadas.update(cats => [...cats, categoria]);
+    console.log(this.categoriasAgregadas());
+  }
 
-    this.categoriasAgregadas.update(cats => [...cats, +categoria]);
-    this.form1.get('idCategoria')?.reset();
+  /* Verificar si una categoria existe en el arreglo de Categorias */
+  existCategoria(categoria: Categoria): boolean {
+    return this.categoriasAgregadas().includes(categoria);
   }
 
   // Obtener nombre de categoría
@@ -178,26 +166,21 @@ export class CrearProductoComponent {
       }
     });
     return 'Categoría desconocida';
-    // return this.categorias().find(c => c.idCategoria === idCategoria)?.nombre || 'Categoría desconocida';
   }
 
   private getCategories(){
-    // this.blockUICategories?.start('Loading...');
     this.categoriaService.findAll(this.token)
     .subscribe({
       next: (data) => {
         this.categorias.set(data);
-        // this.blockUICategories?.stop();
       },
       error: (error) => {
-        // this.blockUICategories?.stop();
         this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
       }
     });
   }
 
   private getCategoriesByName(){
-    // this.blockUICategories?.start('Loading...');
     this.categoriaService.findByNombre(this.nombreCategoria,this.token)
     .subscribe({
       next: (data: Categoria[]) => {
@@ -207,13 +190,11 @@ export class CrearProductoComponent {
 
         if (this.categorias().length > 0) {
           this.form1.patchValue({
-            idCategoria: this.categorias()[0].idCategoria?.toString()
+            idCategoria: this.categorias()[0].id_categoria?.toString()
           });
         }
-        // this.blockUICategories?.stop();
       },
       error: (error) => {
-        // this.blockUICategories?.stop();
         this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
       }
     });
@@ -233,17 +214,23 @@ export class CrearProductoComponent {
     Swal.fire('Error', mensaje, 'error');
   }
 
-  buscarCategoria(dato: string){
-    this.form1.get('idCategoria')?.setValue('');
-    this.categorias.set([]);
-    this.nombreCategoria = dato;
-    this.getCategoriesByName();
-    this.size.set(this.categorias().length);
-  if (this.categorias().length > 0 && this.categorias().length <= 5) {
-    const selectElement = document.getElementById('categoria') as HTMLSelectElement;
-    if (selectElement) {
-    selectElement.size = this.categorias().length;
+  buscarCategoria(dato: string) {
+    if (dato.trim().length > 0) {
+      this.form1.get('idCategoria')?.setValue('');
+      this.categorias.set([]);
+      this.nombreCategoria = dato;
+      this.getCategoriesByName();
+      this.size.set(this.categorias().length);
+      
+      if (this.categorias().length > 0 && this.categorias().length <= 5) {
+        const selectElement = document.getElementById('categoria') as HTMLSelectElement;
+      
+        if (selectElement) {
+          selectElement.size = this.categorias().length;
+        }
+      }
+    } else {
+      this.categorias.set([]);
     }
-  }
   }
 }
