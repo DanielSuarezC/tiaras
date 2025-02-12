@@ -1,5 +1,4 @@
 import { Component, inject, Input, signal } from '@angular/core';
-import { Product } from '../../../../shared/models/Product';
 import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CartService } from '../../../../shared/models/product/services/cart.service';
 import { CommonModule } from '@angular/common';
@@ -8,7 +7,7 @@ import Swal from 'sweetalert2';
 import { Producto } from '../../../../shared/models/product/entities/Producto';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../../../environments/environment';
-import { Categoria } from '../../../../shared/models/categorias/entities/Categoria';
+
 
 @Component({
   selector: 'app-detail-product',
@@ -19,10 +18,8 @@ import { Categoria } from '../../../../shared/models/categorias/entities/Categor
 })
 export class DetailProductComponent {
   @Input() id?: string;
-  // product = signal<Producto | null>(null);
   product: Producto = new Producto();
-  // categories = signal<any[] | undefined>([]);
-  categorias: string[] = [];
+  categorias: any[] = [];
   cover = signal('');
   private productService = inject(ProductService);
   private cartService = inject(CartService);
@@ -43,11 +40,8 @@ export class DetailProductComponent {
       this.productService.findOne(this.id, this.token)
         .subscribe({
           next: (product: Producto) => {
-            console.log(product.categorias);
             this.product = product;
-            this.categorias = product.categorias as string[];
-            // this.product.set(product);
-            // this.categories.set(product.categorias || undefined); 
+            this.categorias = product.categorias;
             if (product.imagenes && product.imagenes.length > 0) {
               this.cover.set(this.baseUrl + product.imagenes[0]);
             }
@@ -63,8 +57,6 @@ export class DetailProductComponent {
   }
 
   addToCart() {
-    // const product = this.product();
-    // const product = this.product();
     if (this.cartService.productExists(this.product?.idProducto)) {
       Swal.fire('Product already in cart', 'El producto ya se encuentra en el carrito', 'warning');
     } else if (this.product) {

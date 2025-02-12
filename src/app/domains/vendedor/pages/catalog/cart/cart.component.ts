@@ -1,10 +1,8 @@
 import { Component, inject, signal, SimpleChanges, Input, PLATFORM_ID } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Product } from '../../../../shared/models/Product';
 import { CartService } from '../../../../shared/models/product/services/cart.service';
 import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CommonModule } from '@angular/common';
-// import generatePDF from '../../../../shared/components/pdf';
 import generatePDF from '../../../../shared/components/pdfMake';
 import Swal from 'sweetalert2';
 import { Producto } from '../../../../shared/models/product/entities/Producto';
@@ -22,7 +20,6 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class CartComponent {
 
-  products = signal<Product[]>([]);
   private cartService = inject(CartService);
   private productService = inject(ProductService);
   private mensaje = inject(MensajeService);
@@ -33,39 +30,21 @@ export class CartComponent {
   subTotal = this.cartService.subTotal; //signal(0);
   shipment = this.cartService.getShipment();//10000
   createItemDto = this.cartService.createItemDto;
-  imagenBase64 = this.cartService.imagenBase64; //signal<string[]>([]);
 
   baseUrl = environment.urlServices + 'uploads/';
 
   isOpenModal = false;
 
   ngOnInit() {
-    this.cartService.getImagenBase64();
-    console.log('img', this.imagenBase64)
+
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.getProducts();
-  }
 
   addToCart(product: Producto) {
-    //  this.cart.update(prevState => [...prevState, product]);
     this.cartService.addTocart(product);
   }
 
-  private getProducts() {
-    // console.log(`category_id: ${category_id}`);
-    this.productService.getProducts()
-      .subscribe({
-        next: (products) => {
-          this.products.set(products);
-          // console.log(products);
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
-  }
+
   removeItemProduct(productId: number | undefined) {
     return this.cartService.removeItem(productId);
   }
@@ -101,7 +80,6 @@ export class CartComponent {
         import('pdfmake/build/vfs_fonts').then(pdfFontsModule => {
           const pdfMake = pdfMakeModule.default;
           pdfMake.vfs = pdfFontsModule.vfs;
-          // Aquí ya puedes usar pdfMake.createPdf(...)
           const fecha = new Date().toLocaleDateString();
           generatePDF(this.cart(), fecha, this.cartService);
         });

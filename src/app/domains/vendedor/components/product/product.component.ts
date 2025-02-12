@@ -6,6 +6,7 @@ import { CartService } from '../../../shared/models/product/services/cart.servic
 import Swal from 'sweetalert2';
 import { Producto } from '../../../shared/models/product/entities/Producto';
 import { environment } from '../../../../../environments/environment';
+import { Categoria } from '../../../shared/models/categorias/entities/Categoria';
 
 @Component({
   selector: 'app-product',
@@ -19,12 +20,21 @@ export class ProductComponent {
   baseUrl = environment.urlServices + 'uploads/';
 
   @Input({required: true}) product!: Producto;
+  @Input() isFilter = false;
 
   @Output() addToCart = new EventEmitter();
 
   private cartService = inject(CartService);
 
   cart = this.cartService.cart; //signal<Product[]>([]);
+
+  categorias: Categoria[] = [];
+
+  ngOnInit(){
+    this.product.categorias.forEach(categoria => {
+      this.categorias.push(categoria);
+    });
+  }
 
   productExists = false;
 

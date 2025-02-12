@@ -1,5 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
-import { variable64 } from "../../../../assets/img";
+import { logo } from "../../../../assets/img";
 import { Producto } from "../models/product/entities/Producto";
 import { CartService } from "../models/product/services/cart.service";
 
@@ -11,14 +11,16 @@ const generatePDF = (
 ) => {
   const tableBody = [
     [
-      { text: "Nombre producto", style: "tableHeader" },
-      { text: "Descripción", style: "tableHeader" },
-      { text: "Precio", style: "tableHeader" },
+      { text: "Imagen", style: "tableHeader", alignment: "center" },
+      { text: "Nombre", style: "tableHeader", alignment: "center" },
+      { text: "Descripción", style: "tableHeader", alignment: "center" },
+      { text: "Precio", style: "tableHeader", alignment: "center" },
     ],
     ...products.map((product, index) => [
-      { image: `image${index}`, width: 100 },
-      product.descripcion,
-      product.precio,
+      { image: `image${index}`, width: 200 },
+      { text: product.nombre, style: "texto", alignment: "center" },
+      { text: product.descripcion, style: "texto"},
+      { text: `$${product.precio}`, style: "texto", bold: true},
     ]),
   ];
 
@@ -31,7 +33,7 @@ const generatePDF = (
 
   content.push({
     columns: [
-      { image: variable64.miVar, width: 100 },
+      { image: logo.miVar, width: 100 },
       {
         stack: [
           {
@@ -56,7 +58,10 @@ const generatePDF = (
   content.push({
     table: {
       headerRows: 1,
-      widths: ["*", "*", "*"],
+      heights: (rowIndex: number) => {
+        return rowIndex === 0 ? 'auto' : 150; 
+      },
+      widths: ['auto', 'auto', 'auto', 'auto'],
       body: tableBody,
     },
     layout: "lightHorizontalLines",
@@ -74,13 +79,16 @@ const generatePDF = (
     },
     tableHeader: {
       bold: true,
-      fontSize: 12,
+      fontSize: 14,
       color: "black",
-      fillColor: "#C69D75"
+      fillColor: "#C69D75",
+      alignment: "center",
     },
-    total: {
-      fontSize: 12,
-      bold: true,
+    texto:{
+      fontSize: 14,
+      italics: true,
+      alignment: 'justify',
+      valign: "middle",
     },
   };
 
@@ -89,6 +97,15 @@ const generatePDF = (
   const docDefinition: any = {
     content,
     styles,
+    tagged: true,
+    displayTitle: true,
+    info: {
+      title: 'Tiaras Colombia',
+      author: 'Tiaras Colombia',
+      subject: 'Catálogo',
+      keywords: 'Productos',
+      },
+      pageOrientation: "portrait",
     // Configurar fondo de todo el documento
     background: () => {
       return {
@@ -99,15 +116,14 @@ const generatePDF = (
             y: 0,
             w: 595.28,  // Ancho estándar A4 en puntos (21cm)
             h: 841.89,  // Alto estándar A4 en puntos (29.7cm)
+            // w: 841.89,  // Ancho estándar A4 en puntos (29.7cm) para landscape
+            // h: 595.28,  // Alto estándar A4 en puntos (21cm) para landscape
             color: '#FBF6E4'
           }
         ]
       };
     },
     pageMargins: [40, 60, 40, 60],
-    images: {
-      snow: cartservice.imagenBase64,
-    },
   };
 
   docDefinition.images = { ...docDefinition.images, ...images };

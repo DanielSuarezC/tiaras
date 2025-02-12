@@ -233,4 +233,8 @@ export class CrearProductoComponent implements OnInit {
       this.categorias.set([]);
     }
   }
+
+  hasErrors(controlName: string, errorType: string) {
+    return this.form1.get(controlName)?.hasError(errorType) && this.form1.get(controlName)?.touched;
+  }
 }
