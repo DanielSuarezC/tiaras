@@ -64,7 +64,6 @@ export class CatalogComponent implements OnInit{
       if (this.initialized && this.categoriasAgregadas().length === 0) {
         this.isFilter = false;
         this.getProducts();
-        
       }
     });
 
@@ -94,6 +93,7 @@ export class CatalogComponent implements OnInit{
 
   filtrarProductos(){
     let categoriasId: number[] = this.categoriasAgregadas().map(categoria => categoria.id_categoria);
+    this.blockUIProducts?.start('Loading...');
     this.productService.findProductosByCategorias(categoriasId, this.token)
     .subscribe({
       next: (data: any[]) => {
@@ -105,8 +105,16 @@ export class CatalogComponent implements OnInit{
             idCategoria: this.categorias()[0].id_categoria?.toString()
           });
         }
+        this.blockUIProducts?.stop();
+
+        if(this.productos().length === 0){
+          this.mensaje.toastMessage('No se encontraron productos con las categorías seleccionadas', 'info', 'bottom-end', 4000);
+        }else{
+          this.mensaje.toastMessage(this.productos().length === 1 ? `${this.productos().length} producto ha sido encontrado` : `${this.productos().length} productos han sido encontrados`, 'info', 'bottom-end', 4000);
+        }
       },
       error: (error) => {
+        this.blockUIProducts?.stop();
         this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
       }
     });
@@ -166,5 +174,10 @@ export class CatalogComponent implements OnInit{
     quitarCategoria(categoria: Categoria) {
       this.categoriasAgregadas.update(cats => cats.filter(cat => cat !== categoria));
     }
+
+    removerFiltros(){
+      this.categoriasAgregadas.set([]);
+    }
+
 
 }

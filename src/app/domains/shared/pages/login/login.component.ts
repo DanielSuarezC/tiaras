@@ -96,12 +96,14 @@ export class LoginComponent implements OnInit {
           case 'ADMINISTRADOR':
             this.form1.reset();
             this.route.navigate(['/administrador/inventories']);
-            this.mensaje.showMessage('Bienvenido', `Bienvenido al sistema ${this.paylod.rol}`, 'success');
+            // this.mensaje.showMessage('Bienvenido', `Bienvenido al sistema ${this.paylod.rol}`, 'success');
+            this.mensaje.toastMessage(`Bienvenido ${this.paylod.rol}`, 'success', 'bottom-end', 4000);
             break;
             case 'VENDEDOR':
               this.form1.reset();
               this.route.navigate(['/vendedor/catalog']);
-              this.mensaje.showMessage('Bienvenido', `Bienvenido al sistema ${this.paylod.rol}`, 'success');
+              this.mensaje.toastMessage(`Bienvenido ${this.paylod.rol}`, 'success', 'bottom-end', 4000);
+              // this.mensaje.showMessage('Bienvenido', `Bienvenido al sistema ${this.paylod.rol}`, 'success');
             break;
         }
 

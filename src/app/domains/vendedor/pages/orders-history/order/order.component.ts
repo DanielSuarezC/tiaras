@@ -53,7 +53,6 @@ export class OrderComponent {
     fechaPedido: ['', Validators.required],
     fechaEntrega: ['', Validators.required],
     valorTotal: ['', Validators.required],
-    estadoPedido: ['', Validators.required]
   });
 
   ngOnInit() {
@@ -80,8 +79,8 @@ export class OrderComponent {
       this.createPedidoDto.evento = this.form1.get('evento')?.value;
       this.createPedidoDto.fechaEntrega = this.form1.get('fechaEntrega')?.value;
       this.createPedidoDto.valorTotal = this.form1.get('valorTotal')?.value;
-      this.createPedidoDto.estadoPedido = this.form1.get('estadoPedido')?.value;
-      this.createPedidoDto.items = this.createItemDto();
+      this.createPedidoDto.estadoPedido = "Pendiente"; //cuando se crea un pedido siempre estará en estado pendiente
+      this.createPedidoDto.items = this.createItemDto(); //se asocian los items al pedido
       
       if(this.form1.get('fechaEntrega')?.value <= this.form1.get('fechaPedido')?.value){
         this.mensaje.showMessage('Error', 'La fecha de entrega no puede ser menor o igual a la fecha de pedido', 'error');

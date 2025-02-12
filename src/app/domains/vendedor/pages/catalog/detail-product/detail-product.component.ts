@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { Producto } from '../../../../shared/models/product/entities/Producto';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../../../environments/environment';
+import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class DetailProductComponent {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
   private cookieService = inject(CookieService);
+  private mensaje = inject(MensajeService);
   cart = this.cartService.cart; //signal<Product[]>([]);
 
   token?: string;
@@ -58,9 +60,10 @@ export class DetailProductComponent {
 
   addToCart() {
     if (this.cartService.productExists(this.product?.idProducto)) {
-      Swal.fire('Product already in cart', 'El producto ya se encuentra en el carrito', 'warning');
+      this.mensaje.showMessage('Información', 'El producto ya se encuentra en el carrito.', 'warning');
     } else if (this.product) {
       this.cartService.addTocart(this.product);
+      this.mensaje.toastMessage('Producto agregado al carrito.', 'success', 'bottom-end', 2000);
     }
   }
 

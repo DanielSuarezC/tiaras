@@ -3,12 +3,12 @@ import { logo } from "../../../../assets/img";
 import { Producto } from "../models/product/entities/Producto";
 import { CartService } from "../models/product/services/cart.service";
 
-
 const generatePDF = (
   products: Producto[],
   fecha: string,
   cartservice: CartService
 ) => {
+  const productsPerPage = 3;
   const tableBody = [
     [
       { text: "Imagen", style: "tableHeader", alignment: "center" },
@@ -17,10 +17,10 @@ const generatePDF = (
       { text: "Precio", style: "tableHeader", alignment: "center" },
     ],
     ...products.map((product, index) => [
-      { image: `image${index}`, width: 200 },
-      { text: product.nombre, style: "texto", alignment: "center" },
-      { text: product.descripcion, style: "texto"},
-      { text: `$${product.precio}`, style: "texto", bold: true},
+      { image: `image${index}`, width: 200, margin: [0, 10]  },
+      { text: product.nombre, style: "texto", alignment: "center", margin: [0, 10]  },
+      { text: product.descripcion, style: "texto", margin: [0, 10]  },
+      { text: `$${product.precio}`, style: "texto", bold: true, margin: [0, 10]  },
     ]),
   ];
 
@@ -58,13 +58,16 @@ const generatePDF = (
   content.push({
     table: {
       headerRows: 1,
-      heights: (rowIndex: number) => {
-        return rowIndex === 0 ? 'auto' : 150; 
-      },
+      heights: (rowIndex: number) => rowIndex === 0 ? 30 : 180,
       widths: ['auto', 'auto', 'auto', 'auto'],
       body: tableBody,
     },
-    layout: "lightHorizontalLines",
+    // layout: "lightHorizontalLines",
+    layout: {
+      hLineWidth: (i: number, node: any) => (i === 0 || i === node.table.body.length) ? 1 : 0,
+      vLineWidth: () => 0,
+      paddingBottom: () => 2,
+    },
     margin: [0, 10, 0, 10],
   });
 
@@ -84,11 +87,15 @@ const generatePDF = (
       fillColor: "#C69D75",
       alignment: "center",
     },
-    texto:{
+    texto: {
       fontSize: 14,
       italics: true,
       alignment: 'justify',
       valign: "middle",
+    },
+    footer: {
+      fontSize: 10,
+      color: "#666666",
     },
   };
 
@@ -97,6 +104,28 @@ const generatePDF = (
   const docDefinition: any = {
     content,
     styles,
+    footer: (currentPage: number, pageCount: number) => ({
+      stack: [
+        {
+          canvas: [
+            {
+              type: 'line',
+              x1: 0, y1: 0,
+              x2: 595.28, y2: 0,
+              lineWidth: 1,
+              lineColor: '#C69D75'
+            }
+          ],
+          margin: [0, 5]
+        },
+        {
+          text: `Página ${currentPage} de ${pageCount} - © ${new Date().getFullYear()} Tiaras Colombia`,
+          style: 'footer',
+          alignment: 'center'
+        }
+      ],
+      margin: [40, 10]
+    }),
     tagged: true,
     displayTitle: true,
     info: {
@@ -104,8 +133,8 @@ const generatePDF = (
       author: 'Tiaras Colombia',
       subject: 'Catálogo',
       keywords: 'Productos',
-      },
-      pageOrientation: "portrait",
+    },
+    pageOrientation: "portrait",
     // Configurar fondo de todo el documento
     background: () => {
       return {

@@ -60,6 +60,24 @@ export class MensajeService {
     }
   }
 
+  toastMessage(title: string, icon: any, position: any, timer: number) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: position,
+      showConfirmButton: false,
+      timer: timer,
+      timerProgressBar: false,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+    Toast.fire({
+      icon: icon ,
+      title: `${title}`
+    });
+  }
+
   showClientValidate(){
     Swal.fire({
       title: "Información del cliente",
@@ -82,5 +100,7 @@ export class MensajeService {
       }
     });
   }
+
+
 
 }
