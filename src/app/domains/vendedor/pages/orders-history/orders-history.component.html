@@ -75,6 +75,9 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            <th scope="col" class="px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
                             <th scope="col" class="px-4 py-3">Id Pedido</th>
                             <th scope="col" class="px-4 py-3">Cliente</th>
                             <th scope="col" class="px-4 py-3">Fecha de pedido</th>
@@ -83,23 +86,10 @@
                             <th scope="col" class="px-4 py-3">Valor pagado</th>
                             <th scope="col" class="px-4 py-3">Estado del pago</th>
                             <th scope="col" class="px-4 py-3">Estado del pedido</th>
-                            <th scope="col" class="px-4 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let pedido of pedidos(); let i = index" class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ pedido.idPedido }}
-                            </td>
-                            <td class="px-4 py-3">{{pedido.cliente?.nombre}}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaPedido }}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaEntrega }}</td>
-                            <td class="px-4 py-3">{{ pedido.valorTotal }}</td>
-                            <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
-                            <td class="px-4 py-3">{{ pedido.estadoPago }}</td>
-                            <td class="px-4 py-3">{{ pedido.estadoPedido }}</td>
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button (click)="toggleDropdown(i)" cdkOverlayOrigin #dropdownOverlay="cdkOverlayOrigin"
                                     type="button"
@@ -111,6 +101,16 @@
                                     </svg>
                                 </button>
                             </td>
+                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ pedido.idPedido }}
+                            </td>
+                            <td class="px-4 py-3">{{pedido.cliente?.nombre}}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaPedido }}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaEntrega }}</td>
+                            <td class="px-4 py-3">{{ pedido.valorTotal }}</td>
+                            <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
+                            <td class="px-4 py-3">{{ pedido.estadoPago }}</td>
+                            <td class="px-4 py-3">{{ pedido.estadoPedido }}</td>
                             <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="dropdownOverlay"
                                 [cdkConnectedOverlayOpen]="openDropdownIndex === i" (backdropClick)="closeDropdown()">
 

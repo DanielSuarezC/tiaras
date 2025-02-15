@@ -30,18 +30,22 @@ export class CrearProductoComponent implements OnInit {
   // Usar validadores más específicos
   public form1 = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    descripcion: ['', [Validators.required, Validators.minLength(10)]],
+    descripcion: ['', [Validators.required, Validators.minLength(10),Validators.maxLength(250)]],
     precio: ['', [Validators.required, Validators.min(1)]],
-    imagen: ['', Validators.required],
+    imagen1: ['', Validators.required],
+    imagen2: ['', Validators.required],
     idCategoria: [''],
     idInsumo: [''],
     cantidadInsumo: [''],
   });
 
   /* Variables */
-  fileUploaded = false;
-  fileName = '';
+  fileUploaded1 = false;
+  fileUploaded2 = false;
+  fileName1 = '';
+  fileName2 = '';
   selectedFile: File[] = [];
+  selectedFile2: File[] = [];
   nombreCategoria = '';
   insumosAgregados = signal<{ idInsumo: number, cantidad: number }[]>([]);
   categoriasAgregadas = signal<Categoria[]>([]);
@@ -70,7 +74,7 @@ export class CrearProductoComponent implements OnInit {
       nombre: this.form1.value.nombre!,
       descripcion: this.form1.value.descripcion!,
       precio: +this.form1.value.precio!,
-      categorias: this.categoriasAgregadas().map(categoria => categoria.id_categoria),
+      categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
       insumos: this.insumosAgregados()
     };
 
@@ -95,15 +99,24 @@ export class CrearProductoComponent implements OnInit {
     }
   }
 
-  onFileSelect(event: Event) {
+  onFileSelect(event: Event, index: number) {
     // const input = event.target as HTMLInputElement;
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile.push(input.files[0]);
+      // this.selectedFile.push(input.files[0]);
+      // this.selectedFile2.push(input.files[0]);
       // this.selectedFile = input.files[0];
-      this.fileName = input.files[0].name;
-      this.fileUploaded = true;
-      this.form1.get('imagen')?.updateValueAndValidity();
+      if(index === 1){
+        this.fileName1 = input.files[0].name;
+        this.fileUploaded1 = true;
+      }else if(index === 2){
+        this.fileName2 = input.files[0].name;
+        this.fileUploaded2 = true;
+      }
+      this.form1.get('imagen1')?.updateValueAndValidity();
+      this.form1.get('imagen2')?.updateValueAndValidity();
+      console.log(this.selectedFile); 
     }
   }
 
@@ -117,7 +130,8 @@ export class CrearProductoComponent implements OnInit {
     this.insumosAgregados.set([]);
     this.categoriasAgregadas.set([]);
     this.selectedFile = [];
-    this.fileUploaded = false;
+    this.fileUploaded1 = false;
+    this.fileUploaded2 = false;
   }
 
   // Modificar método agregarInsumo
@@ -190,7 +204,7 @@ export class CrearProductoComponent implements OnInit {
 
         if (this.categorias().length > 0) {
           this.form1.patchValue({
-            idCategoria: this.categorias()[0].id_categoria?.toString()
+            idCategoria: this.categorias()[0].idCategoria?.toString()
           });
         }
       },
@@ -232,5 +246,9 @@ export class CrearProductoComponent implements OnInit {
     } else {
       this.categorias.set([]);
     }
+  }
+
+  hasErrors(controlName: string, errorType: string) {
+    return this.form1.get(controlName)?.hasError(errorType) && this.form1.get(controlName)?.touched;
   }
 }

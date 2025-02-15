@@ -1,24 +1,28 @@
 <div class="w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-    <div class="h-56 w-full">
+    <div class="h-56 w-full overflow-hidden">
         <a [routerLink]="['/vendedor/product', product.idProducto]">
-            <img class="h-auto max-w-full rounded-lg mx-auto dark:hidden" [src]="'http://localhost:3000/tiaras/api/uploads/' + product.imagenes?.[0]" [alt]="product.nombre" />
-            <img class="mx-auto hidden h-full dark:block" [src]="'http://localhost:3000/tiaras/api/uploads/' + product.imagenes?.[0]" [alt]="product.nombre" />
+            <img class="h-auto max-w-full rounded-lg mx-auto dark:hidden"
+                [src]="'http://localhost:3000/tiaras/api/uploads/' + product.imagenes?.[0]" [alt]="product.nombre"
+                width="300" height="200" loading="lazy" />
+            <img class="mx-auto hidden h-full dark:block"
+                [src]="'http://localhost:3000/tiaras/api/uploads/' + product.imagenes?.[0]" [alt]="product.nombre" />
         </a>
     </div>
-        <div class="pt-6">
-            <!-- <div class="mb-4 flex items-center justify-between gap-4">
-                <span
-                    class="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300"
-                    *ngIf="product.">{{product.creationAt | timeAgoPipe}}</span>
-            </div> -->
+    <div class="pt-6">
+        <div class="flex flex-wrap justify-start lg:justify-start space-x-2">
+            @for (cat of categorias; track cat) {
+            <span
+                class="me-2 rounded bg-primary-100 px-2.5 py-0.5 text-sm font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300">
+                {{ cat.nombre }} </span>
+            }
+        </div>
+        <a class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+            {{ product.nombre | uppercase }}
+        </a>
 
-            <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
-                {{ product.nombre | uppercase }}
-            </a>
-
-            <div class="mt-4 flex items-center justify-between gap-4">
-                <p class="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">{{product.precio |
-                    currency: '$ ':'symbol':'1.0'}}</p>
+        <div class="mt-4 flex items-center justify-between gap-4">
+            <p class="text-lg font-extrabold leading-tight text-gray-900 dark:text-white">{{product.precio |
+                currency: '$ ':'symbol':'1.0'}}</p>
             <!-- <app-btn [type]="'button' [color]="'peach'" ></app-btn> -->
             <button (click)="addToCardHandler()" type="button"
                 class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
@@ -30,6 +34,6 @@
                 Add to cart
             </button>
 
-            </div>
         </div>
+    </div>
 </div>

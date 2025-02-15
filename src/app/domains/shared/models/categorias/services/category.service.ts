@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Category } from '../../category'; 
 import { environment } from '../../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Categoria } from '../entities/Categoria';
@@ -16,10 +15,6 @@ export class CategoryService {
   baseUrl = environment.urlServices + 'categorias';
 
   constructor() { }
-
-  getAll(){
-    return this.http.get<Category[]>('https://api.escuelajs.co/api/v1/categories');
-  }
 
   public findAll(token: string | undefined): Observable<Categoria[]> {
     const headers = new HttpHeaders({
@@ -53,10 +48,10 @@ export class CategoryService {
       return this.http.patch(this.baseUrl + '/' + idCategoria, updateCategoriaDto, { headers });
     }
 
-    public findByNombre(nombre: string, token: string | undefined):Observable<any>{
+    public findByNombre(nombre: string, token: string | undefined):Observable<any[]>{
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
         });
-        return this.http.get(this.baseUrl + '/by-name/' + nombre, { headers });
+        return this.http.get<any[]>(this.baseUrl + '/by-name/' + nombre, { headers });
     }
 }
