@@ -12,14 +12,14 @@
           </div>
           <!-- Miniaturas -->
           <div class="flex items-center justify-center mt-1">
-            <div class="grid grid-cols-3 gap-1 sm:grid-cols-5 lg:grid-cols-3">
+            <div class="grid grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-2">
               @for (image of product.imagenes; track image; let i = $index) {
                 <img
                   alt="ecommerce"
-                  class="object-cover object-center rounded border-2 border-gray-200"
+                  class="object-cover object-center rounded border-2 border-gray-200 cursor-pointer"
                   [src]="this.baseUrl + image"
                   (click)="changeCover(image)"
-                  [class.border-tiaras-beige]="image === cover()"
+                  [class.border-tiaras-wine]="this.baseUrl + image === cover()"
                 />
               }
             </div>

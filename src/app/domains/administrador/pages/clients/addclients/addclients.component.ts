@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Country } from '../../../../shared/models/paises/paises.interface';
-import { PaisesService } from '../../../../shared/models/paises/paises.service';
 import { ClientesService } from '../../../../shared/models/clientes/services/clientes.service';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../../../environments/environment';

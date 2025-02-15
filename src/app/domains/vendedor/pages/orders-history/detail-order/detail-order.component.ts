@@ -4,11 +4,16 @@ import { PedidosService } from '../../../../shared/models/pedidos/services/pedid
 import { CookieService } from 'ngx-cookie-service';
 import { CommonModule } from '@angular/common';
 import { Pedido } from '../../../../shared/models/pedidos/entities/Pedido.interface';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { Dialog } from '@angular/cdk/dialog';
+import { EditarDireccionComponent } from '../../../components/editarDireccion/editarDireccion.component';
+import { get } from 'http';
+import { RegistrarPagoComponent } from '../../../components/RegistrarPago/RegistrarPago.component';
 
 @Component({
   selector: 'app-detail-order',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OverlayModule],
   templateUrl: './detail-order.component.html',
   styleUrl: './detail-order.component.css'
 })
@@ -19,6 +24,7 @@ export class DetailOrderComponent {
   // cliente = signal<cliente | null>(null);
   private pedidosService = inject(PedidosService);
   private cookieService = inject(CookieService);
+  private dialog = inject(Dialog);
 
   token?: string;
 
@@ -39,5 +45,37 @@ export class DetailOrderComponent {
         }
         );
     }
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open<string>(EditarDireccionComponent, {
+      width: '250px',
+      data: this.pedido().cliente,
+    });
+    
+    dialogRef.closed.subscribe(result => {
+      /**Si el diálogo al cerrar retorna 'recargarPedido' se recarga el pedido, 
+         de lo contrario no.
+      **/
+      if(result === 'recargarPedido'){
+        this.getPedido();
+      }
+    });
+  }
+
+  openDialogPagos(): void {
+    const dialogRef = this.dialog.open<string>(RegistrarPagoComponent, {
+      width: '250px',
+      data: this.pedido(),
+    });
+    
+    dialogRef.closed.subscribe(result => {
+      /**Si el diálogo al cerrar retorna 'recargarPedido' se recarga el pedido, 
+         de lo contrario no.
+      **/
+      if(result === 'pagoAgregado'){
+        this.getPedido();
+      }
+    });
   }
 }

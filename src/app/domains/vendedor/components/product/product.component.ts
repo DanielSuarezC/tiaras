@@ -21,7 +21,6 @@ export class ProductComponent {
   baseUrl = environment.urlServices + 'uploads/';
 
   @Input({required: true}) product!: Producto;
-  @Input() isFilter = false;
 
   @Output() addToCart = new EventEmitter();
 

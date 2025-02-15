@@ -6,8 +6,6 @@ import { CategoryService } from '../../../shared/models/categorias/services/cate
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgBlockUI, BlockUIModule, BlockUI } from 'ng-block-ui';
-import { Dialog } from '@angular/cdk/dialog';
-import { MensajeComponent } from '../../../shared/components/mensaje/mensaje.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { Producto } from '../../../shared/models/product/entities/Producto';
 import { CookieService } from 'ngx-cookie-service';
@@ -15,7 +13,7 @@ import { environment } from '../../../../../environments/environment';
 import { Categoria } from '../../../shared/models/categorias/entities/Categoria';
 import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 import { InputComponent } from '../../../shared/components/input/input.component';
-import { FormBuilder } from '@angular/forms';
+
 
 @Component({
   selector: 'app-catalog',
@@ -32,14 +30,8 @@ export class CatalogComponent implements OnInit{
   private categoriaService = inject(CategoryService);
   private cookieService = inject(CookieService);
   private mensaje = inject(MensajeService);
-  private dialog = inject(Dialog);
-  private fb = inject(FormBuilder);
 
   initialized = false;
-
-  form1 = this.fb.group({
-    idCategoria: [''],
-  });
 
   nombreCategoria = '';
   size = signal<number>(0);
@@ -92,7 +84,7 @@ export class CatalogComponent implements OnInit{
   }
 
   filtrarProductos(){
-    let categoriasId: number[] = this.categoriasAgregadas().map(categoria => categoria.id_categoria);
+    let categoriasId: number[] = this.categoriasAgregadas().map(categoria => categoria.idCategoria);
     this.blockUIProducts?.start('Loading...');
     this.productService.findProductosByCategorias(categoriasId, this.token)
     .subscribe({
@@ -100,11 +92,6 @@ export class CatalogComponent implements OnInit{
         this.productos.set(data);
         this.selectCategory = this.categoriasAgregadas().length === 1 ? `${this.categoriasAgregadas().length} categoría seleccionada` : `${this.categoriasAgregadas().length} categorías seleccionadas`;
         this.isFilter = true;
-        if (this.categorias().length > 0) {
-          this.form1.patchValue({
-            idCategoria: this.categorias()[0].id_categoria?.toString()
-          });
-        }
         this.blockUIProducts?.stop();
 
         if(this.productos().length === 0){
@@ -124,15 +111,7 @@ export class CatalogComponent implements OnInit{
     this.categoriaService.findByNombre(this.nombreCategoria,this.token)
     .subscribe({
       next: (data: Categoria[]) => {
-        console.log('data',data);
         this.categorias.set(data);
-        console.log('categorias',this.categorias());
-
-        if (this.categorias().length > 0) {
-          this.form1.patchValue({
-            idCategoria: this.categorias()[0].id_categoria?.toString()
-          });
-        }
       },
       error: (error) => {
         this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
@@ -142,7 +121,6 @@ export class CatalogComponent implements OnInit{
 
   buscarCategoria(dato: string) {
     if (dato.trim().length > 0) {
-      this.form1.get('idCategoria')?.setValue('');
       this.categorias.set([]);
       this.nombreCategoria = dato;
       this.getCategoriesByName();
@@ -163,7 +141,7 @@ export class CatalogComponent implements OnInit{
     // Modificar método agregarCategoria
     agregarCategoria(categoria: Categoria) {
       this.categoriasAgregadas.update(cats => [...cats, categoria]);
-      console.log(this.categoriasAgregadas());
+      // console.log(this.categoriasAgregadas());
     }
   
     /* Verificar si una categoria existe en el arreglo de Categorias */
