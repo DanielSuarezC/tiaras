@@ -48,13 +48,21 @@ export class CrearProductoComponent implements OnInit {
   /* Formulario de Creación de Productos */
   public createProductoForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    descripcion: ['', [Validators.required, Validators.minLength(10)]],
-    precio: [0, [Validators.required, Validators.min(1)]],
-    imagen: ['', Validators.required],
-    idCategoria: [],
+    descripcion: ['', [Validators.required, Validators.minLength(10),Validators.maxLength(250)]],
+    precio: ['', [Validators.required, Validators.min(1)]],
+    imagen1: ['', Validators.required],
+    imagen2: ['', Validators.required],
+    idCategoria: [''],
     idInsumo: [''],
     cantidadInsumo: [''],
   });
+
+  /* Variables */
+  fileUploaded1 = false;
+  fileUploaded2 = false;
+  fileName1 = '';
+  fileName2 = '';
+  selectedFile2: File[] = [];
 
   ngOnInit(){
     this.token = this.cookieService.get(environment.nombreCookieToken);
@@ -66,7 +74,7 @@ export class CrearProductoComponent implements OnInit {
           this.createProductoForm.patchValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
-            precio: data.precio
+            precio: data.precio.toString()
           });
 
           this.categoriasAgregadas.set([...data.categorias]);
@@ -158,15 +166,55 @@ export class CrearProductoComponent implements OnInit {
     }
   }
 
-  onFileSelect(event: Event) {
+  /* Modificar Producto */
+  private editarProducto() {
+    const productoData: CreateProductoDto = {
+      nombre: this.createProductoForm.value.nombre!,
+      descripcion: this.createProductoForm.value.descripcion!,
+      precio: this.createProductoForm.value.precio!,
+      categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
+    };
+
+    console.log(productoData);
+
+    try {
+      this.productoService.editarProducto(
+        this.idProducto.toString(),
+        productoData,
+        this.selectedFile,
+        this.token!
+      ).subscribe({
+        next: () => {
+          this.mensaje.showMessage('Éxito', 'Producto modificado correctamente', 'success');
+        }, error: (error) => {
+          this.mostrarError(error);
+        }
+      });
+
+      this.resetFormulario();
+    } catch (error) {
+      this.mostrarError(error);
+    }
+  }
+
+  onFileSelect(event: Event, index: number) {
     // const input = event.target as HTMLInputElement;
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile.push(input.files[0]);
+      // this.selectedFile.push(input.files[0]);
+      // this.selectedFile2.push(input.files[0]);
       // this.selectedFile = input.files[0];
-      this.fileName = input.files[0].name;
-      this.fileUploaded = true;
-      this.createProductoForm.get('imagen')?.updateValueAndValidity();
+      if(index === 1){
+        this.fileName1 = input.files[0].name;
+        this.fileUploaded1 = true;
+      }else if(index === 2){
+        this.fileName2 = input.files[0].name;
+        this.fileUploaded2 = true;
+      }
+      this.createProductoForm.get('imagen1')?.updateValueAndValidity();
+      this.createProductoForm.get('imagen2')?.updateValueAndValidity();
+      console.log(this.selectedFile); 
     }
   }
 
@@ -180,7 +228,8 @@ export class CrearProductoComponent implements OnInit {
     this.insumosAgregados.set([]);
     this.categoriasAgregadas.set([]);
     this.selectedFile = [];
-    this.fileUploaded = false;
+    this.fileUploaded1 = false;
+    this.fileUploaded2 = false;
   }
 
   // Modificar método agregarInsumo
@@ -248,6 +297,16 @@ export class CrearProductoComponent implements OnInit {
           this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
         }
       });
+        if (this.categorias().length > 0) {
+          this.createProductoForm.patchValue({
+            idCategoria: this.categorias()[0].idCategoria?.toString()
+          });
+        }
+      },
+      error: (error) => {
+        this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
+      }
+    });
   }
 
   private mostrarError(error: any) {
@@ -282,6 +341,10 @@ export class CrearProductoComponent implements OnInit {
     } else {
       this.categorias.set([]);
     }
+  }
+
+  hasErrors(controlName: string, errorType: string) {
+    return this.form1.get(controlName)?.hasError(errorType) && this.form1.get(controlName)?.touched;
   }
 
   eliminarCategoria(categoria: Categoria) {

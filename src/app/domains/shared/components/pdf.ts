@@ -8,64 +8,62 @@ const generatePDF = (
   fecha: string,
   cartService: CartService
 ) => {
-  const productsPerPage = 1; // Máximo 3 productos por página
+  const productsPerPage = 1;
   const pages = [];
 
+  // Cargar las imágenes de los productos
   const images = products.reduce((acc, product, index) => {
-    acc[`image${index}`] = `http://localhost:3000/tiaras/api/uploads/${product.imagenes?.[0]}`;
+    acc[`image${index}_1`] = `http://localhost:3000/tiaras/api/uploads/${product.imagenes?.[0]}`;
+    acc[`image${index}_2`] = `http://localhost:3000/tiaras/api/uploads/${product.imagenes?.[1] || product.imagenes?.[0]}`; // Segunda imagen o repetir la primera
     return acc;
   }, {});
 
   for (let i = 0; i < products.length; i += productsPerPage) {
-    const productChunk = products.slice(i, i + productsPerPage);
-
-    const tableBody = [
-      [
-        { text: "Imagen", style: "tableHeader", alignment: "center" },
-        { text: "Nombre", style: "tableHeader", alignment: "center" },
-        { text: "Descripción", style: "tableHeader", alignment: "center" },
-        { text: "Precio", style: "tableHeader", alignment: "center" },
-      ],
-      ...productChunk.map((product, index) => [
-        { image: `image${i + index}`, width: 200, height: 200, margin: [0, 10] },
-        { text: product.nombre, style: "texto", alignment: "center", margin: [0, 10] },
-        { text: product.descripcion, style: "texto", margin: [0, 10] },
-        { text: `$${product.precio}`, style: "precio", margin: [0, 10] },
-      ]),
-    ];
+    const product = products[i];
 
     pages.push({
       stack: [
+        // Encabezado con logo y fecha
         {
           columns: [
             { image: logo.miVar, width: 100 },
             {
               stack: [
-                {
-                  text: `Fecha: ${fecha}    |    Síguenos en Instagram`,
-                  style: "subheader",
-                  alignment: "right",
-                },
+                { text: `Fecha: ${fecha} | Qr to Instagram`, style: "subheader", alignment: "right" },
                 {
                   qr: "https://www.instagram.com/tiarascol/",
-                  fit: 100,
+                  fit: 80,
                   alignment: "right",
                   margin: [0, 10, 0, 10],
                 },
               ],
-              alignment: "right",
             },
           ],
         },
         { text: "\n" },
+
+        // Contenido del producto
         {
-          table: {
-            headerRows: 1,
-            widths: ["auto", "auto", "auto", "auto"],
-            body: tableBody,
-          },
-          layout: "lightHorizontalLines",
-          margin: [0, 10, 0, 10],
+          columns: [
+            // Imágenes del producto
+            {
+              stack: [
+                { image: `image${i}_1`, width: 300, height: 300, margin: [10, 10, 10, 10] },
+                ],
+                alignment: "center",
+            },
+            // Información del producto
+            {
+                stack: [
+                    { image: `image${i}_2`, width: 150, height: 150, alignment:"center", margin: [10, 10, 10, 10] },
+                    { text: product.nombre, style: "productTitle", alignment: "center" },
+                    { text: product.descripcion, style: "texto", alignment: "justify", margin: [0, 10] },
+                    { text: `Precio: $${product.precio}`, style: "precio", alignment: "center", margin: [0, 10] },
+                ],
+                width: "auto",
+            },
+          ],
+          columnGap: 20,
         },
       ],
       pageBreak: i + productsPerPage < products.length ? "after" : undefined, // Salto de página
@@ -74,31 +72,28 @@ const generatePDF = (
 
   const styles = {
     header: {
-      fontSize: 14,
+      fontSize: 16,
       bold: true,
     },
     subheader: {
       fontSize: 12,
       margin: [0, 5, 0, 5],
     },
-    tableHeader: {
+    productTitle: {
+      fontSize: 18,
       bold: true,
-      fontSize: 14,
-      color: "black",
-      fillColor: "#C69D75",
-      alignment: "center",
+      color: "#490D0B",
     },
     texto: {
       fontSize: 14,
       italics: true,
       alignment: "justify",
-      valign: "middle",
+      margin: [0, 10],
     },
     precio: {
-      fontSize: 14,
+      fontSize: 16,
       bold: true,
-      alignment: "justify",
-      valign: "middle",
+      color: "#490D0B",
     },
     footer: {
       fontSize: 10,
@@ -117,7 +112,7 @@ const generatePDF = (
               type: "line",
               x1: 0,
               y1: 0,
-              x2: 841.89, // Adjusted for landscape orientation
+              x2: 841.89,
               y2: 0,
               lineWidth: 1,
               lineColor: "#C69D75",
@@ -148,8 +143,8 @@ const generatePDF = (
           type: "rect",
           x: 0,
           y: 0,
-          w: 841.89, // Adjusted for landscape orientation
-          h: 595.28, // Adjusted for landscape orientation
+          w: 841.89,
+          h: 595.28,
           color: "#FBF6E4",
         },
       ],
@@ -159,10 +154,8 @@ const generatePDF = (
 
   docDefinition.images = { ...docDefinition.images, ...images };
 
-  // pdfMake.createPdf(docDefinition).download(`Catalogo_Tiaras_${fecha}.pdf`);
-  pdfMake.createPdf(docDefinition).open();
-
+//   pdfMake.createPdf(docDefinition).download(`Catalogo_Tiaras_${fecha}.pdf`);
+    pdfMake.createPdf(docDefinition).open();
 };
-
 
 export default generatePDF;

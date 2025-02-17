@@ -75,6 +75,9 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            <th scope="col" class="px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
                             <th scope="col" class="px-4 py-3">Id Pedido</th>
                             <th scope="col" class="px-4 py-3">Cliente</th>
                             <th scope="col" class="px-4 py-3">Fecha de pedido</th>
@@ -83,23 +86,10 @@
                             <th scope="col" class="px-4 py-3">Valor pagado</th>
                             <th scope="col" class="px-4 py-3">Estado del pago</th>
                             <th scope="col" class="px-4 py-3">Estado del pedido</th>
-                            <th scope="col" class="px-4 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let pedido of pedidos(); let i = index" class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ pedido.idPedido }}
-                            </td>
-                            <td class="px-4 py-3">{{pedido.cliente?.nombre}}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaPedido }}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaEntrega }}</td>
-                            <td class="px-4 py-3">{{ pedido.valorTotal }}</td>
-                            <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
-                            <td class="px-4 py-3">{{ pedido.estadoPago }}</td>
-                            <td class="px-4 py-3">{{ pedido.estadoPedido }}</td>
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button (click)="toggleDropdown(i)" cdkOverlayOrigin #dropdownOverlay="cdkOverlayOrigin"
                                     type="button"
@@ -110,6 +100,62 @@
                                             d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                     </svg>
                                 </button>
+                            </td>
+                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ pedido.idPedido }}
+                            </td>
+                            <td class="px-4 py-3">{{pedido.cliente?.nombre}} {{pedido.cliente.apellidos}}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaPedido }}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaEntrega }}</td>
+                            <td class="px-4 py-3">{{ pedido.valorTotal }}</td>
+                            <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
+                            <td class="px-4 py-3">
+                                @if(pedido.estadoPago === 'Pendiente'){
+                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
+                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+                                        </svg>
+                                        Pendiente
+                                      </dd>
+                                }@else if(pedido.estadoPago === '50% Pagado'){
+                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.891 15.107 15.11 8.89m-5.183-.52h.01m3.089 7.254h.01M14.08 3.902a2.849 2.849 0 0 0 2.176.902 2.845 2.845 0 0 1 2.94 2.94 2.849 2.849 0 0 0 .901 2.176 2.847 2.847 0 0 1 0 4.16 2.848 2.848 0 0 0-.901 2.175 2.843 2.843 0 0 1-2.94 2.94 2.848 2.848 0 0 0-2.176.902 2.847 2.847 0 0 1-4.16 0 2.85 2.85 0 0 0-2.176-.902 2.845 2.845 0 0 1-2.94-2.94 2.848 2.848 0 0 0-.901-2.176 2.848 2.848 0 0 1 0-4.16 2.849 2.849 0 0 0 .901-2.176 2.845 2.845 0 0 1 2.941-2.94 2.849 2.849 0 0 0 2.176-.901 2.847 2.847 0 0 1 4.159 0Z"/>
+                                          </svg>                                          
+                                        50% Pagado
+                                      </dd>
+                                }@else{
+                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 18v-7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+                                          </svg>
+                                          100% Pagado
+                                    </dd>
+                                }
+                            </td>
+                            <td class="px-4 py-3">
+                                @if(pedido.estadoPedido === 'Pendiente'){
+                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
+                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+                                        </svg>
+                                        Pendiente
+                                      </dd>
+                                }@else if(pedido.estadoPedido === 'En Proceso'){
+                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
+                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                                        </svg>
+                                        En Proceso
+                                      </dd>
+                                }@else{
+                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
+                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+                                        </svg>
+                                       Terminado
+                                    </dd>
+                                }
                             </td>
                             <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="dropdownOverlay"
                                 [cdkConnectedOverlayOpen]="openDropdownIndex === i" (backdropClick)="closeDropdown()">

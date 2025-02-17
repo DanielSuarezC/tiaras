@@ -25,6 +25,9 @@ export class HeaderComponent {
   subTotal = this.cartService.subTotal; //computed();
   total = this.cartService.total; //computed(0);
 
+  cantidadEspecifica(idProducto: number | undefined) {
+    return this.cartService.cantidadEspecifica(idProducto);
+  }
 
   removeItemProduct(productId: number | undefined) {
     return this.cartService.removeItem(productId);
@@ -33,6 +36,10 @@ export class HeaderComponent {
   navigateToCarritoDetalle(): void{
     this.isOpenCart = false;
     this.route.navigate(['/vendedor/cart']);
+  }
+
+  clearCart(): void{
+    this.cartService.clearCart();
   }
 
   cerrarMenus(){

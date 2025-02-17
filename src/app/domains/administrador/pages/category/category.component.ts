@@ -4,7 +4,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { RouterModule } from '@angular/router';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CategoryService } from '../../../shared/models/categorias/services/category.service';
-import { Category } from '../../../shared/models/category';
 import { Dialog } from '@angular/cdk/dialog';
 import { MensajeComponent } from '../../../shared/components/mensaje/mensaje.component'; 
 import { Categoria } from '../../../shared/models/categorias/entities/Categoria';
@@ -35,6 +34,7 @@ export class CategoryComponent {
 
     ngOnInit(): void {
       this.getCategories();
+      console.log('Categorías:', this.categories());
     }
     
     private getCategories(){
@@ -43,6 +43,7 @@ export class CategoryComponent {
     this.categoryService.findAll(this.token)
     .subscribe({
       next: (data: Categoria[]) => {
+        console.log('Categorías:', data);
         this.categories.set(data);
         // this.blockUICategories?.stop();
        

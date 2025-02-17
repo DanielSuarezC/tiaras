@@ -10,6 +10,7 @@ import { CreateCategoriaDto } from '../../../../shared/models/categorias/dto/Cre
 import { Dialog } from '@angular/cdk/dialog';
 import { MensajeComponent } from '../../../../shared/components/mensaje/mensaje.component';
 import { BtnComponent } from '../../../../shared/components/btn/btn.component';
+import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
 
 @Component({
   selector: 'app-addcategory',
@@ -23,7 +24,7 @@ export class AddcategoryComponent {
 
   private categoryService = inject(CategoryService);
   private cookieService = inject(CookieService);
-  private dialog = inject(Dialog);
+  private mensaje = inject(MensajeService);
   private fb = inject(FormBuilder);
   public form1 = this.fb.group({
     nombre: ['', Validators.required]
@@ -38,7 +39,7 @@ export class AddcategoryComponent {
     this.token = this.cookieService.get(environment.nombreCookieToken);
     if (this.form1.invalid) {
       this.form1.markAllAsTouched();
-      Swal.fire('Formulario invalido', 'Formulario inválido', 'error');
+      this.mensaje.showMessage('Formulario inválido', 'Formulario inválido','error');
       // this.blockUI?.stop();
       return;
     }
@@ -47,14 +48,11 @@ export class AddcategoryComponent {
     this.categoryService.create(createCategoriaDto, this.token)
       .subscribe({
         next: (data) => {
-          Swal.fire('Categoría creada', 'Categoría creada con éxito', 'success');
+          this.mensaje.showMessage('Categoría creada', `Categoría ${createCategoriaDto.nombre} creada con éxito`,'success');
           this.form1.reset();
           // this.blockUI?.stop();
         },
         error: (error) => {
-          // this.blockUICategories?.stop();
-          // this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
-          //   mensaje: 'Error de obtención de datos. ' + error.message, textoBoton: 'Aceptar' }});
           Swal.fire('Error', `Error de obtención de datos.  ${error.message}`, 'error');
         }
       });

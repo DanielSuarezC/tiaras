@@ -6,6 +6,8 @@ import { CartService } from '../../../shared/models/product/services/cart.servic
 import Swal from 'sweetalert2';
 import { Producto } from '../../../shared/models/product/entities/Producto';
 import { environment } from '../../../../../environments/environment';
+import { Categoria } from '../../../shared/models/categorias/entities/Categoria';
+import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 
 @Component({
   selector: 'app-product',
@@ -23,16 +25,26 @@ export class ProductComponent {
   @Output() addToCart = new EventEmitter();
 
   private cartService = inject(CartService);
+  private mensaje = inject(MensajeService);
 
   cart = this.cartService.cart; //signal<Product[]>([]);
+
+  categorias: Categoria[] = [];
+
+  ngOnInit(){
+    this.product.categorias.forEach(categoria => {
+      this.categorias.push(categoria);
+    });
+  }
 
   productExists = false;
 
   addToCardHandler(){
     if(this.cartService.productExists(this.product.idProducto)){
-      Swal.fire('Info', 'El producto ya se encuentra en el carrito.', 'warning');
+      this.mensaje.showMessage('Información','El producto ya se encuentra en el carrito.', 'warning');
     }else{
       this.cartService.addTocart(this.product);
+      this.mensaje.toastMessage('Producto agregado al carrito.', 'success', 'bottom-end', 2000);
     }
   }
 
