@@ -11,8 +11,6 @@ import { CreateProductoDto } from '../../../../shared/models/product/dto/CreateP
 import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { BtnComponent } from '../../../../shared/components/btn/btn.component';
-import { pipe, tap } from 'rxjs';
-
 
 @Component({
   selector: 'app-crear-producto',
@@ -48,7 +46,7 @@ export class CrearProductoComponent implements OnInit {
   /* Formulario de Creación de Productos */
   public createProductoForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    descripcion: ['', [Validators.required, Validators.minLength(10),Validators.maxLength(250)]],
+    descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(250)]],
     precio: ['', [Validators.required, Validators.min(1)]],
     imagen1: ['', Validators.required],
     imagen2: ['', Validators.required],
@@ -64,9 +62,9 @@ export class CrearProductoComponent implements OnInit {
   fileName2 = '';
   selectedFile2: File[] = [];
 
-  ngOnInit(){
+  ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
-    
+
     if (this.idProducto) {
       this.productoService.findOne(this.idProducto.toString(), this.token).subscribe({
         next: (data) => {
@@ -140,38 +138,7 @@ export class CrearProductoComponent implements OnInit {
     const productoData: CreateProductoDto = {
       nombre: this.createProductoForm.value.nombre!,
       descripcion: this.createProductoForm.value.descripcion!,
-      precio: this.createProductoForm.value.precio!,
-      categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
-    };
-
-    console.log(productoData);
-
-    try {
-      this.productoService.editarProducto(
-        this.idProducto.toString(),
-        productoData,
-        this.selectedFile,
-        this.token!
-      ).subscribe({
-        next: () => {
-          this.mensaje.showMessage('Éxito', 'Producto modificado correctamente', 'success');
-        }, error: (error) => {
-          this.mostrarError(error);
-        }
-      });
-
-      this.resetFormulario();
-    } catch (error) {
-      this.mostrarError(error);
-    }
-  }
-
-  /* Modificar Producto */
-  private editarProducto() {
-    const productoData: CreateProductoDto = {
-      nombre: this.createProductoForm.value.nombre!,
-      descripcion: this.createProductoForm.value.descripcion!,
-      precio: this.createProductoForm.value.precio!,
+      precio: +this.createProductoForm.value.precio!,
       categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
     };
 
@@ -205,16 +172,16 @@ export class CrearProductoComponent implements OnInit {
       // this.selectedFile.push(input.files[0]);
       // this.selectedFile2.push(input.files[0]);
       // this.selectedFile = input.files[0];
-      if(index === 1){
+      if (index === 1) {
         this.fileName1 = input.files[0].name;
         this.fileUploaded1 = true;
-      }else if(index === 2){
+      } else if (index === 2) {
         this.fileName2 = input.files[0].name;
         this.fileUploaded2 = true;
       }
       this.createProductoForm.get('imagen1')?.updateValueAndValidity();
       this.createProductoForm.get('imagen2')?.updateValueAndValidity();
-      console.log(this.selectedFile); 
+      console.log(this.selectedFile);
     }
   }
 
@@ -280,74 +247,61 @@ export class CrearProductoComponent implements OnInit {
     return 'Categoría desconocida';
   }
 
-  private getCategoriesByName(){
-    this.categoriaService.findByNombre(this.nombreCategoria, this.token)
-      .subscribe({
-        next: (data: Categoria[]) => {
-          const categoriasFiltradas = data.filter(cat => !this.categoriasAgregadas().some(catAgregada => catAgregada.idCategoria === cat.idCategoria));
-          this.categorias.set(categoriasFiltradas);
+  private getCategoriesByName() {
+    this.categoriaService.findByNombre(this.nombreCategoria, this.token).subscribe({
+      next: (data: Categoria[]) => {
+        const categoriasFiltradas = data.filter(cat => !this.categoriasAgregadas().some(catAgregada => catAgregada.idCategoria === cat.idCategoria));
+        this.categorias.set(categoriasFiltradas);
 
-          if (this.categorias().length > 0) {
-            this.createProductoForm.patchValue({
-              idCategoria: this.categorias()[0].idCategoria?.toString()
-            });
-          }
-        },
-        error: (error) => {
-          this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-        }
-      });
         if (this.categorias().length > 0) {
           this.createProductoForm.patchValue({
             idCategoria: this.categorias()[0].idCategoria?.toString()
           });
         }
-      },
-      error: (error) => {
+      }, error: (error) => {
         this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-      }
-    });
+      }});
   }
 
   private mostrarError(error: any) {
-    let mensaje = 'Error desconocido';
+  let mensaje = 'Error desconocido';
 
-    if (error.error?.message) {
-      mensaje = error.error.message;
-    } else if (error.status === 413) {
-      mensaje = 'Las imágenes exceden el tamaño máximo permitido';
-    } else if (error.status === 415) {
-      mensaje = 'Formato de imagen no soportado';
-    }
-
-    Swal.fire('Error', mensaje, 'error');
+  if (error.error?.message) {
+    mensaje = error.error.message;
+  } else if (error.status === 413) {
+    mensaje = 'Las imágenes exceden el tamaño máximo permitido';
+  } else if (error.status === 415) {
+    mensaje = 'Formato de imagen no soportado';
   }
 
-  buscarCategoria(dato: string) {
-    if (dato.trim().length > 0) {
-      this.createProductoForm.get('idCategoria')?.setValue('');
-      this.categorias.set([]);
-      this.nombreCategoria = dato;
-      this.getCategoriesByName();
-      this.size.set(this.categorias().length);
-      
-      if (this.categorias().length > 0 && this.categorias().length <= 5) {
-        const selectElement = document.getElementById('categoria') as HTMLSelectElement;
-      
-        if (selectElement) {
-          selectElement.size = this.categorias().length;
-        }
+  Swal.fire('Error', mensaje, 'error');
+}
+
+buscarCategoria(dato: string) {
+  if (dato.trim().length > 0) {
+    this.createProductoForm.get('idCategoria')?.setValue('');
+    this.categorias.set([]);
+    this.nombreCategoria = dato;
+    this.getCategoriesByName();
+    this.size.set(this.categorias().length);
+
+    if (this.categorias().length > 0 && this.categorias().length <= 5) {
+      const selectElement = document.getElementById('categoria') as HTMLSelectElement;
+
+      if (selectElement) {
+        selectElement.size = this.categorias().length;
       }
-    } else {
-      this.categorias.set([]);
     }
+  } else {
+    this.categorias.set([]);
   }
+}
 
-  hasErrors(controlName: string, errorType: string) {
-    return this.form1.get(controlName)?.hasError(errorType) && this.form1.get(controlName)?.touched;
-  }
+hasErrors(controlName: string, errorType: string) {
+  return this.createProductoForm.get(controlName)?.hasError(errorType) && this.createProductoForm.get(controlName)?.touched;
+}
 
-  eliminarCategoria(categoria: Categoria) {
-    this.categoriasAgregadas.update(cats => cats.filter(cat => cat.idCategoria !== categoria.idCategoria));
-  }
+eliminarCategoria(categoria: Categoria) {
+  this.categoriasAgregadas.update(cats => cats.filter(cat => cat.idCategoria !== categoria.idCategoria));
+}
 }
