@@ -84,8 +84,6 @@ const generatePDF = (
     },
   };
 
-
-
   const docDefinition: any = {
     content,
     styles,
