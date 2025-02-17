@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
 import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -11,6 +11,7 @@ import { CreateProductoDto } from '../../../../shared/models/product/dto/CreateP
 import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { BtnComponent } from '../../../../shared/components/btn/btn.component';
+import { pipe, tap } from 'rxjs';
 
 
 @Component({
@@ -18,63 +19,94 @@ import { BtnComponent } from '../../../../shared/components/btn/btn.component';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, InputComponent, BtnComponent],
   templateUrl: './crear-producto.component.html',
-  styleUrl: './crear-producto.component.css'
+  styles: ''
 })
 export class CrearProductoComponent implements OnInit {
-  // Inyectar servicios
-  private categoriaService = inject(CategoryService);
-  private productoService = inject(ProductService);
-  private mensaje = inject(MensajeService);
-  private cookieService = inject(CookieService);
-  private fb = inject(FormBuilder);
-  // Usar validadores más específicos
-  public form1 = this.fb.group({
+  /* Attributes */
+  @Input()
+  public idProducto: number | undefined;
+
+  public fileUploaded: boolean = false;
+  public fileName: string = '';
+  public selectedFile: File[] = [];
+  public nombreCategoria: string = '';
+  public insumosAgregados: WritableSignal<{ idInsumo: number, cantidad: number }[]> = signal<{ idInsumo: number, cantidad: number }[]>([]);
+  public categoriasAgregadas: WritableSignal<Categoria[]> = signal<Categoria[]>([]);
+  public categorias: WritableSignal<Categoria[]> = signal<Categoria[]>([]);
+  private token: string | undefined;
+  public size: WritableSignal<number> = signal<number>(0);
+
+  /* Constructor */
+  constructor(
+    private categoriaService: CategoryService,
+    private productoService: ProductService,
+    private mensaje: MensajeService,
+    private cookieService: CookieService,
+    private fb: FormBuilder
+  ) { }
+
+  /* Formulario de Creación de Productos */
+  public createProductoForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
     descripcion: ['', [Validators.required, Validators.minLength(10)]],
-    precio: ['', [Validators.required, Validators.min(1)]],
+    precio: [0, [Validators.required, Validators.min(1)]],
     imagen: ['', Validators.required],
-    idCategoria: [''],
+    idCategoria: [],
     idInsumo: [''],
     cantidadInsumo: [''],
   });
 
-  /* Variables */
-  fileUploaded = false;
-  fileName = '';
-  selectedFile: File[] = [];
-  nombreCategoria = '';
-  insumosAgregados = signal<{ idInsumo: number, cantidad: number }[]>([]);
-  categoriasAgregadas = signal<Categoria[]>([]);
-  categorias = signal<Categoria[]>([]);
-  private token: string | undefined;
-  size = signal<number>(0);
-
-  constructor() { }
- 
-
   ngOnInit(){
     this.token = this.cookieService.get(environment.nombreCookieToken);
+    
+    if (this.idProducto) {
+      this.productoService.findOne(this.idProducto.toString(), this.token).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.createProductoForm.patchValue({
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            precio: data.precio
+          });
+
+          this.categoriasAgregadas.set([...data.categorias]);
+        },
+        error: (error) => {
+          this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
+        }
+      });
+    }
   }
 
   /* Enviar Formulario */
   async onSubmit() {
-    /* if (this.form1.invalid ||
+    if (this.createProductoForm.invalid ||
       this.categoriasAgregadas().length === 0 ||
       this.selectedFile.length === 0
     ) {
       this.marcarErrores();
       return;
-    } */
+    }
 
+    switch (this.idProducto) {
+      case undefined:
+        this.crearProducto();
+        break;
+      default:
+        this.editarProducto();
+        break;
+    }
+  }
+
+  /* Crear Producto */
+  private crearProducto() {
     const productoData: CreateProductoDto = {
-      nombre: this.form1.value.nombre!,
-      descripcion: this.form1.value.descripcion!,
-      precio: +this.form1.value.precio!,
-      categorias: this.categoriasAgregadas().map(categoria => categoria.id_categoria),
+      nombre: this.createProductoForm.value.nombre!,
+      descripcion: this.createProductoForm.value.descripcion!,
+      precio: +this.createProductoForm.value.precio!,
+      categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
       insumos: this.insumosAgregados()
     };
-
-    console.log({ productoData });
 
     try {
       this.productoService.crearProducto(
@@ -95,6 +127,37 @@ export class CrearProductoComponent implements OnInit {
     }
   }
 
+  /* Modificar Producto */
+  private editarProducto() {
+    const productoData: CreateProductoDto = {
+      nombre: this.createProductoForm.value.nombre!,
+      descripcion: this.createProductoForm.value.descripcion!,
+      precio: this.createProductoForm.value.precio!,
+      categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
+    };
+
+    console.log(productoData);
+
+    try {
+      this.productoService.editarProducto(
+        this.idProducto.toString(),
+        productoData,
+        this.selectedFile,
+        this.token!
+      ).subscribe({
+        next: () => {
+          this.mensaje.showMessage('Éxito', 'Producto modificado correctamente', 'success');
+        }, error: (error) => {
+          this.mostrarError(error);
+        }
+      });
+
+      this.resetFormulario();
+    } catch (error) {
+      this.mostrarError(error);
+    }
+  }
+
   onFileSelect(event: Event) {
     // const input = event.target as HTMLInputElement;
     const input = event.target as HTMLInputElement;
@@ -103,17 +166,17 @@ export class CrearProductoComponent implements OnInit {
       // this.selectedFile = input.files[0];
       this.fileName = input.files[0].name;
       this.fileUploaded = true;
-      this.form1.get('imagen')?.updateValueAndValidity();
+      this.createProductoForm.get('imagen')?.updateValueAndValidity();
     }
   }
 
   private marcarErrores() {
-    this.form1.markAllAsTouched();
+    this.createProductoForm.markAllAsTouched();
     Swal.fire('Error', 'Verifique los campos requeridos', 'error');
   }
 
   private resetFormulario() {
-    this.form1.reset();
+    this.createProductoForm.reset();
     this.insumosAgregados.set([]);
     this.categoriasAgregadas.set([]);
     this.selectedFile = [];
@@ -122,8 +185,8 @@ export class CrearProductoComponent implements OnInit {
 
   // Modificar método agregarInsumo
   agregarInsumo() {
-    const idInsumo = this.form1.get('idInsumo')?.value;
-    const cantidad = this.form1.get('cantidadInsumo')?.value;
+    const idInsumo = this.createProductoForm.get('idInsumo')?.value;
+    const cantidad = this.createProductoForm.get('cantidadInsumo')?.value;
 
     if (!idInsumo || !cantidad) {
       Swal.fire('Error', 'Seleccione un insumo e ingrese la cantidad', 'error');
@@ -135,8 +198,8 @@ export class CrearProductoComponent implements OnInit {
       { idInsumo: +idInsumo, cantidad: +cantidad }
     ]);
 
-    this.form1.get('idInsumo')?.reset();
-    this.form1.get('cantidadInsumo')?.reset();
+    this.createProductoForm.get('idInsumo')?.reset();
+    this.createProductoForm.get('cantidadInsumo')?.reset();
   }
 
   // Modificar método agregarCategoria
@@ -168,36 +231,23 @@ export class CrearProductoComponent implements OnInit {
     return 'Categoría desconocida';
   }
 
-  private getCategories(){
-    this.categoriaService.findAll(this.token)
-    .subscribe({
-      next: (data) => {
-        this.categorias.set(data);
-      },
-      error: (error) => {
-        this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-      }
-    });
-  }
-
   private getCategoriesByName(){
-    this.categoriaService.findByNombre(this.nombreCategoria,this.token)
-    .subscribe({
-      next: (data: Categoria[]) => {
-        console.log('data',data);
-        this.categorias.set(data);
-        console.log('categorias',this.categorias());
+    this.categoriaService.findByNombre(this.nombreCategoria, this.token)
+      .subscribe({
+        next: (data: Categoria[]) => {
+          const categoriasFiltradas = data.filter(cat => !this.categoriasAgregadas().some(catAgregada => catAgregada.idCategoria === cat.idCategoria));
+          this.categorias.set(categoriasFiltradas);
 
-        if (this.categorias().length > 0) {
-          this.form1.patchValue({
-            idCategoria: this.categorias()[0].id_categoria?.toString()
-          });
+          if (this.categorias().length > 0) {
+            this.createProductoForm.patchValue({
+              idCategoria: this.categorias()[0].idCategoria?.toString()
+            });
+          }
+        },
+        error: (error) => {
+          this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
         }
-      },
-      error: (error) => {
-        this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-      }
-    });
+      });
   }
 
   private mostrarError(error: any) {
@@ -216,7 +266,7 @@ export class CrearProductoComponent implements OnInit {
 
   buscarCategoria(dato: string) {
     if (dato.trim().length > 0) {
-      this.form1.get('idCategoria')?.setValue('');
+      this.createProductoForm.get('idCategoria')?.setValue('');
       this.categorias.set([]);
       this.nombreCategoria = dato;
       this.getCategoriesByName();
@@ -232,5 +282,9 @@ export class CrearProductoComponent implements OnInit {
     } else {
       this.categorias.set([]);
     }
+  }
+
+  eliminarCategoria(categoria: Categoria) {
+    this.categoriasAgregadas.update(cats => cats.filter(cat => cat.idCategoria !== categoria.idCategoria));
   }
 }

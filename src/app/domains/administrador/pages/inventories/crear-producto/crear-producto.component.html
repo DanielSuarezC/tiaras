@@ -2,7 +2,7 @@
 <section class="dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Agregue un nuevo producto</h2>
-        <form [formGroup]="form1" (ngSubmit)="onSubmit()">
+        <form [formGroup]="createProductoForm" (ngSubmit)="onSubmit()">
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div class="sm:col-span-2">
                     <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del
@@ -26,29 +26,6 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="$2999">
                 </div>
-                
-                <!-- <div>
-                    <app-input (onDebounce)="buscarCategoria($event)">Filtre por categoría</app-input>
-                </div> -->
-
-                <!-- <div>
-                    <label for="idCategoria"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoria</label>
-                    <select id="idCategoria" formControlName="idCategoria" 
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option *ngFor="let categoria of categorias()" [value]="categoria.idCategoria">
-                          categoria: {{categoria.idCategoria}} - {{categoria.nombre}}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="sm:col-span-2">
-                    <button type="button" (click)="agregarCategoria()"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-                        Agregar Categoría
-                    </button>
-                </div> -->
-
 
                 <!-- Lista de categorías agregadas -->
                 <div class="sm:col-span-2" *ngIf="categoriasAgregadas().length > 0">
@@ -56,10 +33,10 @@
                     <ul class="list-disc pl-5 mt-2">
                         <li *ngFor="let categoria of categoriasAgregadas()" class="text-sm text-gray-700 dark:text-gray-300">
                             {{ categoria.nombre }}
-                            <!-- <button type="button" (click)="eliminarCategoria(categoria)"
+                            <button type="button" (click)="eliminarCategoria(categoria)"
                                 class="text-red-500 hover:text-red-700 ml-2">
                                 Eliminar
-                            </button> -->
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -76,8 +53,8 @@
                         
                         <ul class="px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSearchButton">
                             <li *ngFor="let categoria of categorias()">
-                                <div class="flex items-center ps-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="checkbox-item-11" type="checkbox" [value]="categoria" [checked]="existCategoria(categoria)" (change)="agregarCategoria(categoria)" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <div *ngIf="!categoriasAgregadas().includes(categoria)" class="flex items-center ps-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input id="checkbox-item-11" type="checkbox" [value]="categoria" (change)="agregarCategoria(categoria)" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                     <label for="checkbox-item-11" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300">{{ categoria.nombre }}</label>
                                 </div>
                             </li>
