@@ -38,6 +38,10 @@ export class HeaderComponent {
     this.route.navigate(['/vendedor/cart']);
   }
 
+  clearCart(): void{
+    this.cartService.clearCart();
+  }
+
   cerrarMenus(){
     if(this.isOpenCart || this.isOpenMenuMovil || this.isOpenAccount){
       this.isOpenCart = false;

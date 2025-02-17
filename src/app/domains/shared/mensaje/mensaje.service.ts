@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 export class MensajeService {
 
   private route = inject(Router);
+  public confirmacion = signal<boolean>(false);
 
   constructor() { }
 
@@ -100,7 +101,4 @@ export class MensajeService {
       }
     });
   }
-
-
-
 }
