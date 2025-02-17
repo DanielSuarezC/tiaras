@@ -1,54 +1,46 @@
-
 <nav class="fixed top-0 left-0 w-full bg-pallete-sections dark:bg-gray-800 antialiased z-50">
-    <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
-      <div class="flex items-center justify-between">
-  
-        <!-- logo-header -->
-        <div class="flex items-center space-x-8">
-          <div class="shrink-0">
-            <a title="" class="">
-              <img class="block w-auto h-8 dark:hidden" src="../../../../../assets/logo_tiarascol.png" alt="">
-            </a>
-          </div>
-          <!-- menu items large screen -->
-          <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
-            <ul class="space-y-2">
-              <!-- Gestión de Inventario -->
-              <li>
-                <a
-                  routerLinkActive="underline"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="isOpeninventario = !isOpeninventario"
-                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
-                  class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500 cursor-pointer"
-                >
-                  Gestión de Inventario
-                </a>
-              </li>
-            
-            </ul>
-            
-     
-            <li class="shrink-0">
-              <a routerLink="/administrador/clients" routerLinkActive="underline"
-              (click)="isOpeninventario = false"
-                class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
-                Gestion de clientes
+  <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
+    <div class="flex items-center justify-between">
+
+      <!-- logo-header -->
+      <div class="flex items-center space-x-8">
+        <div class="shrink-0">
+          <a title="" class="">
+            <img class="block w-auto h-8 dark:hidden" src="../../../../../assets/logo_tiarascol.png" alt="">
+          </a>
+        </div>
+        <!-- menu items large screen -->
+        <ul class="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
+          <ul class="space-y-2">
+            <!-- Gestión de Inventario -->
+            <li>
+              <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }"
+                (click)="isOpeninventario = !isOpeninventario" cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
+                class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500 cursor-pointer">
+                Administración
               </a>
             </li>
-            <!-- <li class="shrink-0">
+          </ul>
+
+          <li class="shrink-0">
+            <a routerLink="/administrador/clients" routerLinkActive="underline" (click)="isOpeninventario = false"
+              class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
+              Gestion de Clientes
+            </a>
+          </li>
+          <!-- <li class="shrink-0">
               <a routerLink="/administrador/users" routerLinkActive="underline"
               (click)="isOpeninventario = false"
                 class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500">
                 Administracion de usuarios
               </a>
             </li> -->
-          </ul>
-        </div>
-        <!-- overlay inventario  -->
-        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="inventarioOverlay"
-          [cdkConnectedOverlayOpen]="isOpeninventario">
-          <!-- <div
+        </ul>
+      </div>
+      <!-- overlay inventario  -->
+      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="inventarioOverlay"
+        [cdkConnectedOverlayOpen]="isOpeninventario">
+        <!-- <div
             class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
             <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
               <li>
@@ -91,109 +83,116 @@
               </li>
             </ul>
           </div> -->
-          <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
-            <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
-              <li>
-                <a routerLink="/administrador/inventories" (click)="isOpeninventario = false" class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de productos</a>
-              </li>
-              <li>
-                <a routerLink="/administrador/insumos" (click)="isOpeninventario = false" 
-                  class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Insumos
-                </a>
-              </li>
-              <li>
-                <a routerLink="/administrador/category" (click)="isOpeninventario = false"
-                  class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de categorías</a>
-              </li>
-            </ul>
-          </div>
-
-
-        </ng-template>
-        <!-- Cart and user menu button -->
-        <div class="flex items-center lg:space-x-2">
-  
-
-          <!-- User menu button  -->
-          <button  (click)="isOpenAccount = !isOpenAccount" cdkOverlayOrigin
-            #AccountOverlay="cdkOverlayOrigin"  type="button"
-            class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-            <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-              fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-width="2"
-                d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-            Cuenta
-            <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-              width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m19 9-7 7-7-7" />
-            </svg>
-          </button>
-          <!-- user Overlay  -->
-          <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="AccountOverlay"
-            [cdkConnectedOverlayOpen]="isOpenAccount">
-            <div
-              class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
-              <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
-                <li><a title=""
-                    class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                    Mi cuenta </a></li>
-                <li><a title=""
-                    class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
-                    Cambiar contraseña </a></li>
-              </ul>
-  
-              <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
-                <a title="" routerLink="/"
-                  class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-                  Cerrar Sesión </a>
-              </div>
-            </div>
-          </ng-template>
-  
-  
-          <!-- menu items movil screen  -->
-          <button type="button" (click)="isOpenMenuMovil = !isOpenMenuMovil" cdkOverlayOrigin
-            #menuMovilOverlay="cdkOverlayOrigin" 
-            aria-controls="ecommerce-navbar-menu-1" aria-expanded="false"
-            class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
-            <span class="sr-only">
-              Open Menu
-            </span>
-            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-              viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
-            </svg>
-          </button>
-  
-        </div>
-      </div>
-      <!-- movil screen overlay  -->
-      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="menuMovilOverlay"
-        [cdkConnectedOverlayOpen]="isOpenMenuMovil">  
         <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
           <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
             <li>
-              <a routerLink="/administrador/inventories" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de productos</a>
+              <a routerLink="/administrador/inventarios" (click)="isOpeninventario = false"
+                class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Inventarios</a>
             </li>
             <li>
-              <a routerLink="/administrador/insumos" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de insumos</a>
+              <a routerLink="/administrador/inventories" (click)="isOpeninventario = false"
+                class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Productos</a>
             </li>
             <li>
-              <a routerLink="/administrador/category" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de categorías</a>
-            </li>
-            <li>
-              <a routerLink="/administrador/clients"
-                class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de clientes
+              <a routerLink="/administrador/insumos" (click)="isOpeninventario = false"
+                class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Insumos
               </a>
             </li>
-            <!-- <li>
+            <li>
+              <a routerLink="/administrador/category" (click)="isOpeninventario = false"
+                class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de Categorías</a>
+            </li>
+          </ul>
+        </div>
+
+
+      </ng-template>
+      <!-- Cart and user menu button -->
+      <div class="flex items-center lg:space-x-2">
+
+
+        <!-- User menu button  -->
+        <button (click)="isOpenAccount = !isOpenAccount" cdkOverlayOrigin #AccountOverlay="cdkOverlayOrigin"
+          type="button"
+          class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
+          <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-width="2"
+              d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          </svg>
+          Cuenta
+          <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m19 9-7 7-7-7" />
+          </svg>
+        </button>
+        <!-- user Overlay  -->
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="AccountOverlay"
+          [cdkConnectedOverlayOpen]="isOpenAccount">
+          <div
+            class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
+            <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+              <li><a title=""
+                  class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                  Mi cuenta </a></li>
+              <li><a title=""
+                  class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                  Cambiar contraseña </a></li>
+            </ul>
+
+            <div class="p-2 text-sm font-medium text-gray-900 dark:text-white">
+              <a title="" routerLink="/"
+                class="inline-flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+                Cerrar Sesión </a>
+            </div>
+          </div>
+        </ng-template>
+
+
+        <!-- menu items movil screen  -->
+        <button type="button" (click)="isOpenMenuMovil = !isOpenMenuMovil" cdkOverlayOrigin
+          #menuMovilOverlay="cdkOverlayOrigin" aria-controls="ecommerce-navbar-menu-1" aria-expanded="false"
+          class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
+          <span class="sr-only">
+            Open Menu
+          </span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14" />
+          </svg>
+        </button>
+
+      </div>
+    </div>
+    <!-- movil screen overlay  -->
+    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="menuMovilOverlay"
+      [cdkConnectedOverlayOpen]="isOpenMenuMovil">
+      <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
+        <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
+          <li>
+            <a routerLink="/administrador/inventories"
+              class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de productos</a>
+          </li>
+          <li>
+            <a routerLink="/administrador/insumos" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de
+              insumos</a>
+          </li>
+          <li>
+            <a routerLink="/administrador/category" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión
+              de categorías</a>
+          </li>
+          <li>
+            <a routerLink="/administrador/clients" class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de
+              clientes
+            </a>
+          </li>
+          <!-- <li>
               <a routerLink="/administrador/users"
                 class="hover:text-primary-700 dark:hover:text-primary-500">Administracion de usuarios</a>
             </li> -->
-          </ul>
-        </div>
-      </ng-template>
-    </div>
-  </nav>
+        </ul>
+      </div>
+    </ng-template>
+  </div>
+</nav>
