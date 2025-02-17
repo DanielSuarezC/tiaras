@@ -1,7 +1,8 @@
-<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
+<section class=" py-8 antialiased dark:bg-gray-900 md:py-16">
   <form action="#" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
     <div class="mx-auto max-w-3xl">
-      <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Detalle de pedido</h2>
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Detalle del pedido
+        #{{pedido()?.idPedido}}</h2>
 
       <div class="mt-6 space-y-4 border-b border-t border-gray-200 py-8 dark:border-gray-700 sm:mt-8">
         <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Información del cliente y dirección de envío
@@ -14,23 +15,21 @@
             {{pedido()?.cliente?.ciudad}}, {{pedido()?.cliente?.pais}}, {{pedido()?.cliente?.direccion}}.</dd>
         </dl>
         <div class="space-x-4">
-          <button *ngIf="pedido()?.estadoPedido === 'Pendiente' || pedido()?.estadoPedido === 'En proceso'"
+          <button *ngIf="pedido()?.estadoPedido === 'Pendiente' || pedido()?.estadoPedido === 'En Proceso'"
             (click)="openDialog()" type="button"
             class="text-base font-medium text-primary-700 hover:underline dark:text-primary-500">
             Editar dirección
           </button>
-  
-          <button *ngIf="pedido()?.estadoPedido !== 'Pendiente' && pedido()?.estadoPedido !== 'En proceso'" type="button"
-            class="text-base font-medium text-primary-700 hover:underline dark:text-primary-500">
+
+          <button *ngIf="pedido()?.estadoPedido !== 'Pendiente' && pedido()?.estadoPedido !== 'En Proceso'"
+            type="button" class="text-base font-medium text-primary-700 hover:underline dark:text-primary-500">
             Si el pedido está en estado Terminado, no se puede editar la dirección
           </button>
-  
-          <button *ngIf="pedido()?.valorPagado < pedido()?.valorTotal" 
-          (click)="openDialogPagos()"
-          type="button"
-          class="text-base font-medium text-tiaras-wine hover:underline dark:text-primary-500">
-          Registrar pago
-        </button>
+
+          <button *ngIf="pedido()?.valorPagado < pedido()?.valorTotal" (click)="openDialogPagos()" type="button"
+            class="text-base font-medium text-tiaras-wine hover:underline dark:text-primary-500">
+            Registrar pago
+          </button>
         </div>
 
       </div>
@@ -86,8 +85,13 @@
                 <dd class="text-base font-medium text-gray-900 dark:text-white">{{pedido()?.fechaEntrega}}</dd>
               </dl>
               <dl class="flex items-center justify-between gap-4">
+                <dt class="text-gray-500 dark:text-gray-400">Envío</dt>
+                <dd class="text-base font-medium text-gray-900 dark:text-white">{{shipment|
+                  currency:'$':'symbol':'1.0'}}</dd>
+              </dl>
+              <dl class="flex items-center justify-between gap-4">
                 <dt class="text-gray-500 dark:text-gray-400">Valor Pagado</dt>
-                <dd class="text-base font-medium text-gray-900 dark:text-white">{{pedido()?.valorPagado|
+                <dd class="text-base font-medium text-green-600 dark:text-white">{{pedido()?.valorPagado|
                   currency:'$':'symbol':'1.0'}}</dd>
               </dl>
             </div>
@@ -101,12 +105,27 @@
 
           <div class="gap-4 sm:flex sm:items-center">
             <button type="button"
-              class="w-full rounded-lg  border border-gray-200 bg-white px-5  py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Return
-              to Shopping</button>
+              class="flex w-full items-center justify-center rounded-lg border-gray-200 bg-white px-5  py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+              <svg class="w-6 h-6 text-gray-900 hover:text-primary-700 focus:z-10 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+              </svg>
+
+              Cancelar pedido
+            </button>
+
+            <button (click)="terminarPedido()" *ngIf="pedido()?.estadoPedido === 'En Proceso' && pedido()?.estadoPago === '100% Pagado'" type="button"
+              class="mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700  px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">
+              Terminar pedido
+            </button>
 
             <button type="submit"
-              class="mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700  px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">Send
-              the order</button>
+              routerLink="/vendedor/orders-history"
+              class="mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700  px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">
+              <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+              </svg>              
+              Volver
+            </button>
           </div>
         </div>
       </div>

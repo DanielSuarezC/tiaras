@@ -6,7 +6,7 @@
       <div class="flex items-center space-x-8">
         <div class="shrink-0">
           <a title="" class="">
-            <img class="block w-auto h-8 dark:hidden" src="../../../../../assets/logo_tiarascol.png" alt="">
+            <img class="block w-auto h-10 dark:hidden" src="../../../../../assets/logo_tiarascol.png" alt="">
           </a>
         </div>
         <!-- menu items large screen -->
@@ -50,8 +50,8 @@
           <div
             class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-tiaras-wine border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
             {{cart().length}}</div>
-          <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-gray-900 dark:text-white ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="m19 9-7 7-7-7" />
           </svg>
@@ -108,10 +108,21 @@
                 <p class="text-lg font-semibold">{{ subTotal() | currency: '$': 'symbol':'1.0'}}</p>
               </div>
 
-              <!-- Botón de carrito a detalle -->
-              <a (click)="navigateToCarritoDetalle()"
-                class="mb-2 me-2 inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                role="button">Carrito a detalle</a>
+              <div class="flex justify-between items-center mt-4 space-x-2">
+                <a (click)="navigateToCarritoDetalle()"
+                  class="inline-flex items-center justify-center rounded-lg bg-primary-700 px-6 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-10/12 cursor-pointer">
+                  Carrito a detalle
+                </a>
+                <button (click)="clearCart()" type="button" title="Vaciar carrito"
+                  class="inline-flex items-center justify-center rounded-lg bg-white text-sm font-medium text-tiaras-wine focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-10 h-10">
+                  <svg class="w-6 h-6 text-tiaras-wine dark:text-white" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                  </svg>
+                </button>
+              </div>
+              
             </div>
           </div>
         </ng-template>

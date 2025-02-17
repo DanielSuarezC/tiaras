@@ -46,6 +46,6 @@ export class PedidosService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
-    return this.http.put(this.baseUrl + '/' + idPedido, updatePedidoDto, { headers });
+    return this.http.patch(this.baseUrl + '/' + idPedido, updatePedidoDto, { headers });
   }
 }
