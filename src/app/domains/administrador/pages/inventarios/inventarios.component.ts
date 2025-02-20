@@ -8,18 +8,19 @@ import { Dropdown, InstanceOptions, Modal, ModalOptions } from 'flowbite';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CreateInventarioDto } from '../../../shared/models/inventarios/dto/create-inventario.dto';
 import { RouterLink } from '@angular/router';
-import { Pagination } from '../../../shared/models/paginated.interface';
+import { DefaultPaginationValue, Pagination } from '../../../shared/models/paginated.interface';
 import { InputComponent } from '../../../shared/components/input/input.component';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
 
 @Component({
   selector: 'app-inventarios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, InputComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, InputComponent, PaginationComponent],
   templateUrl: './inventarios.component.html',
   styles: []
 })
 export class InventariosComponent implements OnInit {
-  public pagination: Pagination<Inventario>;
+  public pagination: Pagination<Inventario> = DefaultPaginationValue;
 
   /* ButtonModal */
   @ViewChild('buttonModal', { read: ElementRef })
