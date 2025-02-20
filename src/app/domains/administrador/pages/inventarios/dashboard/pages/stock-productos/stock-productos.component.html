@@ -12,20 +12,10 @@
         </div>
 
         <div class="flex items-center space-x-4">
-            <button data-modal-toggle="filterModal" data-modal-target="filterModal" type="button"
-                class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">
-                <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                        d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z" />
-                </svg>
-                Filtrar
-                <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m19 9-7 7-7-7" />
-                </svg>
-            </button>
+            <div class="w-80">
+                <app-input [placeholder]="'Buscar Producto...'" (onDebounce)="searchProducto($event)" class=""></app-input>
+            </div>
+
             <button id="sortDropdownButton1" data-dropdown-toggle="dropdownSort1" type="button"
                 class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">
                 <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -62,8 +52,8 @@
 
     <!-- Listado de Productos -->
     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-        <div *ngFor="let productoStock of productos" class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-            <div class="h-56 w-full">
+        <div *ngFor="let productoStock of pagination.data" class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="w-full">
                 <a href="#">
                     <img class="mx-auto h-full dark:hidden"
                         [src]="'http://localhost:3000/tiaras/api/uploads/' + productoStock.producto.imagenes?.[0]" alt="" />
@@ -72,7 +62,7 @@
                 </a>
             </div>
             <div class="pt-6">
-                <div class="mb-4 flex items-center justify-between gap-4">
+                <div class="mb-4 flex items-center justify-end gap-4">
                     <div class="flex items-center justify-end gap-1">
                         <button type="button" data-tooltip-target="tooltip-quick-look"
                             class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
@@ -96,10 +86,10 @@
                 <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ productoStock.producto.nombre }}</a>
 
                 <div class="items-center justify-between gap-4">
-                    <p class="text-xl mb-2 font-extrabold leading-tight text-gray-900 dark:text-white">Stock: {{ productoStock.stock }}</p>
+                    <p class="text-xl mb-2 font-extrabold leading-tight text-gray-900 dark:text-white">Stock: {{ productoStock.stock }} Unidad(es)</p>
 
                     <button type="button"
-                        class="inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                        class="inline-flex w-full justify-center items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                         <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -112,10 +102,5 @@
         </div>
     </div>
 
-    <div class="w-full text-center">
-        <button type="button"
-            class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
-            Mostrar Más
-        </button>
-    </div>
+    <app-pagination (page)="cambiarPagina($event)" [currentPage]="this.page" [meta]="this.pagination.meta"></app-pagination>
 </div>
