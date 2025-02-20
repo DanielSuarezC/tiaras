@@ -5,6 +5,8 @@ import { CreateClienteDto } from '../dto/CreateClienteDto';
 import { Observable } from 'rxjs';
 import { cliente } from '../entities/cliente';
 import { UpdateClienteDto } from '../dto/UpdateClienteDto';
+import { Cliente } from '../../pedidos/entities/Pedido.interface';
+import { Pagination } from '../../paginated.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -54,5 +56,15 @@ export class ClientesService {
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
     return this.http.get<cliente[]>(this.baseUrl +'/cedula/' + cedula, { headers });
+  }
+
+  findAllPaginate(token: string, page: number, search?: string, sortBy?: string): Observable<Pagination<Cliente>> {
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+
+    let url: string = `${this.baseUrl}?page=${page}`;
+    if (search) url += `&filter.cedula=${search}`;
+    if (sortBy && sortBy.trim() !== '') url += `&sortBy=${sortBy}`;
+
+    return this.http.get<Pagination<Cliente>>(url, { headers });
   }
 }
