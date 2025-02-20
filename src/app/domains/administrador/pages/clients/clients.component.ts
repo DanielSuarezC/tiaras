@@ -7,14 +7,15 @@ import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 import { CookieService } from 'ngx-cookie-service';
 import { cliente } from '../../../shared/models/clientes/entities/cliente';
 import { environment } from '../../../../../environments/environment';
-import { Pagination } from '../../../shared/models/paginated.interface';
-
-
+import { DefaultPaginationValue, Pagination } from '../../../shared/models/paginated.interface';
+import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
+import { Cliente } from '../../../shared/models/pedidos/entities/Pedido.interface';
+import { InputComponent } from '../../../shared/components/input/input.component';
 
 @Component({
   selector: 'app-clients',
   standalone: true,
-  imports: [CommonModule, OverlayModule, RouterModule],
+  imports: [CommonModule, OverlayModule, RouterModule, InputComponent, PaginationComponent],
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.css'
 })
@@ -22,14 +23,17 @@ export class ClientsComponent {
   clienteService = inject(ClientesService);
   private mensaje = inject(MensajeService);
   private cookieService = inject(CookieService);
-  public clientes: Pagination<cliente>;
+
+  public pagination: Pagination<Cliente> = DefaultPaginationValue;
+  public page: number = 1;
+  public search: string = '';
+  public sortBy: string = '';
 
   isOpenActions = false;
   isOpenFilters = false;
   openDropdownIndex: number | null = null;
 
   private token?: string;
-  public page: number = 1;
 
   ngOnInit(): void {
     this.getClientes();
@@ -39,14 +43,7 @@ export class ClientsComponent {
     // this.blockUICategories?.start('Loading...')
     this.token = this.cookieService.get(environment.nombreCookieToken);
     this.clienteService.findAllPaginate(this.token, this.page).subscribe({
-      next: (data: Pagination<cliente>) => { 
-        this.clientes = data; 
-        console.log('Clientes:', this.clientes); 
-
-        this.clientes.data.forEach((cliente) => {
-          console.log('Cliente:', cliente);
-        });
-      },
+      next: (data: Pagination<cliente>) => this.pagination = data,
       error: (error) => this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error')
     });
   }
@@ -76,4 +73,35 @@ export class ClientsComponent {
     this.openDropdownIndex = this.openDropdownIndex === index ? null : index;
   }
 
+  /* Buscar Cliente */
+  public searchCliente(searchTerm: string) {
+    this.search = searchTerm;
+    this.consultarCliente();
+  }
+
+  /* Páginas */
+  generateNumbers(): number[] {
+    const numbers: number[] = [];
+    for (let i = 1; i <= this.pagination?.meta.totalPages; i++) {
+      numbers.push(i);
+    }
+
+    return numbers;
+  }
+
+  /* Cambiar Página */
+  public cambiarPagina(page: number): void {
+    this.page = page;
+    this.clienteService.findAllPaginate(this.cookieService.get(environment.nombreCookieToken), this.page).subscribe((res) => {
+      this.pagination = res;
+    });
+  }
+
+  /* Consultar Clientes */
+  public consultarCliente() {
+    this.clienteService.findAllPaginate(this.cookieService.get(environment.nombreCookieToken), this.page, this.search, this.sortBy)
+      .subscribe((res) => {
+        this.pagination = res;
+    });
+  }
 }
