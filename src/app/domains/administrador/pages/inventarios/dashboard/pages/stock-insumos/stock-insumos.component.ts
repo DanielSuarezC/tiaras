@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
@@ -6,34 +6,24 @@ import { InsumoStock } from '../../../../../../shared/models/inventarios/dto/ins
 import { InventariosService } from '../../../../../../shared/models/inventarios/services/inventarios.service';
 import { ActivatedRoute } from '@angular/router';
 import { InputComponent } from '../../../../../../shared/components/input/input.component';
-import { Pagination } from '../../../../../../shared/models/paginated.interface';
+import { DefaultPaginationValue, Pagination } from '../../../../../../shared/models/paginated.interface';
 import { Dropdown, DropdownOptions, InstanceOptions } from 'flowbite';
+import { PaginationComponent } from '../../../../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'stock-insumos',
   standalone: true,
-  imports: [CommonModule, InputComponent],
+  imports: [CommonModule, InputComponent, PaginationComponent],
   templateUrl: './stock-insumos.component.html',
   styles: ``
 })
-export class StockInsumosComponent implements OnInit {
-  public pagination: Pagination<InsumoStock> = {
-    data: [],
-    meta: { totalItems: 0, itemsPerPage: 10, totalPages: 1, currentPage: 1, sortBy: [[]] },
-    links: { first: '', previous: '', next: '', last: '', current: '' }
-  };;
+export class StockInsumosComponent implements OnInit, AfterViewInit {
+  public pagination: Pagination<InsumoStock> = DefaultPaginationValue;
+  
   public idInventario: number;
   public page: number = 1;
   public searchTerm: string = '';
   public sortBy: string = '';
-
-  /* Button Dropdown */
-  @ViewChild('buttonSortDropdown')
-  public buttonDropdown: ElementRef<HTMLButtonElement>;
-
-  /* Div Dropdown */
-  @ViewChild('sortDropdown')
-  public divDropdown: ElementRef<HTMLDivElement>;
 
   /* Dropdown */
   public dropdown: Dropdown;
@@ -53,27 +43,35 @@ export class StockInsumosComponent implements OnInit {
     this.inventariosService.findInsumoStockPaginate(this.idInventario, this.cookieService.get(environment.nombreCookieToken), this.page, this.searchTerm, this.sortBy)
       .subscribe((res) => {
         this.pagination = res;
-
-        setTimeout(() => {
-          this.initDropdown();
-        });
     });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.initDropdown());
   }
 
   /* Inicializar Dropdown */
   public initDropdown() {
-    const options: DropdownOptions = {
-      placement: 'bottom',
+    /* const options: DropdownOptions = {
       triggerType: 'click',
       delay: 300,
       ignoreClickOutsideClass: false
     };
   
     const instanceOptions: InstanceOptions = {
-      id: 'sortDropdown'
-    };
+      id: 'sortDropdown',
+      override: true
+    }; */
 
-    this.dropdown = new Dropdown(this.buttonDropdown.nativeElement, this.divDropdown.nativeElement, options, instanceOptions);
+     /* Button Dropdown */
+    const buttonDropdown: HTMLElement = document.getElementById('buttonDropdown');
+    console.log('buttonDropdown', buttonDropdown);
+
+    /* Div Dropdown */
+    const divDropdown: HTMLElement = document.getElementById('sortDropdown');
+    console.log('divDropdown', divDropdown);
+    
+    this.dropdown = new Dropdown(buttonDropdown, divDropdown);
   }
 
   /* Buscar insumo */
