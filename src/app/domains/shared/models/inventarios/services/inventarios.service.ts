@@ -83,11 +83,15 @@ export class InventariosService {
   }
 
   /* Consultar Stock de Productos */
-  findProductoStock(idInventario: number, token: string) {
+  findProductoStockPaginate(idInventario: number, token: string, page: number, search?: string, sortBy?: string) {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
 
-    return this.http.get<ProductoStock[]>(`${this.baseUrl}/${idInventario}/stock/productos`, { headers });
+    let url: string = `${this.baseUrl}/${idInventario}/stock/productos?page=${page}`;
+    if (search) url += `&filter.producto.nombre=$ilike:${search}`;
+    if (sortBy && sortBy.trim() !== '') url += `&sortBy=${sortBy}`;
+
+    return this.http.get<Pagination<ProductoStock>>(url, { headers });
   }
 }
