@@ -10,8 +10,7 @@
                     class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                     <div></div>
                     <div class="flex items-center space-x-3 w-full md:w-auto">
-                        <button id="actionsDropdownButton" (click)="isOpenFilters = !isOpenFilters" cdkOverlayOrigin
-                            #filterOverlay="cdkOverlayOrigin" data-dropdown-toggle="actionsDropdown"
+                        <button id="buttonModal" data-modal-target="filterModal" data-modal-toggle="filterModal"
                             class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                             type="button">
 
@@ -22,7 +21,7 @@
                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                             </svg>
                         </button>
-                        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="filterOverlay"
+                        <!-- <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="filterOverlay"
                             [cdkConnectedOverlayOpen]="isOpenFilters" (backdropClick)="closeFilter()">
 
                             <div id="filterDropdown"
@@ -67,7 +66,7 @@
                                 </ul>
                             </div>
 
-                        </ng-template>
+                        </ng-template> -->
                     </div>
                 </div>
             </div>
@@ -89,9 +88,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let pedido of pedidos(); let i = index" class="border-b dark:border-gray-700">
+                        <tr *ngFor="let pedido of pagination.data" class="border-b dark:border-gray-700">
                             <td class="px-4 py-3 flex items-center justify-end">
-                                <button (click)="toggleDropdown(i)" cdkOverlayOrigin #dropdownOverlay="cdkOverlayOrigin"
+                                <button #dropdownButton [id]="pedido.idPedido + '-button'"
+                                    [attr.data-dropdown-toggle]="pedido.idPedido + '-dropdown'"
                                     type="button"
                                     class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100">
                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
@@ -111,303 +111,286 @@
                             <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
                             <td class="px-4 py-3">
                                 @if(pedido.estadoPago === 'Pendiente'){
-                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
-                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
-                                        </svg>
-                                        Pendiente
-                                      </dd>
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
+                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+                                    </svg>
+                                    Pendiente
+                                </dd>
                                 }@else if(pedido.estadoPago === '50% Pagado'){
-                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.891 15.107 15.11 8.89m-5.183-.52h.01m3.089 7.254h.01M14.08 3.902a2.849 2.849 0 0 0 2.176.902 2.845 2.845 0 0 1 2.94 2.94 2.849 2.849 0 0 0 .901 2.176 2.847 2.847 0 0 1 0 4.16 2.848 2.848 0 0 0-.901 2.175 2.843 2.843 0 0 1-2.94 2.94 2.848 2.848 0 0 0-2.176.902 2.847 2.847 0 0 1-4.16 0 2.85 2.85 0 0 0-2.176-.902 2.845 2.845 0 0 1-2.94-2.94 2.848 2.848 0 0 0-.901-2.176 2.848 2.848 0 0 1 0-4.16 2.849 2.849 0 0 0 .901-2.176 2.845 2.845 0 0 1 2.941-2.94 2.849 2.849 0 0 0 2.176-.901 2.847 2.847 0 0 1 4.159 0Z"/>
-                                          </svg>                                          
-                                        50% Pagado
-                                      </dd>
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M8.891 15.107 15.11 8.89m-5.183-.52h.01m3.089 7.254h.01M14.08 3.902a2.849 2.849 0 0 0 2.176.902 2.845 2.845 0 0 1 2.94 2.94 2.849 2.849 0 0 0 .901 2.176 2.847 2.847 0 0 1 0 4.16 2.848 2.848 0 0 0-.901 2.175 2.843 2.843 0 0 1-2.94 2.94 2.848 2.848 0 0 0-2.176.902 2.847 2.847 0 0 1-4.16 0 2.85 2.85 0 0 0-2.176-.902 2.845 2.845 0 0 1-2.94-2.94 2.848 2.848 0 0 0-.901-2.176 2.848 2.848 0 0 1 0-4.16 2.849 2.849 0 0 0 .901-2.176 2.845 2.845 0 0 1 2.941-2.94 2.849 2.849 0 0 0 2.176-.901 2.847 2.847 0 0 1 4.159 0Z" />
+                                    </svg>
+                                    50% Pagado
+                                </dd>
                                 }@else{
-                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
-                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 18v-7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
-                                          </svg>
-                                          100% Pagado
-                                    </dd>
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                                            d="M8 7V6a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1M3 18v-7a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                                    </svg>
+                                    100% Pagado
+                                </dd>
                                 }
                             </td>
                             <td class="px-4 py-3">
                                 @if(pedido.estadoPedido === 'Pendiente'){
-                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
-                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
-                                        </svg>
-                                        Pendiente
-                                      </dd>
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
+                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+                                    </svg>
+                                    Pendiente
+                                </dd>
                                 }@else if(pedido.estadoPedido === 'En Proceso'){
-                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
-                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                                        </svg>
-                                        En Proceso
-                                      </dd>
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
+                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                                    </svg>
+                                    En Proceso
+                                </dd>
                                 }@else{
-                                    <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
-                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                                        </svg>
-                                       Terminado
-                                    </dd>
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
+                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+                                    </svg>
+                                    Terminado
+                                </dd>
                                 }
                             </td>
-                            <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="dropdownOverlay"
-                                [cdkConnectedOverlayOpen]="openDropdownIndex === i" (backdropClick)="closeDropdown()">
 
-                                <div id="apple-imac-20-dropdown"
-                                    class="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                    <div class="py-1">
-                                        <a [routerLink]="['/vendedor/detail-order', pedido.idPedido]"
+                            <div #dropdownMenu [id]="pedido.idPedido + '-dropdownn'"
+                                class="hidden  z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                <div class="py-1">
+                                    <a [routerLink]="['/vendedor/detail-order', pedido.idPedido]"
                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
                                         ver detalle de pedido
-                                        </a>
-                                        <a (click)="editProducto(pedido)"
-                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
-                                            Editar
-                                        </a>
-                                        <a (click)="deleteProducto(pedido.idPedido || 0)"
-                                            class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
-                                            Eliminar
-                                        </a>
-                                    </div>
+                                    </a>
+                                    <a (click)="editProducto(pedido)"
+                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
+                                        Editar
+                                    </a>
+                                    <a (click)="deleteProducto(pedido.idPedido || 0)"
+                                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
+                                        Eliminar
+                                    </a>
                                 </div>
-                            </ng-template>
-
+                            </div>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-                aria-label="Table navigation">
-                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                    Showing
-                    <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-                    of
-                    <span class="font-semibold text-gray-900 dark:text-white">1000</span>
-                </span>
-                <ul class="inline-flex items-stretch -space-x-px">
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span class="sr-only">Previous</span>
-                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page"
-                            class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span class="sr-only">Next</span>
-                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <app-pagination (page)="cambiarPagina($event)" [currentPage]="this.page"
+                [meta]="this.pagination.meta"></app-pagination>
         </div>
     </div>
 </section>
 
 <!-- Filter modal -->
-<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="filterOverlay" [cdkConnectedOverlayOpen]="isOpenFilters">
-    <form [formGroup]="form1" (ngSubmit)="OnSubmit()" method="get" id="filterModal" tabindex="-1" aria-hidden="true"
-        class=" top-0 z-50 h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
-        <div class="relative h-full w-full max-w-xl md:h-auto">
-            <!-- Modal content -->
-            <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
-                <!-- Modal header -->
-                <div class="flex items-start justify-between rounded-t p-4 md:p-5">
-                    <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filtros</h3>
-                    <button type="button" (click)="isOpenFilters = !isOpenFilters"
-                        class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-toggle="filterModal">
-                        <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18 17.94 6M18 18 6.06 6" />
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
-                <!-- Modal body -->
-                <div class="px-4 md:px-5">
-                    <div id="myTabContent">
-                        <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel"
-                            aria-labelledby="brand-tab">
-                            <div class="space-y-2">
-                                <div>
-                                    <app-input (onDebounce)="buscarCliente($event)" [placeholder]="'1068418546'">Busque
-                                        cliente por cédula (Completa) </app-input>
-                                </div>
-                                <div>
-                                    <label for="idCliente"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Clientes</label>
-                                    <select id="idCliente" formControlName="idCliente"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                        <option *ngFor="let cliente of clientes()" [value]="cliente.idCliente">
-                                            {{cliente.nombre}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="space-y-2">
-                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del pedido
-                                </h5>
-
-                                <div class="flex items-center">
-                                    <input id="canon" type="checkbox" value="Pendiente" formControlName="estadoPedido"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                    <label for="canon"
-                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Pendiente
-                                    </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="cisco" type="checkbox" value="En Proceso" 
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                    <label for="cisco"
-                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> En Proceso
-                                    </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="cowon" type="checkbox" value="Terminado"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                    <label for="cowon"
-                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Terminado
-                                    </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="clevo" type="checkbox" value="Incidencia"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                    <label for="clevo"
-                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Incidencia
-                                    </label>
-                                </div>
-
-                            </div>
-
-                            <div class="space-y-2">
-                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del pago
-                                </h5>
-
-                                <div class="flex items-center">
-                                    <input id="dell" type="checkbox" value="Pendiente" formControlName="estadoPago"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                    <label for="dell" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                        Pendiente
-                                    </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="dogfish" type="checkbox" value="50% Pagado"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                    <label for="dogfish"
-                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 50% Pagado
-                                    </label>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <input id="dyson" type="checkbox" value="100% Pagado"
-                                        class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                    <label for="dyson"
-                                        class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 100% Pagado
-                                    </label>
-                                </div>
-
-                            </div>
-
-                            <div class="space-y-2">
-                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de pedido
-                                </h5>
-
-                                <div class="relative max-w-sm">
-                                    <div
-                                        class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                        </svg>
+<div id="filterModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <form [formGroup]="form1" (ngSubmit)="OnSubmit()" method="get" id="filterModal" tabindex="-1" aria-hidden="true"
+            class=" top-0 z-50 h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
+            <div class="relative h-full w-full max-w-xl md:h-auto">
+                <!-- Modal content -->
+                <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between rounded-t p-4 md:p-5">
+                        <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filtros</h3>
+                        <button type="button"
+                            class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-toggle="filterModal">
+                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="px-4 md:px-5">
+                        <div id="myTabContent">
+                            <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel"
+                                aria-labelledby="brand-tab">
+                                <div class="space-y-2">
+                                    <div>
+                                        <!-- <app-input (onDebounce)="buscarCliente($event)"
+                                            [placeholder]="'1068418546'">Busque
+                                            cliente por cédula (Completa) </app-input> -->
                                     </div>
-                                    <input datepicker formControlName="fechaPedido" type="date"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Fecha de pedido">
-                                </div>
-                            </div>
-
-                            <div class="space-y-2">
-                                <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de entrega
-                                </h5>
-
-                                <div class="relative max-w-sm">
-                                    <div
-                                        class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                                        </svg>
+                                    <div>
+                                        <label for="idCliente"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Clientes</label>
+                                        <select id="idCliente" formControlName="idCliente"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <!-- <option *ngFor="let cliente of clientes()" [value]="cliente.idCliente">
+                                                {{cliente.nombre}}
+                                            </option> -->
+                                        </select>
                                     </div>
-                                    <input datepicker formControlName="fechaEntrega" type="date"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Fecha de pedido">
                                 </div>
 
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del
+                                        pedido
+                                    </h5>
+
+                                    <div class="flex items-center">
+                                        <input id="canon" type="checkbox" value="Pendiente"
+                                            formControlName="estadoPedido"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="canon"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Pendiente
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="cisco" type="checkbox" value="En Proceso"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="cisco"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> En
+                                            Proceso
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="cowon" type="checkbox" value="Terminado"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="cowon"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Terminado
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="clevo" type="checkbox" value="Incidencia"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="clevo"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Incidencia
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del pago
+                                    </h5>
+
+                                    <div class="flex items-center">
+                                        <input id="dell" type="checkbox" value="Pendiente" formControlName="estadoPago"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="dell"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Pendiente
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="dogfish" type="checkbox" value="50% Pagado"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="dogfish"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 50%
+                                            Pagado
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="dyson" type="checkbox" value="100% Pagado"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="dyson"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 100%
+                                            Pagado
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de pedido
+                                    </h5>
+
+                                    <div class="relative max-w-sm">
+                                        <div
+                                            class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input datepicker formControlName="fechaPedido" type="date"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Fecha de pedido">
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de
+                                        entrega
+                                    </h5>
+
+                                    <div class="relative max-w-sm">
+                                        <div
+                                            class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input datepicker formControlName="fechaEntrega" type="date"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Fecha de pedido">
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                        <!-- Modal footer -->
-                <div class="flex items-center space-x-4 rounded-b p-4 dark:border-gray-600 md:p-5">
-                    <button type="submit" class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-800 dark:focus:ring-primary-800">Filtrar</button>
-                    <button type="reset" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
+                    <!-- Modal footer -->
+                    <div class="flex items-center space-x-4 rounded-b p-4 dark:border-gray-600 md:p-5">
+                        <button type="submit"
+                            class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-800 dark:focus:ring-primary-800">Filtrar</button>
+                        <button type="reset"
+                            class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-</ng-template>
+        </form>
+    </div>
+</div>
