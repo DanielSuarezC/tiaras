@@ -19,3 +19,9 @@ export interface Meta {
     totalPages:   number;
     sortBy:       Array<string[]>;
 }
+
+export const DefaultPaginationValue: Pagination<any> = {
+    data: [],
+    meta: { totalItems: 0, itemsPerPage: 10, totalPages: 1, currentPage: 1, sortBy: [[]] },
+    links: { first: '', previous: '', next: '', last: '', current: '' }
+};
