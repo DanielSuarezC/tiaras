@@ -67,6 +67,22 @@ export class ProductService {
     }).toPromise();
   }
 
+  /* Editar Producto */
+  public editarProducto(idProducto: string, producto: CreateProductoDto, imagenes: File[], token: string | undefined): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    
+    const formData = new FormData();
+    formData.append('producto', JSON.stringify(producto));
+    imagenes.forEach((imagen, index) => {
+      formData.append('files', imagen, imagen.name);
+    });
+
+    return this.http.patch(this.baseUrl + '/' + idProducto, formData, { headers });
+  }
+
+
   public crear(formData: FormData, token: string | undefined): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

@@ -21,7 +21,6 @@ export class InventoriesComponent {
   mensaje = inject(MensajeService);
   cookieService = inject(CookieService);
   productos = signal<Producto[]>([]);
-  // productos: Producto[] = [];
 
   openDropdownIndex: number | null = null;
   isOpenFilters = false;

@@ -25,9 +25,11 @@ import { AddinsumosComponent } from './domains/administrador/pages/insumos/addin
 import { CrearProductoComponent } from './domains/administrador/pages/inventories/crear-producto/crear-producto.component';
 import { vendedorGuard } from './domains/shared/models/auth/guard/vendedor.guard';
 import { administradorGuard } from './domains/shared/models/auth/guard/administrador.guard';
-
-
-
+import { InventariosComponent } from './domains/administrador/pages/inventarios/inventarios.component';
+import { InventarioDashboardComponent } from './domains/administrador/pages/inventarios/dashboard/dashboard.component';
+import { StockInsumosComponent } from './domains/administrador/pages/inventarios/dashboard/pages/stock-insumos/stock-insumos.component';
+import { StockProductosComponent } from './domains/administrador/pages/inventarios/dashboard/pages/stock-productos/stock-productos.component';
+import { TransferenciasComponent } from './domains/administrador/pages/inventarios/dashboard/pages/transferencias/transferencias.component';
 
 export const routes: Routes = [
     {
@@ -37,10 +39,29 @@ export const routes: Routes = [
     {
         path: 'administrador',
         component: LayoutComponent,
+        canActivate: [administradorGuard],
+        canActivateChild: [administradorGuard],
         children: [
             {
+                path: 'inventarios',
+                component: InventariosComponent,
+            },
+            {
+                path: 'inventarios/:idInventario',
+                component: InventarioDashboardComponent,
+                children: [
+                    { path: 'insumos', component: StockInsumosComponent },
+                    { path: 'productos', component: StockProductosComponent },
+                    { path: 'transferencias', component: TransferenciasComponent }
+                ]
+            },
+            {
                 path: 'inventories',
-                component: InventoriesComponent, canActivate: [administradorGuard]
+                component: InventoriesComponent,
+            },
+            {
+                path: 'inventories/:idProducto',
+                component: CrearProductoComponent,
             },
             {
                 path: 'clients',

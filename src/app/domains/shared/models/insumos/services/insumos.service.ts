@@ -36,7 +36,6 @@ export class InsumosService {
     return this.http.post(this.baseUrl, formData, { headers });
   
   }
-  
 
   public findAll(token: string | undefined): Observable<Insumo[]> {
     const headers = new HttpHeaders({

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
 import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,25 +12,41 @@ import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { BtnComponent } from '../../../../shared/components/btn/btn.component';
 
-
 @Component({
   selector: 'app-crear-producto',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, InputComponent, BtnComponent],
   templateUrl: './crear-producto.component.html',
-  styleUrl: './crear-producto.component.css'
+  styles: ''
 })
 export class CrearProductoComponent implements OnInit {
-  // Inyectar servicios
-  private categoriaService = inject(CategoryService);
-  private productoService = inject(ProductService);
-  private mensaje = inject(MensajeService);
-  private cookieService = inject(CookieService);
-  private fb = inject(FormBuilder);
-  // Usar validadores más específicos
-  public form1 = this.fb.group({
+  /* Attributes */
+  @Input()
+  public idProducto: number | undefined;
+
+  public fileUploaded: boolean = false;
+  public fileName: string = '';
+  public selectedFile: File[] = [];
+  public nombreCategoria: string = '';
+  public insumosAgregados: WritableSignal<{ idInsumo: number, cantidad: number }[]> = signal<{ idInsumo: number, cantidad: number }[]>([]);
+  public categoriasAgregadas: WritableSignal<Categoria[]> = signal<Categoria[]>([]);
+  public categorias: WritableSignal<Categoria[]> = signal<Categoria[]>([]);
+  private token: string | undefined;
+  public size: WritableSignal<number> = signal<number>(0);
+
+  /* Constructor */
+  constructor(
+    private categoriaService: CategoryService,
+    private productoService: ProductService,
+    private mensaje: MensajeService,
+    private cookieService: CookieService,
+    private fb: FormBuilder
+  ) { }
+
+  /* Formulario de Creación de Productos */
+  public createProductoForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    descripcion: ['', [Validators.required, Validators.minLength(10),Validators.maxLength(250)]],
+    descripcion: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(250)]],
     precio: ['', [Validators.required, Validators.min(1)]],
     imagen1: ['', Validators.required],
     imagen2: ['', Validators.required],
@@ -44,41 +60,59 @@ export class CrearProductoComponent implements OnInit {
   fileUploaded2 = false;
   fileName1 = '';
   fileName2 = '';
-  selectedFile: File[] = [];
   selectedFile2: File[] = [];
-  nombreCategoria = '';
-  insumosAgregados = signal<{ idInsumo: number, cantidad: number }[]>([]);
-  categoriasAgregadas = signal<Categoria[]>([]);
-  categorias = signal<Categoria[]>([]);
-  private token: string | undefined;
-  size = signal<number>(0);
 
-  constructor() { }
- 
-
-  ngOnInit(){
+  ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
+
+    if (this.idProducto) {
+      this.productoService.findOne(this.idProducto.toString(), this.token).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.createProductoForm.patchValue({
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            precio: data.precio.toString()
+          });
+
+          this.categoriasAgregadas.set([...data.categorias]);
+        },
+        error: (error) => {
+          this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
+        }
+      });
+    }
   }
 
   /* Enviar Formulario */
   async onSubmit() {
-    /* if (this.form1.invalid ||
+    if (this.createProductoForm.invalid ||
       this.categoriasAgregadas().length === 0 ||
       this.selectedFile.length === 0
     ) {
       this.marcarErrores();
       return;
-    } */
+    }
 
+    switch (this.idProducto) {
+      case undefined:
+        this.crearProducto();
+        break;
+      default:
+        this.editarProducto();
+        break;
+    }
+  }
+
+  /* Crear Producto */
+  private crearProducto() {
     const productoData: CreateProductoDto = {
-      nombre: this.form1.value.nombre!,
-      descripcion: this.form1.value.descripcion!,
-      precio: +this.form1.value.precio!,
+      nombre: this.createProductoForm.value.nombre!,
+      descripcion: this.createProductoForm.value.descripcion!,
+      precio: +this.createProductoForm.value.precio!,
       categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
       insumos: this.insumosAgregados()
     };
-
-    console.log({ productoData });
 
     try {
       this.productoService.crearProducto(
@@ -99,6 +133,37 @@ export class CrearProductoComponent implements OnInit {
     }
   }
 
+  /* Modificar Producto */
+  private editarProducto() {
+    const productoData: CreateProductoDto = {
+      nombre: this.createProductoForm.value.nombre!,
+      descripcion: this.createProductoForm.value.descripcion!,
+      precio: +this.createProductoForm.value.precio!,
+      categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
+    };
+
+    console.log(productoData);
+
+    try {
+      this.productoService.editarProducto(
+        this.idProducto.toString(),
+        productoData,
+        this.selectedFile,
+        this.token!
+      ).subscribe({
+        next: () => {
+          this.mensaje.showMessage('Éxito', 'Producto modificado correctamente', 'success');
+        }, error: (error) => {
+          this.mostrarError(error);
+        }
+      });
+
+      this.resetFormulario();
+    } catch (error) {
+      this.mostrarError(error);
+    }
+  }
+
   onFileSelect(event: Event, index: number) {
     // const input = event.target as HTMLInputElement;
     const input = event.target as HTMLInputElement;
@@ -107,26 +172,26 @@ export class CrearProductoComponent implements OnInit {
       // this.selectedFile.push(input.files[0]);
       // this.selectedFile2.push(input.files[0]);
       // this.selectedFile = input.files[0];
-      if(index === 1){
+      if (index === 1) {
         this.fileName1 = input.files[0].name;
         this.fileUploaded1 = true;
-      }else if(index === 2){
+      } else if (index === 2) {
         this.fileName2 = input.files[0].name;
         this.fileUploaded2 = true;
       }
-      this.form1.get('imagen1')?.updateValueAndValidity();
-      this.form1.get('imagen2')?.updateValueAndValidity();
-      console.log(this.selectedFile); 
+      this.createProductoForm.get('imagen1')?.updateValueAndValidity();
+      this.createProductoForm.get('imagen2')?.updateValueAndValidity();
+      console.log(this.selectedFile);
     }
   }
 
   private marcarErrores() {
-    this.form1.markAllAsTouched();
+    this.createProductoForm.markAllAsTouched();
     Swal.fire('Error', 'Verifique los campos requeridos', 'error');
   }
 
   private resetFormulario() {
-    this.form1.reset();
+    this.createProductoForm.reset();
     this.insumosAgregados.set([]);
     this.categoriasAgregadas.set([]);
     this.selectedFile = [];
@@ -136,8 +201,8 @@ export class CrearProductoComponent implements OnInit {
 
   // Modificar método agregarInsumo
   agregarInsumo() {
-    const idInsumo = this.form1.get('idInsumo')?.value;
-    const cantidad = this.form1.get('cantidadInsumo')?.value;
+    const idInsumo = this.createProductoForm.get('idInsumo')?.value;
+    const cantidad = this.createProductoForm.get('cantidadInsumo')?.value;
 
     if (!idInsumo || !cantidad) {
       Swal.fire('Error', 'Seleccione un insumo e ingrese la cantidad', 'error');
@@ -149,8 +214,8 @@ export class CrearProductoComponent implements OnInit {
       { idInsumo: +idInsumo, cantidad: +cantidad }
     ]);
 
-    this.form1.get('idInsumo')?.reset();
-    this.form1.get('cantidadInsumo')?.reset();
+    this.createProductoForm.get('idInsumo')?.reset();
+    this.createProductoForm.get('cantidadInsumo')?.reset();
   }
 
   // Modificar método agregarCategoria
@@ -182,73 +247,61 @@ export class CrearProductoComponent implements OnInit {
     return 'Categoría desconocida';
   }
 
-  private getCategories(){
-    this.categoriaService.findAll(this.token)
-    .subscribe({
-      next: (data) => {
-        this.categorias.set(data);
-      },
-      error: (error) => {
-        this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-      }
-    });
-  }
-
-  private getCategoriesByName(){
-    this.categoriaService.findByNombre(this.nombreCategoria,this.token)
-    .subscribe({
+  private getCategoriesByName() {
+    this.categoriaService.findByNombre(this.nombreCategoria, this.token).subscribe({
       next: (data: Categoria[]) => {
-        console.log('data',data);
-        this.categorias.set(data);
-        console.log('categorias',this.categorias());
+        const categoriasFiltradas = data.filter(cat => !this.categoriasAgregadas().some(catAgregada => catAgregada.idCategoria === cat.idCategoria));
+        this.categorias.set(categoriasFiltradas);
 
         if (this.categorias().length > 0) {
-          this.form1.patchValue({
+          this.createProductoForm.patchValue({
             idCategoria: this.categorias()[0].idCategoria?.toString()
           });
         }
-      },
-      error: (error) => {
+      }, error: (error) => {
         this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-      }
-    });
+      }});
   }
 
   private mostrarError(error: any) {
-    let mensaje = 'Error desconocido';
+  let mensaje = 'Error desconocido';
 
-    if (error.error?.message) {
-      mensaje = error.error.message;
-    } else if (error.status === 413) {
-      mensaje = 'Las imágenes exceden el tamaño máximo permitido';
-    } else if (error.status === 415) {
-      mensaje = 'Formato de imagen no soportado';
-    }
-
-    Swal.fire('Error', mensaje, 'error');
+  if (error.error?.message) {
+    mensaje = error.error.message;
+  } else if (error.status === 413) {
+    mensaje = 'Las imágenes exceden el tamaño máximo permitido';
+  } else if (error.status === 415) {
+    mensaje = 'Formato de imagen no soportado';
   }
 
-  buscarCategoria(dato: string) {
-    if (dato.trim().length > 0) {
-      this.form1.get('idCategoria')?.setValue('');
-      this.categorias.set([]);
-      this.nombreCategoria = dato;
-      this.getCategoriesByName();
-      this.size.set(this.categorias().length);
-      
-      if (this.categorias().length > 0 && this.categorias().length <= 5) {
-        const selectElement = document.getElementById('categoria') as HTMLSelectElement;
-      
-        if (selectElement) {
-          selectElement.size = this.categorias().length;
-        }
+  Swal.fire('Error', mensaje, 'error');
+}
+
+buscarCategoria(dato: string) {
+  if (dato.trim().length > 0) {
+    this.createProductoForm.get('idCategoria')?.setValue('');
+    this.categorias.set([]);
+    this.nombreCategoria = dato;
+    this.getCategoriesByName();
+    this.size.set(this.categorias().length);
+
+    if (this.categorias().length > 0 && this.categorias().length <= 5) {
+      const selectElement = document.getElementById('categoria') as HTMLSelectElement;
+
+      if (selectElement) {
+        selectElement.size = this.categorias().length;
       }
-    } else {
-      this.categorias.set([]);
     }
+  } else {
+    this.categorias.set([]);
   }
+}
 
-  hasErrors(controlName: string, errorType: string) {
-    return this.form1.get(controlName)?.hasError(errorType) && this.form1.get(controlName)?.touched;
-  }
+hasErrors(controlName: string, errorType: string) {
+  return this.createProductoForm.get(controlName)?.hasError(errorType) && this.createProductoForm.get(controlName)?.touched;
+}
+
+eliminarCategoria(categoria: Categoria) {
+  this.categoriasAgregadas.update(cats => cats.filter(cat => cat.idCategoria !== categoria.idCategoria));
+}
 }

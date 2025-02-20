@@ -25,6 +25,7 @@ export class InputComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.debouncerSubscription?.unsubscribe();
   }
+  
   onKeyPress(dato: string){
     this.debouncer.next(dato);
   }
