@@ -5,6 +5,7 @@ import { CreateProductoDto } from '../dto/CreateProductoDto';
 import { Observable } from 'rxjs';
 import { Producto } from '../entities/Producto';
 import { InsumoProducto } from '../entities/InsumoProducto';
+import { Pagination } from '../../paginated.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -91,12 +92,16 @@ export class ProductService {
 
   }
 
-
-  public findAll(token: string | undefined): Observable<Producto[]> {
+  public findAll(token: string, page: number, searchTerm?: string, sortBy?: string): Observable<Pagination<Producto>> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
-    return this.http.get<Producto[]>(this.baseUrl, { headers });
+
+    let url = `${this.baseUrl}?page=${page}`;
+    if (searchTerm && searchTerm.length > 0) url += `&filter.nombre=$ilike:${searchTerm}`;
+    if (sortBy && sortBy.length > 0) url += `&sortBy=${sortBy}`;
+
+    return this.http.get<Pagination<Producto>>(url, { headers });
   }
 
   public findOne(idProducto: string | undefined, token: string | undefined): Observable<Producto> {
@@ -110,19 +115,13 @@ export class ProductService {
     return this.http.get<Producto>(this.baseUrl + '/' + idProducto, { headers });
   }
 
-  // public findProductosByCategorias(categoriasId: number[], token: string | undefined):Observable<any[]>{
-  //   const headers = new HttpHeaders({
-  //     Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
-  //     });
-  //     return this.http.post<any[]>(this.baseUrl + '/filtrar/' + categoriasId, { headers });
-  // }
-  public findProductosByCategorias(categoriasId: number[], token: string | undefined): Observable<Producto[]> {
+  findProductosByCategorias(token: string, page: number, categoriasId: number[]): Observable<Pagination<Producto>> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
-  
-    return this.http.post<Producto[]>(`${this.baseUrl}/filtrar`, { categorias: categoriasId }, { headers });
+
+    const url = `${this.baseUrl}?page=${page}&filter.categorias.idCategoria=$in:${categoriasId.join(',')}`;
+    return this.http.get<Pagination<Producto>>(url, { headers });
   }
-  
 }
