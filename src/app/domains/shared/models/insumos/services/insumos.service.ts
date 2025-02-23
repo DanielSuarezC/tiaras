@@ -38,16 +38,16 @@ export class InsumosService {
     return this.http.post(this.baseUrl, formData, { headers });
   }
 
-  public findAll(token: string, page: number, searchTerm?: string, sortBy?: string): Observable<Pagination<Insumo>> {
+  public findAll(token: string, page: number, search?: string, sortBy?: string): Observable<Pagination<Insumo>> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
 
     let url = `${this.baseUrl}?page=${page}`;
-    if (searchTerm && searchTerm.length > 0) url += `&filter.nombre=$eq:${searchTerm}`;
+    if (search && search.length > 0) url += `&filter.nombre=$ilike:${search}`;
     if (sortBy && sortBy.length > 0) url += `&sortBy=${sortBy}`;
 
-    return this.http.get<Pagination<Insumo>>(this.baseUrl, { headers });
+    return this.http.get<Pagination<Insumo>>(url, { headers });
   }
 
   public findOne(idInsumo: number, token: string | undefined): Observable<Insumo> {
