@@ -79,6 +79,11 @@ export class InsumosComponent {
     console.log('Editar categoría:', insumo);
   }
 
+  searchInsumos(searchTerm: string): void {
+    this.searchTerm = searchTerm;
+    this.getInsumos();
+  }
+
   deleteInsumo(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
       console.log('Eliminar categoría con ID:', id);
