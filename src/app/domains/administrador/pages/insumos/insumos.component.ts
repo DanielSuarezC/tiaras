@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { RouterModule } from '@angular/router';
 import { InsumosService } from '../../../shared/models/insumos/services/insumos.service';
-import { Dialog } from '@angular/cdk/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { Insumo } from '../../../shared/models/insumos/entities/Insumo';
 import { environment } from '../../../../../environments/environment';
 import { DialogModule } from '@angular/cdk/dialog';
 import Swal from 'sweetalert2';
 import { InputComponent } from "../../../shared/components/input/input.component";
-import { Dropdown } from 'flowbite';
+import { Dropdown, DropdownOptions, InstanceOptions } from 'flowbite';
 import { DefaultPaginationValue, Pagination } from '../../../shared/models/paginated.interface';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
@@ -24,6 +23,14 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 export class InsumosComponent {
   public pagination: Pagination<Insumo> = DefaultPaginationValue;
 
+  /* ButtonFilterDropdown */
+  @ViewChild('buttonFilterDropdown', { read: ElementRef })
+  public buttonFilterDropdown: ElementRef<HTMLButtonElement>;
+
+  /* Modal */
+  @ViewChild('filterDropdown', { read: ElementRef })
+  public divFilterDropdown: ElementRef<HTMLDivElement>;
+
   /* Buttons of Dropdowns Menus */
   @ViewChildren('dropdownButton', { read: ElementRef })
   public buttons: QueryList<ElementRef<HTMLButtonElement>>;
@@ -33,6 +40,7 @@ export class InsumosComponent {
   public dropdownsMenu: QueryList<ElementRef<HTMLDivElement>>;
 
   /* Dropdowns */
+  private filterDropdown: Dropdown;
   private dropdowns: Dropdown[] = [];
 
   private token: string;
@@ -47,7 +55,26 @@ export class InsumosComponent {
 
   ngOnInit(): void {
     this.token = this.cookieService.get(environment.nombreCookieToken);
+    setTimeout(() => this.inicializarFilterDropdown());
     this.getInsumos();
+  }
+
+  /* Inicializar Filter Dropdown */
+  private inicializarFilterDropdown(): void {
+    if (this.buttonFilterDropdown && this.divFilterDropdown) {
+      const options: DropdownOptions = {
+        triggerType: 'click',
+        delay: 300,
+        ignoreClickOutsideClass: false
+      };
+    
+      const instanceOptions: InstanceOptions = {
+        id: 'filterDropdown',
+        override: true
+      };
+      
+      this.filterDropdown = new Dropdown(this.divFilterDropdown.nativeElement, this.buttonFilterDropdown.nativeElement, options, instanceOptions);
+    }
   }
 
   /* Inicializar Dropdowns */
@@ -67,20 +94,20 @@ export class InsumosComponent {
 
   private getInsumos() {
     this.insumosService.findAll(this.token, this.page, this.searchTerm, this.sortBy).subscribe({
-        next: (data: Pagination<Insumo>) => {
-          this.pagination = data;
-          setTimeout(() => this.inicializarDropdowns(), 1000);
-        },
-        error: (error) => Swal.fire('Error', `Error de obtención de datos.  ${error.message}`, 'error')
-      });
+      next: (data: Pagination<Insumo>) => {
+        this.pagination = data;
+        setTimeout(() => this.inicializarDropdowns());
+      },
+      error: (error) => Swal.fire('Error', `Error de obtención de datos.  ${error.message}`, 'error')
+    });
   }
 
   editInsumo(insumo: any): void {
     console.log('Editar categoría:', insumo);
   }
 
-  searchInsumos(searchTerm: string): void {
-    this.searchTerm = searchTerm;
+  searchInsumos(search: string): void {
+    this.searchTerm = search;
     this.getInsumos();
   }
 
