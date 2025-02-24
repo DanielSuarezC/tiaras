@@ -13,33 +13,31 @@ import { environment } from '../../../../../environments/environment';
 import { Categoria } from '../../../shared/models/categorias/entities/Categoria';
 import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 import { InputComponent } from '../../../shared/components/input/input.component';
+import { DefaultPaginationValue, Pagination } from '../../../shared/models/paginated.interface';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, ProductComponent, RouterModule, BlockUIModule, OverlayModule, InputComponent],
+  imports: [CommonModule, ProductComponent, RouterModule, BlockUIModule, OverlayModule, InputComponent, PaginationComponent],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css'
 })
 export class CatalogComponent implements OnInit{
-  productos = signal<Producto[]>([]);
-  categorias = signal<Categoria[]>([]);
-  private cartService = inject(CartService);
-  private productService = inject(ProductService);
-  private categoriaService = inject(CategoryService);
-  private cookieService = inject(CookieService);
-  private mensaje = inject(MensajeService);
+  public pagination: Pagination<Producto> = DefaultPaginationValue;
+  public productos = signal<Producto[]>([]);
+  public categorias = signal<Categoria[]>([]);
+  public nombreCategoria = '';
+  public size = signal<number>(0);
+  public categoriasAgregadas = signal<Categoria[]>([]);
+  public selectCategory: string = '';
+  public isOpenFilter = false;
+  public isFilter = false;
+  public page: number = 1;
 
-  initialized = false;
-
-  nombreCategoria = '';
-  size = signal<number>(0);
-  categoriasAgregadas = signal<Categoria[]>([]);
-  selectCategory: string = '';
-  isOpenFilter = false;
-  isFilter = false;
-  private token?: string;
+  private initialized = false;
+  private token: string;
 
   @Input() category_id?: string;
   @BlockUI('categories-block') blockUICategories?: NgBlockUI;
@@ -51,7 +49,13 @@ export class CatalogComponent implements OnInit{
     this.initialized = true;
   }
 
-  constructor(){
+  constructor(
+    private cartService: CartService,
+    private productService: ProductService,
+    private categoriaService: CategoryService,
+    private cookieService: CookieService,
+    private mensaje: MensajeService
+  ){
     effect(() => {
       if (this.initialized && this.categoriasAgregadas().length === 0) {
         this.isFilter = false;
@@ -67,13 +71,12 @@ export class CatalogComponent implements OnInit{
   
   private getProducts(category_id?: string){
     this.blockUIProducts?.start('Loading...');
-    this.productService.findAll(this.token)
-    .subscribe({
-      next: (data: any[]) => {
-        this.productos.set(data[0]);
+    this.productService.findAll(this.token, this.page).subscribe({
+      next: (data: Pagination<Producto>) => {
+        this.pagination = data;
+        this.productos.set(data.data);
         this.blockUIProducts?.stop();
         this.selectCategory = 'Todos los productos';
-        // console.log(products);
       },
       error: (error) => {
         this.blockUIProducts?.stop();
@@ -86,10 +89,10 @@ export class CatalogComponent implements OnInit{
   filtrarProductos(){
     let categoriasId: number[] = this.categoriasAgregadas().map(categoria => categoria.idCategoria);
     this.blockUIProducts?.start('Loading...');
-    this.productService.findProductosByCategorias(categoriasId, this.token)
-    .subscribe({
-      next: (data: any[]) => {
-        this.productos.set(data);
+    this.productService.findProductosByCategorias(this.token, this.page, categoriasId).subscribe({
+      next: (data: Pagination<Producto>) => {
+        this.pagination = data;
+        this.productos.set(data.data);
         this.selectCategory = this.categoriasAgregadas().length === 1 ? `${this.categoriasAgregadas().length} categoría seleccionada` : `${this.categoriasAgregadas().length} categorías seleccionadas`;
         this.isFilter = true;
         this.blockUIProducts?.stop();
@@ -157,5 +160,19 @@ export class CatalogComponent implements OnInit{
       this.categoriasAgregadas.set([]);
     }
 
+    /* Páginas */
+    generateNumbers(): number[] {
+      const numbers: number[] = [];
+      for (let i = 1; i <= this.pagination?.meta.totalPages; i++) {
+        numbers.push(i);
+      }
 
+      return numbers;
+    }
+
+    /* Cambiar Página */
+    public cambiarPagina(page: number): void {
+      this.page = page;
+      this.filtrarProductos();
+    }
 }

@@ -1,4 +1,4 @@
-<section class="py-2 antialiased dark:bg-gray-900 md:py-12">
+<section class="py-2 antialiased dark:bg-gray-900 md:py-2">
   <!-- categorias  -->
   <div *blockUI="'categories-block'">
     <section class="py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -13,7 +13,7 @@
             <div #dropdownSearch id="dropdownSearch" class="z-10 rounded-lg shadow-sm  dark:bg-gray-700 w-full">
               <div class="p-3 w-100">
                 <label for="input-group-search" class="sr-only">Buscar...</label>
-                <div class="relative">
+                <div class="w-80">
                   <app-input (onDebounce)="buscarCategoria($event)" [placeholder]="'Buscar...'">Categorias</app-input>
                 </div>
               </div>
@@ -100,6 +100,8 @@
         }
       </div>
     </div>
-  </div>
 
+    <!-- Pagination -->
+    <app-pagination (page)="cambiarPagina($event)" [currentPage]="this.page" [meta]="this.pagination.meta"></app-pagination>
+  </div>
 </section>
