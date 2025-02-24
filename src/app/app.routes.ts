@@ -5,7 +5,7 @@ import { InventoriesComponent } from './domains/administrador/pages/inventories/
 import { ClientsComponent } from './domains/administrador/pages/clients/clients.component';
 
 import { CatalogComponent } from './domains/vendedor/pages/catalog/catalog.component';
-import { DetailProductComponent } from './domains/vendedor/pages/catalog/detail-product/detail-product.component';
+import { DetailProductComponent } from './domains/vendedor/pages/detail-product/detail-product.component';
 import { CancellationsComponent } from './domains/vendedor/pages/cancellations/cancellations.component';
 import { OrdersHistoryComponent } from './domains/vendedor/pages/orders-history/orders-history.component';
 import { NotFoundComponent } from './domains/shared/pages/not-found/not-found.component';
@@ -13,7 +13,7 @@ import { LayoutVendedorComponent } from './domains/vendedor/components/layout-ve
 import { DetailOrderComponent } from './domains/vendedor/pages/orders-history/detail-order/detail-order.component';
 import { DetailCancellationComponent } from './domains/vendedor/pages/cancellations/detail-cancellation/detail-cancellation.component';
 import { MaintenanceComponent } from './domains/shared/pages/maintenance/maintenance.component';
-import { CartComponent } from './domains/vendedor/pages/catalog/cart/cart.component';
+import { CartComponent } from './domains/vendedor/pages/cart/cart.component';
 import { OrderComponent } from './domains/vendedor/pages/orders-history/order/order.component';
 import { UsersComponent } from './domains/administrador/pages/users/users.component';
 import { AddclientsComponent } from './domains/administrador/pages/clients/addclients/addclients.component';
@@ -65,77 +65,79 @@ export const routes: Routes = [
             },
             {
                 path: 'clients',
-                component: ClientsComponent, canActivate: [administradorGuard]
+                component: ClientsComponent, 
             },
             {
                 path: 'users',
-                component: UsersComponent, canActivate: [administradorGuard]
+                component: UsersComponent, 
             },
             {
                 path: 'addclients',
-                component: AddclientsComponent, canActivate: [administradorGuard]
+                component: AddclientsComponent, 
             },
             {
                 path: 'addusers',
-                component: AddusersComponent, canActivate: [administradorGuard]
+                component: AddusersComponent, 
             },
             {
                 path: 'addproducts',
-                component: CrearProductoComponent, canActivate: [administradorGuard]
+                component: CrearProductoComponent, 
             },
             {
                 path: 'insumos',
-                component: InsumosComponent, canActivate: [administradorGuard]
+                component: InsumosComponent, 
             }, 
             {
                 path: 'category',
-                component: CategoryComponent, canActivate: [administradorGuard]
+                component: CategoryComponent, 
             },
             {
                 path: 'addcategory',
-                component: AddcategoryComponent, canActivate: [administradorGuard]
+                component: AddcategoryComponent, 
             },
             {
                 path: 'addinsumos',
-                component: AddinsumosComponent, canActivate: [administradorGuard]
+                component: AddinsumosComponent, 
             }
         ]
     },
     {
         path: 'vendedor',
         component: LayoutVendedorComponent,
+        canActivate: [vendedorGuard],
+        canActivateChild: [vendedorGuard],
         children: [
             {
                 path: 'catalog',
-                component: CatalogComponent, canActivate: [vendedorGuard]
+                component: CatalogComponent, 
             },
             {
                 path: 'product/:id',
-                component: DetailProductComponent, canActivate: [vendedorGuard]
+                component: DetailProductComponent, 
             },
             {
                 path: 'cancellations',
-                component: CancellationsComponent, canActivate: [vendedorGuard]
+                component: CancellationsComponent, 
             },
             {
                 path: 'orders-history',
-                component: OrdersHistoryComponent, canActivate: [vendedorGuard]
+                component: OrdersHistoryComponent, 
             },
             {
                 path: 'detail-order/:id',
-                component: DetailOrderComponent, canActivate: [vendedorGuard]
+                component: DetailOrderComponent, 
             },
             {
                 path: 'cancellations/detail-cancellation',
-                component: DetailCancellationComponent, canActivate: [vendedorGuard]
+                component: DetailCancellationComponent,
             },
             {
                 path: 'cart',
-                component: CartComponent, canActivate: [vendedorGuard]
+                component: CartComponent, 
             },
             {
                 path: 'order-register',
-                component: OrderComponent, canActivate: [vendedorGuard]
+                component: OrderComponent, 
             }
         ]
     },

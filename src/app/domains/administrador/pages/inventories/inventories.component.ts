@@ -32,7 +32,7 @@ export class InventoriesComponent {
     this.getProductos();
   }
 
-  // Método para cerrar el dropdown
+  /* Método para cerrar el dropdown */
   closeDropdown() {
     this.isOpenDropdown = false;
   }
@@ -51,11 +51,11 @@ export class InventoriesComponent {
     }
   }
   
-  // Método para alternar el estado del menú
+  /* Método para alternar el estado del menú */
   toggleDropdown(index: number): void {
     this.openDropdownIndex = this.openDropdownIndex === index ? null : index;
   }
-  
+
   private getProductos(){
     // this.blockUICategories?.start('Loading...');
     this.token = this.cookieService.get(environment.nombreCookieToken);

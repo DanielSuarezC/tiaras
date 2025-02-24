@@ -36,7 +36,6 @@ export class RegistrarPagoComponent implements OnInit {
 
   ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
-    console.log(this.data);
     this.form1.get('valorTotal')?.setValue(this.data.valorTotal);
     this.form1.get('valorTotal')?.disable();
 
@@ -48,8 +47,9 @@ export class RegistrarPagoComponent implements OnInit {
       this.mensaje.showMessage('Formulario inválido', 'Debe agregar una valor', 'error');
       // this.blockUI?.stop();
       return;
-    }else if(this.form1.get('valorPagado')?.value > this.data.valorTotal){
-      this.mensaje.showMessage('Formulario inválido', 'El monto agregado supera el valor total', 'error');
+    }else if((this.form1.get('valorPagado')?.value + this.data.valorPagado ) > this.data.valorTotal){
+      this.mensaje.showMessage('Advertencia', 'El valor pagado supera el valor total del pedido', 'warning');
+      this.form1.get('valorPagado')?.setValue('');
     }else{
       const createPagoDto = new CreatePagoDto();
       createPagoDto.idPedido = this.data.idPedido;
@@ -57,12 +57,11 @@ export class RegistrarPagoComponent implements OnInit {
       this.pagoService.create(createPagoDto, this.token)
         .subscribe({
           next: (data) => {
-            console.log('data',data);
             this.mensaje.toastMessage('Pago agregado', 'success', 'bottom-end', 3000);
             this.dialogRef.close('PagoAgregado');
           },
           error: (error) => {
-            this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
+            this.mensaje.showMessage('Error', `${error.error.message}`, 'error');
           }
         });
     }

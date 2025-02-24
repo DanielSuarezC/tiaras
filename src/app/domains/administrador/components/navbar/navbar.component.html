@@ -15,7 +15,7 @@
             <!-- Gestión de Inventario -->
             <li>
               <a routerLinkActive="underline" [routerLinkActiveOptions]="{ exact: true }"
-                (click)="isOpeninventario = !isOpeninventario" cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
+                (click)="openMenus('inventario')" cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
                 class="flex text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500 cursor-pointer">
                 Administración
               </a>
@@ -37,82 +37,39 @@
             </li> -->
         </ul>
       </div>
+
       <!-- overlay inventario  -->
       <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="inventarioOverlay"
         [cdkConnectedOverlayOpen]="isOpeninventario">
-        <!-- <div
-            class="z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700">
-            <ul class="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
-              <li>
-                <a
-                  routerLink="/administrador/inventories"
-                  routerLinkActive="underline"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="isOpeninventario = !isOpeninventario"
-                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
-                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
-                >
-                  Gestión de Productos
-                </a>
-              </li>
-       
-              <li>
-                <a
-                  routerLink="/administrador/insumos"
-                  routerLinkActive="underline"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="isOpeninventario = !isOpeninventario"
-                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
-                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
-                >
-                  Gestión de Insumos
-                </a>
-              </li>
-              
-              <li>
-                <a
-                  routerLink="/administrador/category"
-                  routerLinkActive="underline"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="isOpeninventario = !isOpeninventario"
-                  cdkOverlayOrigin #inventarioOverlay="cdkOverlayOrigin"
-                  class="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500"
-                >
-                  Gestión de Categorias
-                </a>
-              </li>
-            </ul>
-          </div> -->
         <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
           <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
             <li>
-              <a routerLink="/administrador/inventarios" (click)="isOpeninventario = false"
+              <a routerLink="/administrador/inventarios" (click)="cerrarMenus()"
                 class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Inventarios</a>
             </li>
             <li>
-              <a routerLink="/administrador/inventories" (click)="isOpeninventario = false"
+              <a routerLink="/administrador/inventories" (click)="cerrarMenus()"
                 class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Productos</a>
             </li>
             <li>
-              <a routerLink="/administrador/insumos" (click)="isOpeninventario = false"
+              <a routerLink="/administrador/insumos" (click)="cerrarMenus()"
                 class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Insumos
               </a>
             </li>
             <li>
-              <a routerLink="/administrador/category" (click)="isOpeninventario = false"
+              <a routerLink="/administrador/category" (click)="cerrarMenus()"
                 class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de Categorías</a>
             </li>
           </ul>
         </div>
-
-
       </ng-template>
+      
       <!-- Cart and user menu button -->
       <div class="flex items-center lg:space-x-2">
 
 
         <!-- User menu button  -->
-        <button (click)="isOpenAccount = !isOpenAccount" cdkOverlayOrigin #AccountOverlay="cdkOverlayOrigin"
+        <button (click)="openMenus('account')" cdkOverlayOrigin #AccountOverlay="cdkOverlayOrigin"
           type="button"
           class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
           <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -151,7 +108,7 @@
 
 
         <!-- menu items movil screen  -->
-        <button type="button" (click)="isOpenMenuMovil = !isOpenMenuMovil" cdkOverlayOrigin
+        <button type="button" (click)="openMenus('menuMovil')" cdkOverlayOrigin
           #menuMovilOverlay="cdkOverlayOrigin" aria-controls="ecommerce-navbar-menu-1" aria-expanded="false"
           class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
           <span class="sr-only">
@@ -171,19 +128,23 @@
       <div class=" bg-gray-50 dark:bg-gray-700 dark:border-gray-600 border border-gray-200 rounded-lg py-3 px-4 mt-4">
         <ul class="text-gray-900 text-sm font-medium dark:text-white space-y-3">
           <li>
-            <a routerLink="/administrador/inventories"
+            <a routerLink="/administrador/inventarios" (click)="cerrarMenus()"
+              class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de Inventarios</a>
+          </li>
+          <li>
+            <a routerLink="/administrador/inventories" (click)="cerrarMenus()" 
               class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de productos</a>
           </li>
           <li>
-            <a routerLink="/administrador/insumos" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de
+            <a routerLink="/administrador/insumos" (click)="cerrarMenus()" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión de
               insumos</a>
           </li>
           <li>
-            <a routerLink="/administrador/category" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión
+            <a routerLink="/administrador/category" (click)="cerrarMenus()" class="hover:text-primary-700 dark:hover:text-primary-500">Gestión
               de categorías</a>
           </li>
           <li>
-            <a routerLink="/administrador/clients" class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de
+            <a routerLink="/administrador/clients" (click)="cerrarMenus()" class="hover:text-primary-700 dark:hover:text-primary-500">Gestion de
               clientes
             </a>
           </li>

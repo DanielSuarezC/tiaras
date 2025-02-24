@@ -66,10 +66,8 @@ export class AddclientsComponent {
             // this.blockUI?.stop();
           },
           error: (error) => {
-            // this.blockUICategories?.stop();
-            // this.dialog.open(MensajeComponent, {data: {titulo: 'Error',
-            //   mensaje: 'Error de obtención de datos. ' + error.message, textoBoton: 'Aceptar' }});
-            this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
+            console.log(error.error.message);
+            this.mensaje.showMessage('Error', `Error:  ${error.error.message}`, 'error');
           }
         });
       
@@ -85,7 +83,4 @@ export class AddclientsComponent {
         this.route.navigate(['/vendedor/cart']);
       }
     }
-  
-
-
 }

@@ -7,35 +7,37 @@ import { paylod } from '../../paylod';
 import { jwtDecode } from 'jwt-decode';
 
 export const administradorGuard: CanActivateFn = (route, state) => {
-  const cookieService = inject(CookieService);
-    const router = inject(Router);
-    const mensaje = inject(MensajeService);
-  
-    let payload: paylod | undefined;
-  
-    // Verificar si el token existe en las cookies
-    const token = cookieService.get(environment.nombreCookieToken);
-  
-    // Verificar si el token existe y si el rol es ADMINISTRADOR
-    if (token) {
-      //decodificamos el token
-      payload = jwtDecode(token);
+ 
 
-      //validamos una ruta en específico y tanto el administrador como el vendedor pueden acceder a ella
-      if(state.url === '/administrador/addclients'){
-        return true;
-      }
-      //validamos si el rol es administrador
-      else if (payload?.rol === 'ADMINISTRADOR') {
-        return true; // Permitir acceso
-      } else {
-        mensaje.showMessage('Advertencia!', 'Sólo el administrador puede acceder a esta página', 'warning');
-        return false; // No permitir acceso
-      }
-    } else {
-      // Redirigir al login si no está autenticado
-      mensaje.showMessage('Advertencia!', 'Debes iniciar sesión para acceder a esta página', 'warning');
-      router.navigate(['']);
-      return false;
-    }
+  const cookieService = inject(CookieService);
+  const router = inject(Router);
+  const mensaje = inject(MensajeService);
+
+  const token = cookieService.get(environment.nombreCookieToken);
+
+  if (!token) {
+    mensaje.showMessage('Advertencia', 'Debes iniciar sesión para acceder a esta página', 'warning');
+    router.navigate(['']);
+    return false;
+  }
+
+  let payload: paylod | undefined;
+
+  try {
+    payload = jwtDecode(token);
+  } catch (error) {
+    console.error('Error decodificando el token:', error);
+    cookieService.delete(environment.nombreCookieToken);
+    mensaje.showMessage('Error', 'Token inválido, inicia sesión nuevamente', 'error');
+    router.navigate(['']);
+    return false;
+  }
+
+  if (state.url === '/administrador/addclients') {
+      return true;
+  } else if (payload?.rol !== 'ADMINISTRADOR') {
+    mensaje.showMessage('Advertencia', 'Sólo el administrador puede acceder a esta página', 'warning');
+    return false;
+  }
+  return true;
 };

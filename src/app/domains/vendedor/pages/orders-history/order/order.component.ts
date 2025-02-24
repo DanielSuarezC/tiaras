@@ -17,6 +17,7 @@ import { BtnComponent } from '../../../../shared/components/btn/btn.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ClientesService } from '../../../../shared/models/clientes/services/clientes.service';
 import { cliente } from '../../../../shared/models/clientes/entities/cliente';
+import { Pagination } from '../../../../shared/models/paginated.interface';
 
 @Component({
   selector: 'app-order',
@@ -46,6 +47,7 @@ export class OrderComponent {
   createPedidoDto = new CreatePedidoDto();
   cedula?: string;
   token?: string;
+  fechaPedido?: string;
 
   public form1: FormGroup = this.fb.group({
     cedula: ['', Validators.required],
@@ -58,7 +60,10 @@ export class OrderComponent {
   ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
     this.getClientes();
-    this.form1.get('fechaPedido')?.setValue(new Date().toISOString().substring(0, 10));
+    this.fechaPedido = new Date().toISOString().split('T')[0];
+    // this.fechaPedido = new Date();
+    this.form1.get('fechaPedido')?.setValue(this.fechaPedido);
+    console.log('Date',this.fechaPedido);
     this.form1.get('fechaPedido')?.disable();
     this.form1.get('valorTotal')?.setValue(this.total());
     this.cart()
@@ -138,8 +143,8 @@ export class OrderComponent {
   private getClientes(){
     this.clienteService.findAll(this.token)
     .subscribe({
-      next: (data) => {
-        this.clientes.set(data);
+      next: (data: Pagination<cliente>) => {
+        this.clientes.set(data.data);
         // this.blockUICategories?.stop();
       },
       error: (error) => {
