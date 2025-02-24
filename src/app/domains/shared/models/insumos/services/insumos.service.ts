@@ -5,6 +5,7 @@ import { CreateInsumoDto } from '../dto/CreateInsumoDto';
 import { Observable } from 'rxjs';
 import { Insumo } from '../entities/Insumo';
 import { UpdateInsumoDto } from '../dto/UpdateInsumoDto';
+import { Pagination } from '../../paginated.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -33,15 +34,20 @@ export class InsumosService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
+    
     return this.http.post(this.baseUrl, formData, { headers });
-  
   }
 
-  public findAll(token: string | undefined): Observable<Insumo[]> {
+  public findAll(token: string, page: number, search?: string, sortBy?: string): Observable<Pagination<Insumo>> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
-    return this.http.get<Insumo[]>(this.baseUrl, { headers });
+
+    let url = `${this.baseUrl}?page=${page}`;
+    if (search && search.length > 0) url += `&filter.nombre=$ilike:${search}`;
+    if (sortBy && sortBy.length > 0) url += `&sortBy=${sortBy}`;
+
+    return this.http.get<Pagination<Insumo>>(url, { headers });
   }
 
   public findOne(idInsumo: number, token: string | undefined): Observable<Insumo> {
