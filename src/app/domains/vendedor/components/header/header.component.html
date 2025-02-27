@@ -37,7 +37,7 @@
 
         <!-- Cart menu button  -->
 
-        <button id="myCartDropdownButton1" (click)="isOpenCart = !isOpenCart" cdkOverlayOrigin
+        <button id="myCartDropdownButton1" (click)="openMenus('cart')" cdkOverlayOrigin
           #cartOverlay="cdkOverlayOrigin" type="button"
           class="relative inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
           <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -128,7 +128,7 @@
         </ng-template>
 
         <!-- User menu button  -->
-        <button (click)="isOpenAccount = !isOpenAccount" cdkOverlayOrigin #AccountOverlay="cdkOverlayOrigin"
+        <button (click)="openMenus('account')" cdkOverlayOrigin #AccountOverlay="cdkOverlayOrigin"
           type="button"
           class="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
           <svg class="w-5 h-5 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -169,7 +169,7 @@
 
 
         <!-- menu items movil screen  -->
-        <button type="button" (click)="isOpenMenuMovil = !isOpenMenuMovil" cdkOverlayOrigin
+        <button type="button" (click)="openMenus('menuMovil')" cdkOverlayOrigin
           #menuMovilOverlay="cdkOverlayOrigin" aria-controls="ecommerce-navbar-menu-1" aria-expanded="false"
           class="inline-flex lg:hidden items-center justify-center hover:bg-gray-100 rounded-md dark:hover:bg-gray-700 p-2 text-gray-900 dark:text-white">
           <span class="sr-only">

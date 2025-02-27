@@ -50,6 +50,25 @@ export class PedidosService {
     return this.http.patch(this.baseUrl + '/' + idPedido, updatePedidoDto, { headers });
   }
 
+  public updateEstadoPedido(idPedido: number, estadoPedido: string, token: string | undefined): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+      'Content-Type': 'application/json' // Asegurar que se envía como JSON
+    });
+  
+    return this.http.patch(`${this.baseUrl}/${idPedido}/estado`, {estadoPedido}, { headers });
+  }
+
+  public updateDireccionPedido(idPedido: number, direccion: string, token: string | undefined): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+      'Content-Type': 'application/json' // Asegurar que se envía como JSON
+    });
+  
+    return this.http.patch(`${this.baseUrl}/${idPedido}/direccion`, {direccion: direccion}, { headers });
+  }
+  
+
   public findAllPaginate(token: string, page: number, search?: string, sortBy?: string): Observable<Pagination<Pedido>> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados

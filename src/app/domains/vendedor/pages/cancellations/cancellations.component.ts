@@ -75,8 +75,6 @@ export class CancellationsComponent {
     const filterModal: HTMLElement = document.getElementById('filterModal');
     this.modal = new Modal(filterModal, modalOptions, instanceOptions);
     buttonModal.addEventListener('click', () => this.modal.show());
-
-    console.log(this.dropdowns);
   }
 
   /* Inicializar Dropdowns */
@@ -114,7 +112,7 @@ export class CancellationsComponent {
     this.reembolsosService.findAllPaginate(this.token, this.page, this.search, this.sortBy).subscribe({
       next: (data: Pagination<Reembolso>) => {
         this.pagination = data;
-
+        console.log(this.pagination.data);
         setTimeout(() => this.inicializarDropdowns());
       },
       error: (error) => this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error')

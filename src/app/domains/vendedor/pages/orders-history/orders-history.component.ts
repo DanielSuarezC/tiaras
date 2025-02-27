@@ -103,18 +103,6 @@ export class OrdersHistoryComponent implements OnInit, AfterViewInit {
 
   }
 
-  editProducto(producto: any): void {
-    console.log('Editar producto:', producto);
-    // Aquí podrías redirigir a un formulario de edición
-  }
-
-  deleteProducto(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-      console.log('Eliminar producto con ID:', id);
-      // Llamada al servicio para eliminar la categoría
-    }
-  }
-
   private getPedidos() {
     this.pedidosService.findAllPaginate(this.token, this.page, this.search, this.sortBy).subscribe({
       next: (data: Pagination<Pedido>) => {
@@ -141,12 +129,4 @@ export class OrdersHistoryComponent implements OnInit, AfterViewInit {
     this.page = page;
     this.getPedidos();
   }
-
-  /* buscarCliente(dato: string) {
-    this.clientes.set([]);
-    this.cedula = dato;
-    this.getClientesByCedula();
-    console.log(`dato: ${dato} `);
-  }
- */
 }

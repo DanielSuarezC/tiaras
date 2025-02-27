@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 import { environment } from '../../../../../environments/environment';
 import { UpdateClienteDto } from '../../../shared/models/clientes/dto/UpdateClienteDto';
+import { PedidosService } from '../../../shared/models/pedidos/services/pedidos.service';
 
 @Component({
   selector: 'app-editarDireccion',
@@ -19,12 +20,10 @@ export class EditarDireccionComponent {
 
   dialogRef = inject<DialogRef<string>>(DialogRef<string>);
   data = inject(DIALOG_DATA);
+  pedidoService = inject(PedidosService);
   clienteService = inject(ClientesService);
   private cookieService = inject(CookieService);
-  // private fb = inject(FormBuilder);
-  // public form1 = this.fb.group({
-  //   direccion: ['', Validators.required],
-  // });
+
   form1 = new FormGroup({
     direccion: new FormControl('direccion', Validators.required),
   });
@@ -44,27 +43,41 @@ export class EditarDireccionComponent {
       // this.blockUI?.stop();
       return;
     }else if(this.form1.get('direccion')?.value === this.data.direccion){
-      this.mensaje.showMessage('Formulario inválido', 'Debe agregar una dirección diferente', 'error');
+      this.mensaje.showMessage('Advertencia', 'Debe agregar una dirección diferente', 'warning');
+      return;
     }else{
-      const updateClienteDto = new UpdateClienteDto();
-      updateClienteDto.direccion = this.form1.get('direccion')?.value;
-      updateClienteDto.cedula = this.data.cedula;
-      updateClienteDto.nombre = this.data.nombre;
-      updateClienteDto.apellidos = this.data.apellidos;
-      updateClienteDto.email = this.data.email;
-      updateClienteDto.telefono = this.data.telefono;
-      updateClienteDto.pais = this.data.pais;
-      updateClienteDto.ciudad = this.data.ciudad;
-      this.clienteService.update(this.data.idCliente, updateClienteDto, this.token)
+      // const updateClienteDto = new UpdateClienteDto();
+      // updateClienteDto.direccion = this.form1.get('direccion')?.value;
+      // updateClienteDto.cedula = this.data.cedula;
+      // updateClienteDto.nombre = this.data.nombre;
+      // updateClienteDto.apellidos = this.data.apellidos;
+      // updateClienteDto.email = this.data.email;
+      // updateClienteDto.telefono = this.data.telefono;
+      // updateClienteDto.pais = this.data.pais;
+      // updateClienteDto.ciudad = this.data.ciudad;
+      // this.clienteService.update(this.data.idCliente, updateClienteDto, this.token)
+      //   .subscribe({
+      //     next: (data) => {
+      //       this.mensaje.toastMessage('Dirección actualizada', 'success', 'bottom-end', 3000);
+      //       this.dialogRef.close('recargarPedido');
+      //     },
+      //     error: (error) => {
+      //       this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
+      //     }
+      //   });
+    console.log('idPedido',this.data.idPedido);
+    console.log('direccion',this.form1.get('direccion')?.value);
+     this.pedidoService.updateDireccionPedido(this.data.idPedido, this.form1.get('direccion')?.value, this.token)
         .subscribe({
           next: (data) => {
             this.mensaje.toastMessage('Dirección actualizada', 'success', 'bottom-end', 3000);
             this.dialogRef.close('recargarPedido');
           },
           error: (error) => {
-            this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
+            this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.error.message}`, 'error');
           }
         });
+           
     }
   }
 

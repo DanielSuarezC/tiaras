@@ -22,12 +22,8 @@ export class RegistrarPagoComponent implements OnInit {
   data = inject(DIALOG_DATA);
   pagoService = inject(PagosService);
   private cookieService = inject(CookieService);
-  // private fb = inject(FormBuilder);
-  // public form1 = this.fb.group({
-  //   direccion: ['', Validators.required],
-  // });
+
   form1 = new FormGroup({
-    valorTotal: new FormControl('valorTotal', Validators.required),
     valorPagado: new FormControl('valorPagado', Validators.required),
   });
 
@@ -36,9 +32,6 @@ export class RegistrarPagoComponent implements OnInit {
 
   ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
-    this.form1.get('valorTotal')?.setValue(this.data.valorTotal);
-    this.form1.get('valorTotal')?.disable();
-
   }
 
   onSubmit() {
@@ -49,7 +42,6 @@ export class RegistrarPagoComponent implements OnInit {
       return;
     }else if((this.form1.get('valorPagado')?.value + this.data.valorPagado ) > this.data.valorTotal){
       this.mensaje.showMessage('Advertencia', 'El valor pagado supera el valor total del pedido', 'warning');
-      this.form1.get('valorPagado')?.setValue('');
     }else{
       const createPagoDto = new CreatePagoDto();
       createPagoDto.idPedido = this.data.idPedido;

@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
         switch (this.paylod.rol) {
           case 'ADMINISTRADOR':
             this.form1.reset();
-            this.route.navigate(['/administrador/inventories']);
+            this.route.navigate(['/administrador/inventarios']);
             this.mensaje.toastMessage(`Bienvenido ${this.paylod.rol}`, 'success', 'bottom-end', 4000);
             break;
             case 'VENDEDOR':

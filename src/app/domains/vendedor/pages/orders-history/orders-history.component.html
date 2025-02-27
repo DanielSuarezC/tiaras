@@ -104,9 +104,9 @@
                             <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ pedido.idPedido }}
                             </td>
-                            <td class="px-4 py-3">{{pedido.cliente?.nombre}} {{pedido.cliente.apellidos}}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaPedido }}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaEntrega }}</td>
+                            <td class="px-4 py-3">{{pedido.cliente?.nombre | titlecase}} {{pedido.cliente.apellidos | titlecase}}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaPedido  | date:'longDate' }}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaEntrega | date:'longDate' }}</td>
                             <td class="px-4 py-3">{{ pedido.valorTotal }}</td>
                             <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
                             <td class="px-4 py-3">
@@ -188,14 +188,6 @@
                                     <a [routerLink]="['/vendedor/detail-order', pedido.idPedido]"
                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
                                         ver detalle de pedido
-                                    </a>
-                                    <a (click)="editProducto(pedido)"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
-                                        Editar
-                                    </a>
-                                    <a (click)="deleteProducto(pedido.idPedido || 0)"
-                                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
-                                        Eliminar
                                     </a>
                                 </div>
                             </div>

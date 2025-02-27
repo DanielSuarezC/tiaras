@@ -102,10 +102,10 @@
                           <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                               {{ reembolso.idReembolso }}
                           </td>
-                          <td class="px-4 py-3">{{reembolso.cliente?.nombre}} {{reembolso.cliente.apellidos}}</td>
-                          <td class="px-4 py-3">{{ reembolso.vendedor.nombre}}</td>
-                          <td class="px-4 py-3">{{ reembolso.valorReembolso }}</td>
-                          <td class="px-4 py-3">{{ reembolso.fechaSolicitud }}</td>
+                        <td class="px-4 py-3">{{reembolso.pedido?.cliente?.nombre | titlecase}} {{reembolso.pedido?.cliente?.apellidos | titlecase}}</td>
+                          <td class="px-4 py-3">{{ reembolso.vendedor?.nombre | titlecase}}</td>
+                          <td class="px-4 py-3">{{ reembolso?.valorReembolso }}</td>
+                          <td class="px-4 py-3">{{ reembolso?.at_created | date:'longDate' }}</td>
                           <td class="px-4 py-3">
                               @if(reembolso.estado === 'Pendiente'){
                               <dd
@@ -147,7 +147,7 @@
                               <div class="py-1">
                                   <a [routerLink]="['/vendedor/detail-cancellation', reembolso.idReembolso]"
                                       class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
-                                      ver detalle de cancelacion
+                                      ver detalles  
                                   </a>
                                   <a (click)="editProducto(reembolso)"
                                       class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
