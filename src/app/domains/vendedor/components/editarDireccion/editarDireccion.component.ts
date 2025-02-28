@@ -42,32 +42,13 @@ export class EditarDireccionComponent {
       this.mensaje.showMessage('Formulario inválido', 'Debe agregar una dirección', 'error');
       // this.blockUI?.stop();
       return;
-    }else if(this.form1.get('direccion')?.value === this.data.direccion){
+    } else if (this.form1.get('direccion')?.value === this.data.direccion) {
       this.mensaje.showMessage('Advertencia', 'Debe agregar una dirección diferente', 'warning');
       return;
-    }else{
-      // const updateClienteDto = new UpdateClienteDto();
-      // updateClienteDto.direccion = this.form1.get('direccion')?.value;
-      // updateClienteDto.cedula = this.data.cedula;
-      // updateClienteDto.nombre = this.data.nombre;
-      // updateClienteDto.apellidos = this.data.apellidos;
-      // updateClienteDto.email = this.data.email;
-      // updateClienteDto.telefono = this.data.telefono;
-      // updateClienteDto.pais = this.data.pais;
-      // updateClienteDto.ciudad = this.data.ciudad;
-      // this.clienteService.update(this.data.idCliente, updateClienteDto, this.token)
-      //   .subscribe({
-      //     next: (data) => {
-      //       this.mensaje.toastMessage('Dirección actualizada', 'success', 'bottom-end', 3000);
-      //       this.dialogRef.close('recargarPedido');
-      //     },
-      //     error: (error) => {
-      //       this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-      //     }
-      //   });
-    console.log('idPedido',this.data.idPedido);
-    console.log('direccion',this.form1.get('direccion')?.value);
-     this.pedidoService.updateDireccionPedido(this.data.idPedido, this.form1.get('direccion')?.value, this.token)
+    } else {
+      console.log('idPedido', this.data.idPedido);
+      console.log('direccion', this.form1.get('direccion')?.value);
+      this.pedidoService.updateDireccionPedido(this.data.idPedido, this.form1.get('direccion')?.value, this.token)
         .subscribe({
           next: (data) => {
             this.mensaje.toastMessage('Dirección actualizada', 'success', 'bottom-end', 3000);
@@ -77,7 +58,7 @@ export class EditarDireccionComponent {
             this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.error.message}`, 'error');
           }
         });
-           
+
     }
   }
 

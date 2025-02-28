@@ -58,4 +58,20 @@ export class ReembolsoService {
     return this.http.patch(this.baseUrl + '/' + idReembolso, updateReembolsoDto, { headers });
   }
 
+  
+  public updateValorReembolso(idReembolso: number, valorReembolso: number, token: string | undefined): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+      'Content-Type': 'application/json' // Asegurar que se envía como JSON
+    });
+    return this.http.patch(`${this.baseUrl}/${idReembolso}/valorReembolso`, {valorReembolso: valorReembolso}, { headers });
+  }
+  public updateEstado(idReembolso: number, estado: string, token: string | undefined): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, 
+      'Content-Type': 'application/json' // Asegurar que se envía como JSON
+    });
+    return this.http.patch(`${this.baseUrl}/${idReembolso}/estado`, {estado: estado}, { headers });
+  }
+
 }

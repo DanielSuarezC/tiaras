@@ -19,7 +19,6 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   styleUrl: './cancellations.component.css'
 })
 export class CancellationsComponent {
-  /* Inyectar Servicios */
   reembolsosService = inject(ReembolsoService);
   mensaje = inject(MensajeService);
   cookieService = inject(CookieService);
@@ -96,18 +95,6 @@ export class CancellationsComponent {
 
   }
 
-  editProducto(producto: any): void {
-    console.log('Editar producto:', producto);
-    // Aquí podrías redirigir a un formulario de edición
-  }
-
-  deleteProducto(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-      console.log('Eliminar producto con ID:', id);
-      // Llamada al servicio para eliminar la categoría
-    }
-  }
-
   private getReembolsos() {
     this.reembolsosService.findAllPaginate(this.token, this.page, this.search, this.sortBy).subscribe({
       next: (data: Pagination<Reembolso>) => {
@@ -125,22 +112,11 @@ export class CancellationsComponent {
     for (let i = 1; i <= this.pagination?.meta.totalPages; i++) {
       numbers.push(i);
     }
-
     return numbers;
   }
 
   /* Cambiar Página */
   public cambiarPagina(page: number): void {
-    this.page = page;
-    this.getReembolsos();
-  }
-
-   /* Cambiar Página */
-   public cambiarPagdda(page: number): void {
-    this.page = page;
-    this.getReembolsos();
-  }
-   public cambiarPaga(page: number): void {
     this.page = page;
     this.getReembolsos();
   }

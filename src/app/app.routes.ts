@@ -128,7 +128,7 @@ export const routes: Routes = [
                 component: DetailOrderComponent, 
             },
             {
-                path: 'cancellations/detail-cancellation',
+                path: 'detail-cancellation/:id',
                 component: DetailCancellationComponent,
             },
             {
