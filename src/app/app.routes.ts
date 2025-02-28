@@ -30,6 +30,8 @@ import { InventarioDashboardComponent } from './domains/administrador/pages/inve
 import { StockInsumosComponent } from './domains/administrador/pages/inventarios/dashboard/pages/stock-insumos/stock-insumos.component';
 import { StockProductosComponent } from './domains/administrador/pages/inventarios/dashboard/pages/stock-productos/stock-productos.component';
 import { TransferenciasComponent } from './domains/administrador/pages/inventarios/dashboard/pages/transferencias/transferencias.component';
+import { TransferenciasFormComponent } from './domains/administrador/pages/inventarios/dashboard/pages/transferencias/form/transferencia-form.component';
+import { AddStockComponent } from './domains/administrador/pages/inventarios/dashboard/pages/stock-insumos/add-stock/add-stock.component';
 
 export const routes: Routes = [
     {
@@ -51,8 +53,10 @@ export const routes: Routes = [
                 component: InventarioDashboardComponent,
                 children: [
                     { path: 'insumos', component: StockInsumosComponent },
+                    { path: 'insumos/add-stock', component: AddStockComponent },
                     { path: 'productos', component: StockProductosComponent },
-                    { path: 'transferencias', component: TransferenciasComponent }
+                    { path: 'transferencias', component: TransferenciasComponent },
+                    { path: 'transferencias/form', component: TransferenciasFormComponent }
                 ]
             },
             {
