@@ -13,6 +13,7 @@ import { Pagination } from '../../paginated.interface';
 })
 export class InventariosService {
   private baseUrl: string = `${environment.urlServices}inventarios`;
+  private baseUrlTransferencias: string = `${environment.urlServices}transferencias`;
 
   constructor(
     private http: HttpClient
@@ -93,5 +94,23 @@ export class InventariosService {
     if (sortBy && sortBy.trim() !== '') url += `&sortBy=${sortBy}`;
 
     return this.http.get<Pagination<ProductoStock>>(url, { headers });
+  }
+
+  /* Transferir Insumos */
+  transferirInsumos(idInventarioOrigen: number, idInventarioDestino: number, observaciones: string, token: string, insumos: { idInsumo: number, cantidad: number }[]) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+    });
+
+    const transferencia = {
+      idInventarioOrigen,
+      idInventarioDestino,
+      observaciones,
+      stocks: insumos
+    }
+
+    console.log(transferencia);
+
+    return this.http.post(`${this.baseUrlTransferencias}/insumos`, transferencia, { headers });
   }
 }

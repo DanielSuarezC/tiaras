@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
@@ -17,8 +17,14 @@ import { PaginationComponent } from '../../../../../../shared/components/paginat
   templateUrl: './stock-insumos.component.html',
   styles: ``
 })
-export class StockInsumosComponent implements OnInit, AfterViewInit {
+export class StockInsumosComponent implements OnInit {
   public pagination: Pagination<InsumoStock> = DefaultPaginationValue;
+
+  @ViewChild('buttonDropdown', { read: ElementRef })
+  public buttonDropdown: ElementRef<HTMLButtonElement>;
+
+  @ViewChild('sortDropdown', { read: ElementRef })
+  public sortDropdown: ElementRef<HTMLDivElement>;
   
   public idInventario: number;
   public page: number = 1;
@@ -40,19 +46,13 @@ export class StockInsumosComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit(): void {
-    this.inventariosService.findInsumoStockPaginate(this.idInventario, this.cookieService.get(environment.nombreCookieToken), this.page, this.searchTerm, this.sortBy)
-      .subscribe((res) => {
-        this.pagination = res;
-    });
-  }
-
-  ngAfterViewInit(): void {
+    this.consultarInsumos();
     setTimeout(() => this.initDropdown());
   }
 
   /* Inicializar Dropdown */
   public initDropdown() {
-    /* const options: DropdownOptions = {
+    const options: DropdownOptions = {
       triggerType: 'click',
       delay: 300,
       ignoreClickOutsideClass: false
@@ -61,17 +61,9 @@ export class StockInsumosComponent implements OnInit, AfterViewInit {
     const instanceOptions: InstanceOptions = {
       id: 'sortDropdown',
       override: true
-    }; */
-
-     /* Button Dropdown */
-    const buttonDropdown: HTMLElement = document.getElementById('buttonDropdown');
-    console.log('buttonDropdown', buttonDropdown);
-
-    /* Div Dropdown */
-    const divDropdown: HTMLElement = document.getElementById('sortDropdown');
-    console.log('divDropdown', divDropdown);
+    };
     
-    this.dropdown = new Dropdown(buttonDropdown, divDropdown);
+    this.dropdown = new Dropdown(this.buttonDropdown.nativeElement, this.sortDropdown.nativeElement, options, instanceOptions);
   }
 
   /* Buscar insumo */

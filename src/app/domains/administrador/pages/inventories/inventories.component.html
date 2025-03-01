@@ -103,9 +103,13 @@
                             <td class="px-4 py-3">{{producto.nombre}}</td>
                             <td class="px-4 py-3">{{ producto.descripcion }}</td>
                             <td class="px-4 py-3">{{ producto.precio }}</td>
-                            <td class="px-4 py-3"><img class="h-auto max-w-full rounded-lg mx-auto dark:hidden"
+                            <td class="px-4 py-3">
+                                <img 
+                                    class="max-w-64 max-h-32 rounded-lg mx-auto dark:hidden"
                                     [src]="'http://localhost:3000/tiaras/api/uploads/' + producto.imagenes?.[0]"
-                                    [alt]="producto.nombre"></td>
+                                    [alt]="producto.nombre"
+                                >
+                            </td>
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button #dropdownButton [id]="producto.idProducto + '-button'"
                                     [attr.data-dropdown-toggle]="producto.idProducto + '-dropdown'"

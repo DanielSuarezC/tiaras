@@ -1,0 +1,47 @@
+<section class="dark:bg-gray-900 p-3 sm:p-5">
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <!-- Start coding here -->
+        <h1 class="text-xl">Detalles de la Transferencia</h1>
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-4 py-3">Inventario Origen</th>
+                    <th scope="col" class="px-4 py-3">Inventario Destino</th>
+                    <th scope="col" class="px-4 py-3">Fecha de Transferencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b dark:border-gray-700">
+                    <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap dark:text-white">{{ transferencia.inventarioOrigen.nombre }}</th>
+                    <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap dark:text-white">{{ transferencia.inventarioDestino.nombre }}</th>
+                    <th scope="row" class="px-4 py-3 font-medium whitespace-nowrap dark:text-white">{{ transferencia.fecha | date }}</th>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="border-b dark:border-gray-700">
+                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">OBSERVACIONES</th>
+                    <td colspan="2" class="px-4 py-3 font-medium whitespace-nowrap dark:text-white">{{ transferencia.observaciones }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <h2 class="text-xl mt-3">Insumos Transferidos</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-4 py-3">Insumo</th>
+                        <th scope="col" class="px-4 py-3">Cantidad Transferida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of transferencia.insumosItemsTransferencia" class="bg-blue-50">
+                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+                            item.insumo.nombre }}</th>
+                        <td class="px-4 py-3">{{ item.cantidad }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
