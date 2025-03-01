@@ -10,6 +10,7 @@ import { environment } from '../../../../../../../../../environments/environment
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { debounceTime, Subject, Subscription } from 'rxjs';
+import { InsumoStock } from '../../../../../../../shared/models/inventarios/dto/insumo-stock.dto';
 
 @Component({
   selector: 'transferencia-form',
@@ -20,9 +21,9 @@ import { debounceTime, Subject, Subscription } from 'rxjs';
 })
 export class TransferenciasFormComponent implements OnInit, OnDestroy {
   public inventariosDestino: Inventario[];
-  public insumosSeleccionados: { insumo: Insumo, cantidad: number }[] = [];
+  public insumosSeleccionados: { insumo: InsumoStock, cantidad: number }[] = [];
   public insumosSearch: Insumo[] = [];
-  public insumosOnInventario: Insumo[] = [];
+  public insumosOnInventario: InsumoStock[] = [];
 
   private token: string;
   private idInventario: number;
@@ -57,7 +58,8 @@ export class TransferenciasFormComponent implements OnInit, OnDestroy {
   public transferForm = this.fb.group({
     inventarioDestino: ['', Validators.required],
     insumoSearch: [''],
-    insumoStock: ['', [Validators.required, Validators.min(1)]]
+    insumoStock: ['', [Validators.required, Validators.min(1)]],
+    observaciones: ['', Validators.nullValidator]
   });
 
   private loadInventarios() {
@@ -69,7 +71,7 @@ export class TransferenciasFormComponent implements OnInit, OnDestroy {
     });
 
     this.inventarioService.findInsumoStockPaginate(this.idInventario, this.token, 1).subscribe({
-      next: (data) => this.insumosOnInventario = data.data.map(i => i.insumo),
+      next: (data) => this.insumosOnInventario = data.data,
       error: (error) => this.mensaje.showMessage('Error', `Error de obtención de datos. ${error.message}`, 'error')
     });
   }
@@ -97,15 +99,36 @@ export class TransferenciasFormComponent implements OnInit, OnDestroy {
   }  
 
   addInsumo() {
-    const insumo = this.insumosOnInventario.find(i => i.nombre === this.transferForm.get('insumoSearch')?.value);
+    const insumo = this.insumosOnInventario.find(i => i.insumo.nombre === this.transferForm.get('insumoSearch')?.value);
     if (!insumo) {
       this.mensaje.showMessage('Error', 'Seleccione un insumo de la lista', 'error');
       return;
     }
 
-    const stock = this.transferForm.get('insumoStock')?.value;
+    const stock = Number(this.transferForm.get('insumoStock')?.value);
     if (!stock) {
       this.mensaje.showMessage('Error', 'Ingrese la cantidad del producto', 'error');
+      return;
+    }
+
+    /* Validar si el Stock a Transferir es Válido */
+    if (stock > insumo.stock) {
+      this.mensaje.showMessage('Error', 'La cantidad a transferir es mayor al stock disponible', 'error');
+      return;
+    }
+
+    /* Validar si el Insumo ya fue seleccionado */
+    if (this.insumosSeleccionados.find(i => i.insumo.insumo.idInsumo === insumo.insumo.idInsumo)) {
+      this.insumosSeleccionados = this.insumosSeleccionados.map(i => {
+        if (i.insumo.insumo.idInsumo === insumo.insumo.idInsumo) {
+          i.cantidad = stock;
+        }
+        return i;
+      });
+      
+      this.transferForm.get('insumoSearch')?.reset();
+      this.transferForm.get('insumoStock')?.reset();
+      
       return;
     }
 
@@ -115,8 +138,20 @@ export class TransferenciasFormComponent implements OnInit, OnDestroy {
     this.transferForm.get('insumoStock')?.reset();
   }
 
-  removeProduct(insumo: Insumo) {
-    this.insumosSeleccionados.filter(i => i.insumo.idInsumo !== insumo.idInsumo);
+  editInsumo(insumo: Insumo) {
+    const insumoSeleccionado = this.insumosSeleccionados.find(i => i.insumo.insumo.idInsumo === insumo.idInsumo);
+    if (!insumoSeleccionado) {
+      this.mensaje.showMessage('Error', 'Error al editar el insumo', 'error');
+      return;
+    }
+
+    /* this.insumosSeleccionados = this.insumosSeleccionados.filter(i => i.insumo.insumo.idInsumo !== insumo.idInsumo); */
+    this.transferForm.get('insumoSearch')?.setValue(insumo.nombre);
+    this.transferForm.get('insumoStock')?.setValue(insumoSeleccionado.cantidad.toString());
+  }
+
+  removeInsumo(insumo: Insumo) {
+    this.insumosSeleccionados = this.insumosSeleccionados.filter(i => i.insumo.insumo.idInsumo !== insumo.idInsumo);
   }
 
   onSubmit() {
@@ -131,9 +166,10 @@ export class TransferenciasFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const insumos = this.insumosSeleccionados.map(i => ({ idInsumo: i.insumo.idInsumo, cantidad: i.cantidad }));
+    const insumos = this.insumosSeleccionados.map(i => ({ idInsumo: i.insumo.insumo.idInsumo, cantidad: i.cantidad }));
+    const observaciones: string = this.transferForm.get('observaciones')?.value;
 
-    this.inventarioService.transferirInsumos(this.idInventario, idInventarioDestino, this.token, insumos).subscribe({
+    this.inventarioService.transferirInsumos(this.idInventario, idInventarioDestino, observaciones, this.token, insumos).subscribe({
       next: () => {
         this.mensaje.showMessage('Éxito', 'Transferencia realizada con éxito', 'success');
         this.insumosSeleccionados = [];
