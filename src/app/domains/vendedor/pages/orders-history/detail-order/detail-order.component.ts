@@ -204,10 +204,8 @@ export class DetailOrderComponent {
   
   enviarFormulario(): void {
     const { detalles, bancoDestino, cuentaBancaria } = this.formReembolso.value;
-    const paylod = jwtDecode(this.token);
-    console.log(paylod);
     if (this.formReembolso.valid) {
-      const createReembolsoDto: CreateReembolsoDto = { idPedido: this.pedido()?.idPedido, idVendedor: 2, valorReembolso: 0, detalles, bancoDestino, cuentaBancaria, estado: 'Pendiente' };
+      const createReembolsoDto: CreateReembolsoDto = { idPedido: this.pedido()?.idPedido, valorReembolso: 0, detalles, bancoDestino, cuentaBancaria, estado: 'Pendiente' };
       this.reembolsoService.create(createReembolsoDto, this.token).subscribe({
         next: (res) => {
           this.mensaje.showMessage('Reembolso creado', 'El reembolso será procesado por el administrador y dará una pronta respuesta.', 'success');

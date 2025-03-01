@@ -141,10 +141,9 @@ export class CatalogComponent implements OnInit{
     }
   }
 
-    // Modificar método agregarCategoria
+    
     agregarCategoria(categoria: Categoria) {
       this.categoriasAgregadas.update(cats => [...cats, categoria]);
-      // console.log(this.categoriasAgregadas());
     }
   
     /* Verificar si una categoria existe en el arreglo de Categorias */

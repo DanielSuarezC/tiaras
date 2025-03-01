@@ -83,11 +83,11 @@
               </dl>
               <dl class="flex items-center justify-between gap-4">
                 <dt class="text-gray-500 dark:text-gray-400">Fecha de pedido</dt>
-                <dd class="text-base font-medium text-gray-900 dark:text-white">{{pedido()?.fechaPedido}}</dd>
+                <dd class="text-base font-medium text-gray-900 dark:text-white">{{pedido()?.fechaPedido | date:'longDate'}}</dd>
               </dl>
               <dl class="flex items-center justify-between gap-4">
-                <dt class="text-gray-500 dark:text-gray-400">Estado de entrega</dt>
-                <dd class="text-base font-medium text-gray-900 dark:text-white">{{pedido()?.fechaEntrega}}</dd>
+                <dt class="text-gray-500 dark:text-gray-400">Fecha de entrega</dt>
+                <dd class="text-base font-medium text-gray-900 dark:text-white">{{pedido()?.fechaEntrega | date:'longDate'}}</dd>
               </dl>
               <dl class="flex items-center justify-between gap-4">
                 <dt class="text-gray-500 dark:text-gray-400">Envío</dt>

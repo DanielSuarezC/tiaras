@@ -8,18 +8,17 @@ import { environment } from '../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { InputComponent } from '../../../shared/components/input/input.component';
-import { ClientesService } from '../../../shared/models/clientes/services/clientes.service';
-import { cliente } from '../../../shared/models/clientes/entities/cliente';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DefaultPaginationValue, Pagination } from '../../../shared/models/paginated.interface';
 import { Pedido } from '../../../shared/models/pedidos/entities/Pedido.interface';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { Dropdown, InstanceOptions, Modal, ModalOptions } from 'flowbite';
+import { SearchArray } from '../../../shared/models/SearchArray.interface';
 
 @Component({
   selector: 'app-orders-history',
   standalone: true,
-  imports: [CommonModule, RouterLink, OverlayModule, ReactiveFormsModule, PaginationComponent],
+  imports: [CommonModule, RouterLink, OverlayModule, ReactiveFormsModule, PaginationComponent, InputComponent],
   templateUrl: './orders-history.component.html',
   styleUrl: './orders-history.component.css'
 })
@@ -29,16 +28,19 @@ export class OrdersHistoryComponent implements OnInit, AfterViewInit {
   mensaje = inject(MensajeService);
   cookieService = inject(CookieService);
   private fb = inject(FormBuilder);
-  cedula?: string;
+  public cedula?: string;
 
   public form1: FormGroup = this.fb.group({
     idCliente: [''],
-    estadoPedido: [''],
-    estadoPago: [''],
+    estadoPedido: this.fb.array([]),
+    estadoPago: this.fb.array([]),
     fechaPedido: [''],
     fechaEntrega: [''],
+    evento: ['']
   });
 
+  estados = ['Pendiente', 'En Proceso', 'Terminado', 'Incidencia'];
+  estadosPagos = ['Pendiente', '50% Pagado', '100% Pagado'];
   public modal: Modal;
 
   token: string | undefined;
@@ -47,6 +49,7 @@ export class OrdersHistoryComponent implements OnInit, AfterViewInit {
   public page: number = 1;
   public search: string = '';
   public sortBy: string = '';
+  public terminos: SearchArray[] = [];
 
   /* Buttons of Dropdowns Menus */
   @ViewChildren('dropdownButton', { read: ElementRef })
@@ -100,18 +103,73 @@ export class OrdersHistoryComponent implements OnInit, AfterViewInit {
   }
 
   OnSubmit() {
+    let estadosSeleccionados = this.form1.get('estadoPedido').value;
+    let estadosPagosSeleccionados = this.form1.get('estadoPago').value;
+    let fechaPedido = this.form1.get('fechaPedido').value;
+    let fechaEntrega = this.form1.get('fechaEntrega').value;
+    let evento = this.form1.get('evento').value;
 
+    this.terminos = [];
+
+    if (estadosSeleccionados) this.terminos.push({ term: 'estadoPedido', search: estadosSeleccionados });
+    if (estadosPagosSeleccionados) this.terminos.push({ term: 'estadoPago', search: estadosPagosSeleccionados });
+    if (fechaPedido) this.terminos.push({ term: 'fechaPedido', search: fechaPedido });
+    if (fechaEntrega) this.terminos.push({ term: 'fechaEntrega', search: fechaEntrega });
+    if (evento) this.terminos.push({ term: 'evento', search: evento });
+    console.log('onSubmit',this.terminos)
+    this.getPedidos();
   }
 
   private getPedidos() {
-    this.pedidosService.findAllPaginate(this.token, this.page, this.search, this.sortBy).subscribe({
+    this.pedidosService.filter(this.token, this.page, this.terminos, this.sortBy).subscribe({
       next: (data: Pagination<Pedido>) => {
         this.pagination = data;
-
-        setTimeout(() => this.inicializarDropdowns());
+        setTimeout(() => this.inicializarDropdowns()); 
       },
       error: (error) => this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error')
     });
+  }
+
+  /* Buscar Pedidos */
+  searchPedidos(search: any): void {
+    this.terminos = [];
+    if(search) this.terminos.push({ term: 'cliente', search: search });
+    this.getPedidos();
+  }
+
+  resetFilter(){
+    this.form1.reset();
+    this.terminos = [];
+    this.getPedidos();
+  }
+
+  onCheckboxChange(event: any, tipo: string): void {
+    if (tipo === 'Pedido') {
+      const estadoPedido: FormArray = this.form1.get('estadoPedido') as FormArray;
+      if (event.target.checked) {
+        estadoPedido.push(this.fb.control(event.target.value));
+      } else {
+        const index = estadoPedido.controls.findIndex(x => x.value === event.target.value);
+        estadoPedido.removeAt(index);
+      }
+    } else {
+      const estadoPago: FormArray = this.form1.get('estadoPago') as FormArray;
+      if (event.target.checked) {
+        if (event.target.value === '50% Pagado' || event.target.value === '100% Pagado') {
+          let textEncode = this.encodeToUrl(event.target.value);
+          estadoPago.push(this.fb.control(textEncode));
+        } else {
+          estadoPago.push(this.fb.control(event.target.value));
+        }
+      } else {
+        const indexPago = estadoPago.controls.findIndex(x => x.value === event.target.value);
+        estadoPago.removeAt(indexPago);
+      }
+    }
+  }
+
+  encodeToUrl(texto: string): string {
+    return encodeURIComponent(texto);
   }
 
   /* Páginas */
@@ -128,5 +186,10 @@ export class OrdersHistoryComponent implements OnInit, AfterViewInit {
   public cambiarPagina(page: number): void {
     this.page = page;
     this.getPedidos();
+  }
+
+  /* Cerrar modal de filtros */
+  public closeModal(): void {
+    this.modal.hide();
   }
 }

@@ -7,6 +7,7 @@ import { CreatePedidoDto } from '../dto/CreatePedidoDto';
 import { UpdatePedidoDto } from '../dto/UpdatePedidoDto';
 import { Pedido } from '../entities/Pedido.interface';
 import { Pagination } from '../../paginated.interface';
+import { SearchArray } from '../../SearchArray.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -75,9 +76,44 @@ export class PedidosService {
     });
     
     let url: string = `${this.baseUrl}/paginate?page=${page}`;
-    if (search) url += `&filter.evento=${search}`;
+    if (search) url += `&filter.cliente.cedula=${search}`;
     if (sortBy && sortBy.trim() !== '') url += `&sortBy=${sortBy}`;
     
+    return this.http.get<Pagination<Pedido>>(url, { headers });
+  }
+
+  public filter(token: string, page: number, terminos?: SearchArray[], sortBy?: string): Observable<Pagination<Pedido>> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+    });
+    
+    let url: string = `${this.baseUrl}/paginate?page=${page}`;
+    for(let termino of terminos){
+      if (termino.term==='estadoPedido'){
+        for(let search of termino.search){
+          /*
+            Si el arreglo search tiene un solo elemento, se agrega el filtro de estadoPedido con el operador $eq
+            Si el arreglo search tiene más de un elemento, se considera un filtro combinado y se usa el operador $or 
+           */
+          url += (search.length == 1) ? `&filter.estadoPedido=$eq:${search}`: `&filter.estadoPedido=$or:${search}`;
+        }
+      }
+      if (termino.term==='estadoPago'){
+        for(let search of termino.search){
+          /*
+            Si el arreglo search tiene un solo elemento, se agrega el filtro de estadoPago con el operador $eq
+            Si el arreglo search tiene más de un elemento, se considera un filtro combinado y se usa el operador $or 
+           */
+          url += (termino.search.length == 1) ? `&filter.estadoPago=$eq:${search}`: `&filter.estadoPago=$or:${search}`;
+        }
+      }
+      if (termino.term==='fechaPedido') url += `&filter.fechaPedido=${termino.search}`;
+      if (termino.term==='fechaEntrega') url += `&filter.fechaEntrega=${termino.search}`;
+      if (termino.term==='cliente') url += `&filter.cliente.cedula=${termino.search}`;
+      if (termino.term==='evento') url += `&filter.evento=${termino.search}`;
+    }
+    // if (search && term==='EstadoPedido') url += `&filter.cliente.cedula=${search}`;
+    if (sortBy && sortBy.trim() !== '') url += `&sortBy=${sortBy}`;
     return this.http.get<Pagination<Pedido>>(url, { headers });
   }
 }
