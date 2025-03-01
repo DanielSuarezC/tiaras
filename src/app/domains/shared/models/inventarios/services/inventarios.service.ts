@@ -97,7 +97,7 @@ export class InventariosService {
   }
 
   /* Transferir Insumos */
-  transferirInsumos(idInventarioOrigen: number, idInventarioDestino, token: string, insumos: { idInsumo: number, cantidad: number }[]) {
+  transferirInsumos(idInventarioOrigen: number, idInventarioDestino: number, observaciones: string, token: string, insumos: { idInsumo: number, cantidad: number }[]) {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
@@ -105,8 +105,11 @@ export class InventariosService {
     const transferencia = {
       idInventarioOrigen,
       idInventarioDestino,
+      observaciones,
       stocks: insumos
     }
+
+    console.log(transferencia);
 
     return this.http.post(`${this.baseUrlTransferencias}/insumos`, transferencia, { headers });
   }
