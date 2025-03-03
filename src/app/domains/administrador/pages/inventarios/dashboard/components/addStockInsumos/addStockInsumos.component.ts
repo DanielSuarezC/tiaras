@@ -20,14 +20,12 @@ import { Pagination } from '../../../../../../shared/models/paginated.interface'
   styles: ''
 })
 export class AddStockInsumosComponent implements OnInit {
-
     public insumosSeleccionados: { insumo: InsumoStock, cantidad: number }[] = [];
     public insumosSearch: Insumo[] = [];
     public insumoSeleccionado: Insumo;
     public insumosOnInventario: InsumoStock[] = [];
     public searchTerm: string = '';
     
-  
     private token: string;
     private idInventario: number;
     public mostrarDropdown = false;
@@ -171,5 +169,4 @@ export class AddStockInsumosComponent implements OnInit {
       this.debouncer.next(dato);
       this.searchTerm = dato;
     }
-
 }
