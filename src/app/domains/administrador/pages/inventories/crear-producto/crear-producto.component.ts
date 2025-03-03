@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { ProductService } from '../../../../shared/models/product/services/product.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -11,6 +11,10 @@ import { CreateProductoDto } from '../../../../shared/models/product/dto/CreateP
 import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { BtnComponent } from '../../../../shared/components/btn/btn.component';
+import { Insumo } from '../../../../shared/models/insumos/entities/Insumo';
+import { debounceTime, Subject, Subscription } from 'rxjs';
+import { InsumosService } from '../../../../shared/models/insumos/services/insumos.service';
+import { Pagination } from '../../../../shared/models/paginated.interface';
 
 @Component({
   selector: 'app-crear-producto',
@@ -19,7 +23,7 @@ import { BtnComponent } from '../../../../shared/components/btn/btn.component';
   templateUrl: './crear-producto.component.html',
   styles: ''
 })
-export class CrearProductoComponent implements OnInit {
+export class CrearProductoComponent implements OnInit, OnDestroy {
   /* Attributes */
   @Input()
   public idProducto: number | undefined;
@@ -28,11 +32,20 @@ export class CrearProductoComponent implements OnInit {
   public fileName: string = '';
   public selectedFile: File[] = [];
   public nombreCategoria: string = '';
-  public insumosAgregados: WritableSignal<{ idInsumo: number, cantidad: number }[]> = signal<{ idInsumo: number, cantidad: number }[]>([]);
   public categoriasAgregadas: WritableSignal<Categoria[]> = signal<Categoria[]>([]);
   public categorias: WritableSignal<Categoria[]> = signal<Categoria[]>([]);
   private token: string | undefined;
   public size: WritableSignal<number> = signal<number>(0);
+
+  public insumosSeleccionados: { insumo: Insumo, cantidad: number }[] = [];
+  public insumosSearch: Insumo[] = [];
+  public insumoSeleccionado: Insumo;
+  public searchTerm: string = '';
+  public mostrarDropdown = false;
+
+  /* Debouncer */
+  private debouncer: Subject<string> = new Subject<string>();
+  private debouncerSubscription?: Subscription;
 
   /* Constructor */
   constructor(
@@ -40,6 +53,7 @@ export class CrearProductoComponent implements OnInit {
     private productoService: ProductService,
     private mensaje: MensajeService,
     private cookieService: CookieService,
+    private insumosService: InsumosService,
     private fb: FormBuilder
   ) { }
 
@@ -53,6 +67,8 @@ export class CrearProductoComponent implements OnInit {
     idCategoria: [''],
     idInsumo: [''],
     cantidadInsumo: [''],
+    insumoSearch: [''],
+    insumoStock: ['', [Validators.min(1)]]
   });
 
   /* Variables */
@@ -82,6 +98,10 @@ export class CrearProductoComponent implements OnInit {
         }
       });
     }
+
+    this.debouncerSubscription = this.debouncer
+      .pipe(debounceTime(500))
+      .subscribe((value: string) => this.onInsumoSearch(value));
   }
 
   /* Enviar Formulario */
@@ -111,7 +131,7 @@ export class CrearProductoComponent implements OnInit {
       descripcion: this.createProductoForm.value.descripcion!,
       precio: +this.createProductoForm.value.precio!,
       categorias: this.categoriasAgregadas().map(categoria => categoria.idCategoria),
-      insumos: this.insumosAgregados()
+      insumos: this.insumosSeleccionados.map(i => ({ idInsumo: i.insumo.idInsumo, cantidad: i.cantidad }))
     };
 
     try {
@@ -165,13 +185,9 @@ export class CrearProductoComponent implements OnInit {
   }
 
   onFileSelect(event: Event, index: number) {
-    // const input = event.target as HTMLInputElement;
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile.push(input.files[0]);
-      // this.selectedFile.push(input.files[0]);
-      // this.selectedFile2.push(input.files[0]);
-      // this.selectedFile = input.files[0];
       if (index === 1) {
         this.fileName1 = input.files[0].name;
         this.fileUploaded1 = true;
@@ -192,30 +208,11 @@ export class CrearProductoComponent implements OnInit {
 
   private resetFormulario() {
     this.createProductoForm.reset();
-    this.insumosAgregados.set([]);
+    this.insumosSeleccionados = [];
     this.categoriasAgregadas.set([]);
     this.selectedFile = [];
     this.fileUploaded1 = false;
     this.fileUploaded2 = false;
-  }
-
-  // Modificar método agregarInsumo
-  agregarInsumo() {
-    const idInsumo = this.createProductoForm.get('idInsumo')?.value;
-    const cantidad = this.createProductoForm.get('cantidadInsumo')?.value;
-
-    if (!idInsumo || !cantidad) {
-      Swal.fire('Error', 'Seleccione un insumo e ingrese la cantidad', 'error');
-      return;
-    }
-
-    this.insumosAgregados.update(insumos => [
-      ...insumos,
-      { idInsumo: +idInsumo, cantidad: +cantidad }
-    ]);
-
-    this.createProductoForm.get('idInsumo')?.reset();
-    this.createProductoForm.get('cantidadInsumo')?.reset();
   }
 
   // Modificar método agregarCategoria
@@ -260,48 +257,129 @@ export class CrearProductoComponent implements OnInit {
         }
       }, error: (error) => {
         this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error');
-      }});
+      }
+    });
   }
 
   private mostrarError(error: any) {
-  let mensaje = 'Error desconocido';
+    let mensaje = 'Error desconocido';
 
-  if (error.error?.message) {
-    mensaje = error.error.message;
-  } else if (error.status === 413) {
-    mensaje = 'Las imágenes exceden el tamaño máximo permitido';
-  } else if (error.status === 415) {
-    mensaje = 'Formato de imagen no soportado';
-  }
-
-  Swal.fire('Error', mensaje, 'error');
-}
-
-buscarCategoria(dato: string) {
-  if (dato.trim().length > 0) {
-    this.createProductoForm.get('idCategoria')?.setValue('');
-    this.categorias.set([]);
-    this.nombreCategoria = dato;
-    this.getCategoriesByName();
-    this.size.set(this.categorias().length);
-
-    if (this.categorias().length > 0 && this.categorias().length <= 5) {
-      const selectElement = document.getElementById('categoria') as HTMLSelectElement;
-
-      if (selectElement) {
-        selectElement.size = this.categorias().length;
-      }
+    if (error.error?.message) {
+      mensaje = error.error.message;
+    } else if (error.status === 413) {
+      mensaje = 'Las imágenes exceden el tamaño máximo permitido';
+    } else if (error.status === 415) {
+      mensaje = 'Formato de imagen no soportado';
     }
-  } else {
-    this.categorias.set([]);
+
+    Swal.fire('Error', mensaje, 'error');
   }
-}
 
-hasErrors(controlName: string, errorType: string) {
-  return this.createProductoForm.get(controlName)?.hasError(errorType) && this.createProductoForm.get(controlName)?.touched;
-}
+  buscarCategoria(dato: string) {
+    if (dato.trim().length > 0) {
+      this.createProductoForm.get('idCategoria')?.setValue('');
+      this.categorias.set([]);
+      this.nombreCategoria = dato;
+      this.getCategoriesByName();
+      this.size.set(this.categorias().length);
 
-eliminarCategoria(categoria: Categoria) {
-  this.categoriasAgregadas.update(cats => cats.filter(cat => cat.idCategoria !== categoria.idCategoria));
-}
+      if (this.categorias().length > 0 && this.categorias().length <= 5) {
+        const selectElement = document.getElementById('categoria') as HTMLSelectElement;
+
+        if (selectElement) {
+          selectElement.size = this.categorias().length;
+        }
+      }
+    } else {
+      this.categorias.set([]);
+    }
+  }
+
+  hasErrors(controlName: string, errorType: string) {
+    return this.createProductoForm.get(controlName)?.hasError(errorType) && this.createProductoForm.get(controlName)?.touched;
+  }
+
+  eliminarCategoria(categoria: Categoria) {
+    this.categoriasAgregadas.update(cats => cats.filter(cat => cat.idCategoria !== categoria.idCategoria));
+  }
+
+  ngOnDestroy(): void {
+    this.debouncerSubscription.unsubscribe();
+  }
+
+  onInsumoSearch(searchTerm: string) {
+    if (searchTerm && searchTerm.trim().length > 0) {
+      this.insumosService.findAll(this.token, 1, this.searchTerm).subscribe({
+        next: (data: Pagination<Insumo>) => {
+          this.insumosSearch = data.data;
+        },
+        error: (error) => this.mensaje.showMessage('Error', `Error de obtención de datos. ${error.error.message}`, 'error')
+      });
+    } else {
+      this.insumosSearch = [];
+    }
+  }
+
+  ocultarDropdownConRetraso() {
+    setTimeout(() => {
+      this.mostrarDropdown = false;
+    }, 200);
+  }
+
+  selectInsumo(insumo: Insumo) {
+    this.createProductoForm.get('insumoSearch')?.setValue(insumo.nombre);
+    this.insumoSeleccionado = insumo;
+    this.insumosSearch = [];
+  }
+
+  addInsumo() {
+    const stock = Number(this.createProductoForm.get('insumoStock')?.value);
+    if (!stock) {
+      this.mensaje.showMessage('Error', 'Ingrese la cantidad del producto', 'error');
+      return;
+    }
+
+    /* Validar si el Insumo ya fue seleccionado */
+    if (this.insumosSeleccionados.find(i => i.insumo.idInsumo === this.insumoSeleccionado.idInsumo)) {
+      this.insumosSeleccionados = this.insumosSeleccionados.map(i => {
+        if (i.insumo.idInsumo === this.insumoSeleccionado.idInsumo) {
+          i.cantidad = stock;
+        }
+        return i;
+      });
+
+      this.createProductoForm.get('insumoSearch')?.reset();
+      this.createProductoForm.get('insumoStock')?.reset();
+
+      return;
+    }
+
+    this.insumosSeleccionados = [...this.insumosSeleccionados, { insumo: this.insumoSeleccionado, cantidad: +stock }];
+
+    console.log(this.insumosSeleccionados);
+
+    this.createProductoForm.get('insumoSearch')?.reset();
+    this.createProductoForm.get('insumoStock')?.reset();
+  }
+
+  editInsumo(insumo: Insumo) {
+    const insumoSeleccionado = this.insumosSeleccionados.find(i => i.insumo.idInsumo === insumo.idInsumo);
+    if (!insumoSeleccionado) {
+      this.mensaje.showMessage('Error', 'Error al editar el insumo', 'error');
+      return;
+    }
+
+    this.createProductoForm.get('insumoSearch')?.setValue(insumo.nombre);
+    this.createProductoForm.get('insumoStock')?.setValue(insumoSeleccionado.cantidad.toString());
+    this.insumoSeleccionado = insumo;
+  }
+
+  removeInsumo(insumo: Insumo) {
+    this.insumosSeleccionados = this.insumosSeleccionados.filter(i => i.insumo.idInsumo !== insumo.idInsumo);
+  }
+
+  onKeyPress(dato: string){
+    this.debouncer.next(dato);
+    this.searchTerm = dato;
+  }
 }
