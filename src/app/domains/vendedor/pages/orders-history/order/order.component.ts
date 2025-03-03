@@ -17,6 +17,8 @@ import { BtnComponent } from '../../../../shared/components/btn/btn.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ClientesService } from '../../../../shared/models/clientes/services/clientes.service';
 import { cliente } from '../../../../shared/models/clientes/entities/cliente';
+import { Pagination } from '../../../../shared/models/paginated.interface';
+import { Datepicker, DatepickerOptions, InstanceOptions } from 'flowbite';
 
 @Component({
   selector: 'app-order',
@@ -43,29 +45,78 @@ export class OrderComponent {
   shipment = this.cartService.getShipment();
   createItemDto = this.cartService.createItemDto;//signal<CreateItemDto[]>([]);
   clientes = signal<cliente[]>([]);
-  createPedidoDto = new CreatePedidoDto();
   cedula?: string;
   token?: string;
+  fechaPedido?: string;
+  createPedidoDto = new CreatePedidoDto();
+
+  /* Datepicker */
+  private datepicker: Datepicker;
 
   public form1: FormGroup = this.fb.group({
     cedula: ['', Validators.required],
     evento: ['', Validators.required],
+    direccion: ['', Validators.required],
     fechaPedido: ['', Validators.required],
-    fechaEntrega: ['', Validators.required],
+    fechaEntrega: [''],
     valorTotal: ['', Validators.required],
   });
 
   ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
     this.getClientes();
-    this.form1.get('fechaPedido')?.setValue(new Date().toISOString().substring(0, 10));
+    this.fechaPedido = new Date().toISOString().split('T')[0];
+    this.form1.get('fechaPedido')?.setValue(this.fechaPedido);
+    console.log('Date',this.fechaPedido);
     this.form1.get('fechaPedido')?.disable();
     this.form1.get('valorTotal')?.setValue(this.total());
     this.cart()
+
+    this.form1.get('cedula').valueChanges.subscribe(value => {
+      this.clienteService.findByCedula(value,this.token)
+      .subscribe({
+        next: (data) => {
+          this.form1.get('direccion').setValue(data[0].direccion);
+        },
+        error: (error) => {
+          this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.error.message}`, 'error');
+        }
+      });
+    });
+  }
+
+  initializeDatePicker() {
+    const datepickerEl: HTMLInputElement = document.getElementById('fechaEntrega') as HTMLInputElement;
+    // optional options with default values and callback functions
+    const options: DatepickerOptions = {
+      format: 'yyyy-mm-dd',
+      autohide: true,
+      orientation: 'bottom',
+    };
+
+    // instance options object
+    const instanceOptions: InstanceOptions = {
+      id: 'fechaEntrega',
+      override: true
+    };
+
+    if (datepickerEl) {
+      const datepicker = new Datepicker(
+        datepickerEl,
+        options,
+        instanceOptions
+    );
+    this.datepicker = datepicker;
+    }
+  }
+
+  ngAfterViewInit() {
+    this.initializeDatePicker();
   }
 
   onSubmit() {
     this.blockUI?.start();
+    console.log(this.form1.value);
     if (this.form1.invalid) {
       // Marcar todos los campos como tocados para mostrar los errores
       this.form1.markAllAsTouched();
@@ -75,19 +126,21 @@ export class OrderComponent {
       return;
     } else {
     
+      const fechaEntrega: HTMLInputElement = document.getElementById('fechaEntrega') as HTMLInputElement;
+
       this.createPedidoDto.cedula = Number(this.form1.get('cedula')?.value);
       this.createPedidoDto.evento = this.form1.get('evento')?.value;
-      this.createPedidoDto.fechaEntrega = this.form1.get('fechaEntrega')?.value;
+      this.createPedidoDto.fechaEntrega = new Date(fechaEntrega.value);
       this.createPedidoDto.valorTotal = this.form1.get('valorTotal')?.value;
-      this.createPedidoDto.estadoPedido = "Pendiente"; //cuando se crea un pedido siempre estará en estado pendiente
+      this.createPedidoDto.direccion = this.form1.get('direccion')?.value;
       this.createPedidoDto.items = this.createItemDto(); //se asocian los items al pedido
-      
-      if(this.form1.get('fechaEntrega')?.value <= this.form1.get('fechaPedido')?.value){
-        this.mensaje.showMessage('Error', 'La fecha de entrega no puede ser menor o igual a la fecha de pedido', 'error');
+      console.log(this.createPedidoDto.fechaEntrega.toISOString());
+      if(fechaEntrega.value <= this.fechaPedido){
+        this.mensaje.showMessage('Advertencia', 'La fecha de entrega no puede ser menor o igual a la fecha de pedido', 'warning');
         this.blockUI?.stop();
         return;
       }else if(this.cart().length === 0){
-        this.mensaje.showMessage('Error', 'El carrito no puede estar vacío', 'error');
+        this.mensaje.showMessage('Advertencia', 'El carrito no puede estar vacío', 'warning');
         this.blockUI?.stop();
         return;
       }else{
@@ -138,8 +191,8 @@ export class OrderComponent {
   private getClientes(){
     this.clienteService.findAll(this.token)
     .subscribe({
-      next: (data) => {
-        this.clientes.set(data);
+      next: (data: Pagination<cliente>) => {
+        this.clientes.set(data.data);
         // this.blockUICategories?.stop();
       },
       error: (error) => {

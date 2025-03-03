@@ -7,12 +7,15 @@ import { UpdateResult } from '../../update-result';
 import { InsumoStock } from '../dto/insumo-stock.dto';
 import { ProductoStock } from '../dto/producto-stock.dto';
 import { Pagination } from '../../paginated.interface';
+import { AddStockInsumoDto } from '../dto/AddStockInsumos.dto';
+import { AddStockProductoDto } from '../dto/AddStockProductos.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventariosService {
   private baseUrl: string = `${environment.urlServices}inventarios`;
+  private baseUrlTransferencias: string = `${environment.urlServices}transferencias`;
 
   constructor(
     private http: HttpClient
@@ -93,5 +96,39 @@ export class InventariosService {
     if (sortBy && sortBy.trim() !== '') url += `&sortBy=${sortBy}`;
 
     return this.http.get<Pagination<ProductoStock>>(url, { headers });
+  }
+
+  /* Transferir Insumos */
+  transferirInsumos(idInventarioOrigen: number, idInventarioDestino: number, observaciones: string, token: string, insumos: { idInsumo: number, cantidad: number }[]) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+    });
+
+    const transferencia = {
+      idInventarioOrigen,
+      idInventarioDestino,
+      observaciones,
+      stocks: insumos
+    }
+
+    console.log(transferencia);
+
+    return this.http.post(`${this.baseUrlTransferencias}/insumos`, transferencia, { headers });
+  }
+
+  addInsumoStock(idInventario: number, addStock: AddStockInsumoDto[], token: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+    });
+
+    return this.http.post(`${this.baseUrl}/${idInventario}/stock/insumos`, addStock, { headers });
+  }
+  
+  addProductoStock(idInventario: number, addStock: AddStockProductoDto[], token: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
+    });
+
+    return this.http.post(`${this.baseUrl}/${idInventario}/stock/productos`, addStock, { headers });
   }
 }

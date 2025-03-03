@@ -14,4 +14,30 @@ export class NavbarComponent {
   isOpenAccount = false;
   isOpenMenuMovil = false;
   isOpeninventario = false;
+
+  openMenus(overlay: string){
+    if(overlay === 'account') {
+      this.isOpenAccount = !this.isOpenAccount; 
+      this.isOpenMenuMovil = false; 
+      this.isOpeninventario = false;
+    }
+    if(overlay === 'menuMovil'){
+      this.isOpenMenuMovil = !this.isOpenMenuMovil; 
+      this.isOpenAccount = false; 
+      this.isOpeninventario = false;
+    } 
+    if(overlay === 'inventario'){
+      this.isOpeninventario = !this.isOpeninventario; 
+      this.isOpenAccount = false; 
+      this.isOpenMenuMovil = false;
+    } 
+  }
+
+  cerrarMenus(){
+    if(this.isOpeninventario || this.isOpenMenuMovil || this.isOpenAccount){
+      this.isOpeninventario = false;
+      this.isOpenMenuMovil = false;
+      this.isOpenAccount = false;
+    }
+  }
 }

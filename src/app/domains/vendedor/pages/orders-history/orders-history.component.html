@@ -4,7 +4,14 @@
         <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
                 <div class="w-full md:w-1/2">
-                    <h1 class="font-medium ">Historial de pedidos</h1>
+                    <!-- <h1 class="font-medium ">Historial de pedidos</h1> -->
+                    <form class="flex items-center">
+                        <label for="simple-search" class="sr-only">Search</label>
+                        <div class="relative w-full">
+                            <app-input [placeholder]="'Buscar por cédula del cliente...'"
+                                (onDebounce)="searchPedidos($event)"></app-input>
+                        </div>
+                    </form>
                 </div>
                 <div
                     class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
@@ -21,52 +28,6 @@
                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                             </svg>
                         </button>
-                        <!-- <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="filterOverlay"
-                            [cdkConnectedOverlayOpen]="isOpenFilters" (backdropClick)="closeFilter()">
-
-                            <div id="filterDropdown"
-                                class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
-                                <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose brand</h6>
-                                <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
-                                    <li class="flex items-center">
-                                        <input id="apple" type="checkbox" value=""
-                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="apple"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Apple
-                                            (56)</label>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <input id="fitbit" type="checkbox" value=""
-                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="fitbit"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Microsoft
-                                            (16)</label>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <input id="razor" type="checkbox" value=""
-                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="razor"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Razor
-                                            (49)</label>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <input id="nikon" type="checkbox" value=""
-                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="nikon"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nikon
-                                            (12)</label>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <input id="benq" type="checkbox" value=""
-                                            class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                        <label for="benq"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">BenQ
-                                            (74)</label>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </ng-template> -->
                     </div>
                 </div>
             </div>
@@ -79,6 +40,8 @@
                             </th>
                             <th scope="col" class="px-4 py-3">Id Pedido</th>
                             <th scope="col" class="px-4 py-3">Cliente</th>
+                            <th scope="col" class="px-4 py-3">Cédula</th>
+                            <th scope="col" class="px-4 py-3">Evento</th>
                             <th scope="col" class="px-4 py-3">Fecha de pedido</th>
                             <th scope="col" class="px-4 py-3">Fecha de entrega</th>
                             <th scope="col" class="px-4 py-3">Valor total</th>
@@ -91,8 +54,7 @@
                         <tr *ngFor="let pedido of pagination.data" class="border-b dark:border-gray-700">
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button #dropdownButton [id]="pedido.idPedido + '-button'"
-                                    [attr.data-dropdown-toggle]="pedido.idPedido + '-dropdown'"
-                                    type="button"
+                                    [attr.data-dropdown-toggle]="pedido.idPedido + '-dropdown'" type="button"
                                     class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100">
                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -104,16 +66,19 @@
                             <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ pedido.idPedido }}
                             </td>
-                            <td class="px-4 py-3">{{pedido.cliente?.nombre}} {{pedido.cliente.apellidos}}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaPedido }}</td>
-                            <td class="px-4 py-3">{{ pedido.fechaEntrega }}</td>
+                            <td class="px-4 py-3">{{pedido.cliente?.nombre | titlecase}} {{pedido.cliente.apellidos |
+                                titlecase}}</td>
+                            <td class="px-4 py-3">{{ pedido.cliente.cedula}}</td>
+                            <td class="px-4 py-3">{{ pedido.evento}}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaPedido | date:'longDate' }}</td>
+                            <td class="px-4 py-3">{{ pedido.fechaEntrega | date:'longDate' }}</td>
                             <td class="px-4 py-3">{{ pedido.valorTotal }}</td>
                             <td class="px-4 py-3">{{ pedido.valorPagado }}</td>
                             <td class="px-4 py-3">
                                 @if(pedido.estadoPago === 'Pendiente'){
                                 <dd
                                     class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
-                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="me-1 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                             stroke-width="2"
@@ -124,7 +89,7 @@
                                 }@else if(pedido.estadoPago === '50% Pagado'){
                                 <dd
                                     class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    <svg class="me-1 h-4 w-4 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                         viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -136,7 +101,7 @@
                                 }@else{
                                 <dd
                                     class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                    <svg class="me-1 h-4 w-4 text-gray-800 dark:text-white" aria-hidden="true"
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                         viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -150,7 +115,7 @@
                                 @if(pedido.estadoPedido === 'Pendiente'){
                                 <dd
                                     class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
-                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="me-1 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                             stroke-width="2"
@@ -161,23 +126,38 @@
                                 }@else if(pedido.estadoPedido === 'En Proceso'){
                                 <dd
                                     class="me-2 mt-1.5 inline-flex items-center rounded bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900  dark:text-yellow-300">
-                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                                    <svg class="me-1 h-4 w-4 text-yellow-800 dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                                            d="m20.9532 11.7634-2.0523-2.05225-2.0523 2.05225 2.0523 2.0523 2.0523-2.0523Zm-1.3681-2.73651-4.1046-4.10457L12.06 8.3428l4.1046 4.1046 3.4205-3.42051Zm-4.1047 2.73651-2.7363-2.73638-8.20919 8.20918 2.73639 2.7364 8.2091-8.2092Z" />
+                                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                                            d="m12.9306 3.74083 1.8658 1.86571-2.0523 2.05229-1.5548-1.55476c-.995-.99505-3.23389-.49753-3.91799.18657l2.73639-2.73639c.6841-.68409 1.9901-.74628 2.9229.18658Z" />
                                     </svg>
+
                                     En Proceso
                                 </dd>
-                                }@else{
+                                }@else if(pedido.estadoPedido === 'Terminado'){
                                 <dd
                                     class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
-                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    <svg class="me-1 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                             stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
                                     </svg>
                                     Terminado
+                                </dd>
+                                }@else{
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-green-900  dark:text-green-300">
+                                    <svg class="me-1 w-4 h-4 text-red-700 dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3" />
+                                    </svg>
+                                    Incidencia
                                 </dd>
                                 }
                             </td>
@@ -188,14 +168,6 @@
                                     <a [routerLink]="['/vendedor/detail-order', pedido.idPedido]"
                                         class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
                                         ver detalle de pedido
-                                    </a>
-                                    <a (click)="editProducto(pedido)"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
-                                        Editar
-                                    </a>
-                                    <a (click)="deleteProducto(pedido.idPedido || 0)"
-                                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer">
-                                        Eliminar
                                     </a>
                                 </div>
                             </div>
@@ -212,7 +184,7 @@
 
 <!-- Filter modal -->
 <div id="filterModal" tabindex="-1" aria-hidden="true"
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <form [formGroup]="form1" (ngSubmit)="OnSubmit()" method="get" id="filterModal" tabindex="-1" aria-hidden="true"
             class=" top-0 z-50 h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
@@ -222,7 +194,7 @@
                     <!-- Modal header -->
                     <div class="flex items-start justify-between rounded-t p-4 md:p-5">
                         <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filtros</h3>
-                        <button type="button"
+                        <button type="button" (click)="closeModal()"
                             class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
                             data-modal-toggle="filterModal">
                             <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -236,110 +208,51 @@
                     <!-- Modal body -->
                     <div class="px-4 md:px-5">
                         <div id="myTabContent">
-                            <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel"
+                            <div class="grid grid-cols-2 gap-4 md:grid-cols-2" id="brand" role="tabpanel"
                                 aria-labelledby="brand-tab">
-                                <div class="space-y-2">
-                                    <div>
-                                        <!-- <app-input (onDebounce)="buscarCliente($event)"
-                                            [placeholder]="'1068418546'">Busque
-                                            cliente por cédula (Completa) </app-input> -->
-                                    </div>
-                                    <div>
-                                        <label for="idCliente"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Clientes</label>
-                                        <select id="idCliente" formControlName="idCliente"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                            <!-- <option *ngFor="let cliente of clientes()" [value]="cliente.idCliente">
-                                                {{cliente.nombre}}
-                                            </option> -->
-                                        </select>
-                                    </div>
-                                </div>
 
                                 <div class="space-y-2">
-                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del
+                                    <h6 class="text-base font-medium uppercase text-black dark:text-white">Estado del
                                         pedido
-                                    </h5>
-
-                                    <div class="flex items-center">
-                                        <input id="canon" type="checkbox" value="Pendiente"
-                                            formControlName="estadoPedido"
-                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                        <label for="canon"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Pendiente
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="cisco" type="checkbox" value="En Proceso"
-                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                        <label for="cisco"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> En
-                                            Proceso
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="cowon" type="checkbox" value="Terminado"
-                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                        <label for="cowon"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Terminado
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="clevo" type="checkbox" value="Incidencia"
-                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                        <label for="clevo"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                            Incidencia
-                                        </label>
-                                    </div>
-
+                                    </h6>
+                                    <ul class="px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                                        aria-labelledby="dropdownSearchButton">
+                                        <li *ngFor="let estado of estados">
+                                            <div
+                                                class="flex items-center ps-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                <input id="checkbox-item-{{estado}}" type="checkbox"
+                                                    [value]="estado"
+                                                    (change)="onCheckboxChange($event,'Pedido')"
+                                                    class="w-4 h-4 text-tiaras-wine bg-gray-100 border-gray-300 rounded-sm focus:ring-tiaras-beige dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                <label for="checkbox-item-{{estado}}"
+                                                    class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300 cursor-pointer">{{
+                                                    estado }}</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="space-y-2">
+                                    <h6 class="text-base font-medium uppercase text-black dark:text-white">Estado del pago
+                                    </h6>
+                                    <ul class="px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200"
+                                        aria-labelledby="dropdownSearchButton">
+                                        <li *ngFor="let estado of estadosPagos">
+                                            <div
+                                                class="flex items-center ps-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                <input id="checkbox-item-{{estado}}" type="checkbox"
+                                                    [value]="estado"
+                                                    (change)="onCheckboxChange($event, 'Pago')"
+                                                    class="w-4 h-4 text-tiaras-wine bg-gray-100 border-gray-300 rounded-sm focus:ring-tiaras-beige dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                                <label for="checkbox-item-{{estado}}"
+                                                    class="w-full py-2 ms-2 text-sm font-medium text-gray-900 rounded-sm dark:text-gray-300 cursor-pointer">{{
+                                                    estado }}</label>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
 
                                 <div class="space-y-2">
-                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del pago
-                                    </h5>
-
-                                    <div class="flex items-center">
-                                        <input id="dell" type="checkbox" value="Pendiente" formControlName="estadoPago"
-                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                        <label for="dell"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                            Pendiente
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="dogfish" type="checkbox" value="50% Pagado"
-                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                        <label for="dogfish"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 50%
-                                            Pagado
-                                        </label>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <input id="dyson" type="checkbox" value="100% Pagado"
-                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
-
-                                        <label for="dyson"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 100%
-                                            Pagado
-                                        </label>
-                                    </div>
-
-                                </div>
-
-                                <div class="space-y-2">
-                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de pedido
+                                    <h5 class="text-base font-medium uppercase text-black dark:text-white">Fecha de pedido
                                     </h5>
 
                                     <div class="relative max-w-sm">
@@ -352,14 +265,14 @@
                                                     d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                             </svg>
                                         </div>
-                                        <input datepicker formControlName="fechaPedido" type="date"
+                                        <input formControlName="fechaPedido" type="date"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Fecha de pedido">
                                     </div>
                                 </div>
 
                                 <div class="space-y-2">
-                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de
+                                    <h5 class="text-base font-medium uppercase text-black dark:text-white">Fecha de
                                         entrega
                                     </h5>
 
@@ -373,11 +286,24 @@
                                                     d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                                             </svg>
                                         </div>
-                                        <input datepicker formControlName="fechaEntrega" type="date"
+                                        <input formControlName="fechaEntrega" type="date"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Fecha de pedido">
                                     </div>
 
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="evento"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Evento</label>
+                                    <select id="evento" formControlName="evento"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value="Boda">Boda</option>
+                                        <option value="Primera Comunión">Primera Comunión</option>
+                                        <option value="Grados">Grados</option>
+                                        <option value="Quinceañeros">Quinceañeros</option>
+                                        <option value="Otros">Otros</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -386,7 +312,7 @@
                     <div class="flex items-center space-x-4 rounded-b p-4 dark:border-gray-600 md:p-5">
                         <button type="submit"
                             class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-800 dark:focus:ring-primary-800">Filtrar</button>
-                        <button type="reset"
+                        <button type="reset" (click)="resetFilter()"
                             class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
                     </div>
                 </div>

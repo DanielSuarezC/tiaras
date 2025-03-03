@@ -1,10 +1,11 @@
-  <section class="mt-16 dark:bg-gray-900">
+<section class="mt-16 dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Agregue un nuevo pedido</h2>
         <form [formGroup]="form1" (ngSubmit)="onSubmit()">
             <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
                 <div>
-                    <app-input (onDebounce)="buscarCliente($event)" [placeholder]="'1068418546'">Busque cliente por cédula (Completa) </app-input>
+                    <app-input (onDebounce)="buscarCliente($event)" [placeholder]="'1068418546'">Busque cliente por
+                        cédula (Completa) </app-input>
                 </div>
                 <div>
                     <label for="idCliente"
@@ -12,13 +13,15 @@
                     <select id="idCliente" formControlName="cedula"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option *ngFor="let cliente of clientes()" [value]="cliente.cedula">
-                            {{cliente.nombre}}
+                            {{cliente.nombre | titlecase}} {{cliente.apellidos | titlecase}}
                         </option>
                     </select>
                 </div>
                 <div>
-                    <label for="evento"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Evento</label>
-                    <select id="evento" formControlName="evento" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <label for="evento"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Evento</label>
+                    <select id="evento" formControlName="evento"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option value="Boda">Boda</option>
                         <option value="Primera Comunión">Primera Comunión</option>
                         <option value="Grados">Grados</option>
@@ -27,41 +30,60 @@
                     </select>
                 </div>
                 <div>
-                <label for="fechaPedido" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de pedido</label>
-                <div class="relative max-w-sm">
-                  <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                    </svg>
-                    </div>
-                    <input datepicker formControlName="fechaPedido" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Fecha de pedido">
+                    <label for="direccion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección de envío</label>
+                    <input type="text" formControlName="direccion"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Dirección de envío">
                 </div>
-              </div>
-              <div>
-              <label for="fechaEntrega" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de entrega</label>
-                <div class="relative max-w-sm">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                    </svg>
-                    </div>
-                    <input datepicker formControlName="fechaEntrega" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Fecha de entrega">
-                </div>
-              </div>
                 <div>
-                    <label for="valorTotal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor total</label>
-                    <input type="number" formControlName="valorTotal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="12">
+                    <label for="fechaPedido" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha
+                        de pedido</label>
+                    <div class="relative max-w-sm">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                            </svg>
+                        </div>
+                        <input datepicker datepicker-format="yyyy-mm-dd" formControlName="fechaPedido" type="text"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Fecha de pedido">
+                    </div>
                 </div>
-            <div class="flex justify-start space-x-4 sm:col-span-2">
-                <button type="submit"
-                  class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                  Finalizar pedido
-                </button>
-                <app-btn [color]="'peach'" [routerLink]="'/vendedor/cart'">Volver</app-btn>
-              </div>
+
+                <div>
+                    <label for="fechaEntrega" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha
+                        de entrega</label>
+                    <div class="relative max-w-sm">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                            </svg>
+                        </div>
+                        <input datepicker datepicker-autohide datepicker-format="yyyy-mm-dd" id="fechaEntrega"
+                            formControlName="fechaEntrega" type="text"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Fecha de entrega">
+                    </div>
+                </div>
+                <div>
+                    <label for="valorTotal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor
+                        total</label>
+                    <input type="number" formControlName="valorTotal"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Valor total">
+                </div>
+                <div class="flex justify-start space-x-4 sm:col-span-2">
+                    <button type="submit"
+                        class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                        Finalizar pedido
+                    </button>
+                    <app-btn [color]="'peach'" [routerLink]="'/vendedor/cart'">Volver</app-btn>
+                </div>
             </div>
         </form>
     </div>
-  </section>
-
-  
+</section>

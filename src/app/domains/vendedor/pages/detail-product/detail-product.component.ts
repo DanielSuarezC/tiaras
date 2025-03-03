@@ -1,13 +1,13 @@
 import { Component, inject, Input, signal } from '@angular/core';
-import { ProductService } from '../../../../shared/models/product/services/product.service';
-import { CartService } from '../../../../shared/models/product/services/cart.service';
+import { ProductService } from '../../../shared/models/product/services/product.service';
+import { CartService } from '../../../shared/models/product/services/cart.service';
 import { CommonModule } from '@angular/common';
-import { BtnComponent } from '../../../../shared/components/btn/btn.component';
+import { BtnComponent } from '../../../shared/components/btn/btn.component';
 import Swal from 'sweetalert2';
-import { Producto } from '../../../../shared/models/product/entities/Producto';
+import { Producto } from '../../../shared/models/product/entities/Producto';
 import { CookieService } from 'ngx-cookie-service';
-import { environment } from '../../../../../../environments/environment';
-import { MensajeService } from '../../../../shared/mensaje/mensaje.service';
+import { environment } from '../../../../../environments/environment';
+import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 
 
 @Component({

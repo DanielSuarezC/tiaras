@@ -1,14 +1,15 @@
 export interface Pedido {
     idPedido: number;
+    cliente: Cliente;
     evento: string;
+    direccion: string;
     fechaPedido: string; // Se puede convertir a Date si es necesario
     fechaEntrega: string; // Se puede convertir a Date si es necesario
-    valorTotal: string;
-    valorPagado: string;
+    valorTotal: number;
+    valorPagado: number;
     estadoPago: string;
     estadoPedido: string;
     __items__: ItemPedido[];
-    cliente: Cliente;
 }
 
 export interface ItemPedido {

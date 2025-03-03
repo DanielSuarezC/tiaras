@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { DefaultPaginationValue, Pagination } from '../../../shared/models/paginated.interface';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { PaginationComponent } from "../../../shared/components/pagination/pagination.component";
+import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 
 @Component({
   selector: 'app-inventarios',
@@ -50,7 +51,8 @@ export class InventariosComponent implements OnInit {
   constructor(
     private inventariosService: InventariosService,
     private cookieService: CookieService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private mensaje: MensajeService
   ) {}
 
   /* Formulario */
@@ -118,6 +120,7 @@ export class InventariosComponent implements OnInit {
         this.actualizarInventario(idInventario, createInventarioDto);
       } else {
         this.crearInventario(createInventarioDto);
+        this.mensaje.toastMessage('Inventario creado correctamente', 'success','bottom-end',3000);
       }
     }
   }
@@ -176,5 +179,10 @@ export class InventariosComponent implements OnInit {
 
       setTimeout(() => this.inicializarDropdowns());
     });
+  }
+
+  /* Cerrar modal */
+  closeModal(): void {
+    this.formModal.hide();
   }
 }

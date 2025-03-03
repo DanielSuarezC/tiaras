@@ -25,11 +25,11 @@ export class ClientesService {
     return this.http.post(this.baseUrl, createClienteDto, { headers });    
   }
 
-  public findAll(token: string | undefined): Observable<cliente[]> {
+  public findAll(token: string | undefined): Observable<Pagination<cliente>> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`, // Agregar el token en los encabezados
     });
-    return this.http.get<cliente[]>(this.baseUrl, { headers });
+    return this.http.get<Pagination<cliente>>(this.baseUrl, { headers });
   }
 
   public findOne(idCliente: number, token: string | undefined): Observable<cliente> {

@@ -7,7 +7,7 @@
                     <form class="flex items-center">
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
-                            <app-input [placeholder]="'Buscar Productos...'" (onDebounce)="searchProductos($event)"></app-input>
+                            <app-input [placeholder]="'Buscar Productos por nombre...'" (onDebounce)="searchProductos($event)"></app-input>
                         </div>
                     </form>
                 </div>
@@ -23,7 +23,7 @@
                         Nuevo Producto
                     </a>
 
-                    <div class="flex items-center space-x-3 w-full md:w-auto">
+                    <!-- <div class="flex items-center space-x-3 w-full md:w-auto">
                         <button #buttonFilterDropdown id="buttonFilterDropdown" data-dropdown-target="filterDropdown" data-dropdown-toggle="filterDropdown"
                             class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                             type="button">
@@ -77,35 +77,26 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            <th scope="col" class="px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
                             <th scope="col" class="px-4 py-3">Id Producto</th>
                             <th scope="col" class="px-4 py-3">Nombre</th>
                             <th scope="col" class="px-4 py-3">Descripción</th>
                             <th scope="col" class="px-4 py-3">Precio</th>
                             <th scope="col" class="px-4 py-3">Imagen</th>
-                            <th scope="col" class="px-4 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let producto of this.pagination.data; let i = index"
                             class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ producto.idProducto }}
-                            </td>
-                            <td class="px-4 py-3">{{producto.nombre}}</td>
-                            <td class="px-4 py-3">{{ producto.descripcion }}</td>
-                            <td class="px-4 py-3">{{ producto.precio }}</td>
-                            <td class="px-4 py-3"><img class="h-auto max-w-full rounded-lg mx-auto dark:hidden"
-                                    [src]="'http://localhost:3000/tiaras/api/uploads/' + producto.imagenes?.[0]"
-                                    [alt]="producto.nombre"></td>
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button #dropdownButton [id]="producto.idProducto + '-button'"
                                     [attr.data-dropdown-toggle]="producto.idProducto + '-dropdown'"
@@ -116,21 +107,31 @@
                                             d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                     </svg>
                                 </button>
-                            </td>
-
-                            <div #dropdownMenu [id]="producto.idProducto + '-dropdown'"
-                                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <div class="py-1">
-                                    <a [routerLink]="[producto.idProducto]"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        Editar
-                                    </a>
-                                    <a (click)="deleteProducto(producto.idProducto)"
-                                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
-                                        Eliminar
-                                    </a>
+                                <div #dropdownMenu [id]="producto.idProducto + '-dropdown'"
+                                    class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                    <div class="py-1">
+                                        <a [routerLink]="[producto.idProducto]"
+                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                            Editar
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
+                            </td>
+                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ producto.idProducto }}
+                            </td>
+                            <td class="px-4 py-3">{{producto.nombre}}</td>
+                            <td class="px-4 py-3">{{ producto.descripcion }}</td>
+                            <td class="px-4 py-3">{{ producto.precio }}</td>
+                            <td class="px-4 py-3">
+                                <img 
+                                    class="max-w-64 max-h-32 rounded-lg mx-auto dark:hidden"
+                                    [src]="'http://localhost:3000/tiaras/api/uploads/' + producto.imagenes?.[0]"
+                                    [alt]="producto.nombre"
+                                >
+                            </td>
+                           
+
                         </tr>
                     </tbody>
                 </table>

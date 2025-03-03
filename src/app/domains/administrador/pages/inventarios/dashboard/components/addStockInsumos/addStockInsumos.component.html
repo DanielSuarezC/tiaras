@@ -1,0 +1,72 @@
+<section class="dark:bg-gray-900 p-3 sm:p-5">
+  <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+    <!-- Start coding here -->
+    <h2 class="text-xl font-medium mb-4  ">Agregar insumos a inventario</h2>
+
+    <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+      <div class="relative">
+        <input type="text" #insumoInput
+          class="w-full border border-tiaras-beige rounded-md p-2 focus:ring-tiaras-beige focus:border-tiaras-wine"
+          placeholder="Buscar Insumo..." formControlName="insumoSearch" (input)="onKeyPress(insumoInput.value)"
+          (focus)="mostrarDropdown = true" (blur)="ocultarDropdownConRetraso()">
+
+        <!-- Dropdown de opciones -->
+        <div *ngIf="mostrarDropdown"
+          class="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-md mt-1">
+          <ul>
+            <li *ngFor="let insumo of insumosSearch" (mousedown)="selectInsumo(insumo)"
+              class="p-2 hover:bg-gray-100 cursor-pointer">
+              {{ insumo.nombre }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mb-4 mt-4">
+        <label for="insumoStock" class="block text-sm font-medium text-gray-700">Cantidad</label>
+        <input id="insumoStock" type="number" formControlName="insumoStock"
+        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-tiaras-beige focus:outline-none focus:ring-tiaras-beige focus:border-tiaras-wine sm:text-sm rounded-md">
+      </div>
+
+      <div class="mb-4">
+        <button type="button" (click)="addInsumo()"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-tiaras-wine hover:bg-pallete-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tiaras-beige">
+          AgregarInsumo
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-4 py-3">Insumo</th>
+              <th scope="col" class="px-4 py-3">Cantidad</th>
+              <th scope="col" class="px-4 py-3">Stock Actual</th>
+              <th scope="col" class="px-4 py-3">
+                <span class="sr-only">Acciones</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of insumosSeleccionados" class="bg-blue-50">
+              <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ item.insumo.insumo.nombre }}</th>
+              <td class="px-4 py-3">{{ item.cantidad }}</td>
+              <td class="px-4 py-3">{{ item.insumo.stock }}</td>
+              <td class="px-4 py-3 flex items-center justify-center">
+                <button type="button" (click)="editInsumo(item.insumo.insumo)" class="text-tiaras-wine hover:text-pallete-800 mx-3">Editar</button>
+                <button type="button" (click)="removeInsumo(item.insumo.insumo)" class="text-tiaras-wine hover:text-pallete-800 mx-30">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4">
+        <button type="submit"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-tiaras-wine hover:bg-pallete-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-tiaras-beige">
+          Agregar Insumos al inventario
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

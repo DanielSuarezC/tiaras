@@ -1,347 +1,348 @@
-<section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-      <div class="mx-auto max-w-5xl">
-        <div class="gap-4 lg:flex lg:items-center lg:justify-between">
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">My refunds</h2>
-  
-          <div class="mt-6 gap-4 space-y-4 sm:flex sm:items-center sm:space-y-0 lg:mt-0 lg:justify-end">
-            <div>
-              <label for="order-type" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select order type</label>
-              <select id="order-type" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:w-[144px]">
-                <option selected>All orders</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="completed">Completed</option>
-                <option value="denied">Denied</option>
-              </select>
+<section class=" dark:bg-gray-900 p-3 sm:p-5">
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <!-- Start coding here -->
+        <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                <div class="w-full md:w-1/2">
+                    <h1 class="font-medium ">Cancelaciones y reembolsos</h1>
+                </div>
+                <div
+                    class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                    <div></div>
+                    <div class="flex items-center space-x-3 w-full md:w-auto">
+                        <button id="buttonModal" data-modal-target="filterModal" data-modal-toggle="filterModal"
+                            class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                            type="button">
+
+                            Filter
+                            <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path clip-rule="evenodd" fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                            </svg>
+                        </button>
+                        <!-- <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="filterOverlay"
+                          [cdkConnectedOverlayOpen]="isOpenFilters" (backdropClick)="closeFilter()">
+
+                          <div id="filterDropdown"
+                              class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+                              <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">Choose brand</h6>
+                              <ul class="space-y-2 text-sm" aria-labelledby="filterDropdownButton">
+                                  <li class="flex items-center">
+                                      <input id="apple" type="checkbox" value=""
+                                          class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                      <label for="apple"
+                                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Apple
+                                          (56)</label>
+                                  </li>
+                                  <li class="flex items-center">
+                                      <input id="fitbit" type="checkbox" value=""
+                                          class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                      <label for="fitbit"
+                                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Microsoft
+                                          (16)</label>
+                                  </li>
+                                  <li class="flex items-center">
+                                      <input id="razor" type="checkbox" value=""
+                                          class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                      <label for="razor"
+                                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Razor
+                                          (49)</label>
+                                  </li>
+                                  <li class="flex items-center">
+                                      <input id="nikon" type="checkbox" value=""
+                                          class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                      <label for="nikon"
+                                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">Nikon
+                                          (12)</label>
+                                  </li>
+                                  <li class="flex items-center">
+                                      <input id="benq" type="checkbox" value=""
+                                          class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                      <label for="benq"
+                                          class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">BenQ
+                                          (74)</label>
+                                  </li>
+                              </ul>
+                          </div>
+
+                      </ng-template> -->
+                    </div>
+                </div>
             </div>
-  
-            <span class="inline-block text-gray-500 dark:text-gray-400"> from </span>
-  
-            <div>
-              <label for="date" class="sr-only mb-2 block text-sm font-medium text-gray-900 dark:text-white">Select date</label>
-              <select id="date" class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:w-[144px]">
-                <option selected>this week</option>
-                <option value="this month">this month</option>
-                <option value="last 3 months">the last 3 months</option>
-                <option value="lats 6 months">the last 6 months</option>
-                <option value="this year">this year</option>
-              </select>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
+                            <th scope="col" class="px-4 py-3">Id Reembolso</th>
+                            <th scope="col" class="px-4 py-3">Cliente</th>
+                            <th scope="col" class="px-4 py-3">Vendedor</th>
+                            <th scope="col" class="px-4 py-3">Valor del reembolso</th>
+                            <th scope="col" class="px-4 py-3">Fecha de solicitud</th>
+                            <th scope="col" class="px-4 py-3">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let reembolso of pagination.data" class="border-b dark:border-gray-700">
+                            <td class="px-4 py-3 flex items-center justify-end">
+                                <button #dropdownButton [id]="reembolso.idReembolso + '-button'"
+                                    [attr.data-dropdown-toggle]="reembolso.idReembolso + '-dropdown'" type="button"
+                                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100">
+                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                                </button>
+                            </td>
+                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ reembolso.idReembolso }}
+                            </td>
+                            <td class="px-4 py-3">{{reembolso.pedido?.cliente?.nombre | titlecase}}
+                                {{reembolso.pedido?.cliente?.apellidos | titlecase}}</td>
+                            <td class="px-4 py-3">{{ reembolso.vendedor?.nombre | titlecase}}</td>
+                            <td class="px-4 py-3">{{ reembolso?.valorReembolso }}</td>
+                            <td class="px-4 py-3">{{ reembolso?.at_created | date:'longDate' }}</td>
+                            <td class="px-4 py-3">
+                                @if(reembolso.estado === 'Pendiente'){
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900  dark:text-primary-300">
+                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
+                                    </svg>
+                                    Pendiente
+                                </dd>
+                                }@else if(reembolso.estado === 'Aprobado'){
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900  dark:text-green-300">
+                                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+                                    </svg>
+                                    Aprobado
+                                </dd>
+                                }@else{
+                                <dd
+                                    class="me-2 mt-1.5 inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-600 dark:bg-green-900  dark:text-green-300">
+                                    <svg class="me-1 w-3 h-3 text-red-600 hover:text-red-800 focus:z-10 dark:text-white"
+                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    Rechazado
+                                </dd>
+                                }
+                            </td>
+
+                            <div #dropdownMenu [id]="reembolso.idReembolso + '-dropdownn'"
+                                class="hidden  z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                <div class="py-1">
+                                    <a [routerLink]="['/vendedor/detail-cancellation', reembolso.idReembolso]"
+                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer">
+                                        ver detalles
+                                    </a>
+                                </div>
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-  
-            <button type="button" class="w-full rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300   dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto">Add return request</button>
-          </div>
+
+            <app-pagination (page)="cambiarPagina($event)" [currentPage]="this.page" [meta]="this.pagination.meta">
+            </app-pagination>
         </div>
-  
-        <div class="mt-6 flow-root sm:mt-8">
-          <div class="divide-y divide-gray-200 dark:divide-gray-700">
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB127364372</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">22 May 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Missing parts</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class="inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
-                  </svg>
-                  Ongoing
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button [routerLink]="['/vendedor/cancellations/detail-cancellation']" routerLinkActive="router-link-active"  type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-  
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB746253940</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">06 April 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Wrong item</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class="  inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Completed
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-  
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB453648693</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">24 March 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Defective item</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class=" inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                  </svg>
-                  Denied
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-  
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB234826346</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">24 February 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Color mismatch</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class="  inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Completed
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB127364372</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">12 April 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Missing parts</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class="inline-flex items-center rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
-                  </svg>
-                  Ongoing
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-  
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB746253940</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">30 April 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Wrong item</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class="  inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Completed
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-  
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB453648693</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">12 May 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Defective item</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class=" inline-flex items-center rounded bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                  </svg>
-                  Denied
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-  
-            <div class="relative grid grid-cols-2 gap-4 py-6 sm:grid-cols-4 lg:grid-cols-5">
-              <div class="col-span-2 content-center sm:col-span-4 lg:col-span-1">
-                <a href="#" class="text-base font-semibold text-gray-900 hover:underline dark:text-white">#FWB234826346</a>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center gap-2">
-                  <svg class="h-4 w-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
-                  </svg>
-                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400">23 June 2024</p>
-                </div>
-              </div>
-  
-              <div class="content-center">
-                <div class="flex items-center justify-end gap-2 sm:justify-start">
-                  <p class="text-sm text-gray-500 dark:text-gray-400"><span class="font-medium text-gray-900 dark:text-white">Reason</span>: Color mismatch</p>
-                </div>
-              </div>
-  
-              <div class="absolute right-0 top-7 content-center sm:relative sm:right-auto sm:top-auto">
-                <span class="  inline-flex items-center rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300">
-                  <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-                  </svg>
-                  Completed
-                </span>
-              </div>
-  
-              <div class="col-span-2 content-center sm:col-span-1 sm:justify-self-end">
-                <button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">View details</button>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <nav class="mt-2 flex items-center justify-center sm:mt-8" aria-label="Page navigation example">
-          <ul class="flex h-8 items-center -space-x-px text-sm">
-            <li>
-              <a href="#" class="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span class="sr-only">Previous</span>
-                <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-                </svg>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-            </li>
-            <li>
-              <a href="#" aria-current="page" class="z-10 flex h-8 items-center justify-center border border-primary-300 bg-primary-50 px-3 leading-tight text-primary-600 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-            </li>
-            <li>
-              <a href="#" class="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span class="sr-only">Next</span>
-                <svg class="h-4 w-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
-                </svg>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
     </div>
-  </section>
+</section>
+
+<!-- Filter modal -->
+<div id="filterModal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <form [formGroup]="form1" (ngSubmit)="OnSubmit()" method="get" id="filterModal" tabindex="-1" aria-hidden="true"
+            class=" top-0 z-50 h-modal w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 md:h-full">
+            <div class="relative h-full w-full max-w-xl md:h-auto">
+                <!-- Modal content -->
+                <div class="relative rounded-lg bg-white shadow dark:bg-gray-800">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between rounded-t p-4 md:p-5">
+                        <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">Filtros</h3>
+                        <button type="button"
+                            class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-toggle="filterModal">
+                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="px-4 md:px-5">
+                        <div id="myTabContent">
+                            <div class="grid grid-cols-2 gap-4 md:grid-cols-3" id="brand" role="tabpanel"
+                                aria-labelledby="brand-tab">
+                                <div class="space-y-2">
+                                    <div>
+                                        <!-- <app-input (onDebounce)="buscarCliente($event)"
+                                          [placeholder]="'1068418546'">Busque
+                                          cliente por cédula (Completa) </app-input> -->
+                                    </div>
+                                    <div>
+                                        <label for="idCliente"
+                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Clientes</label>
+                                        <select id="idCliente" formControlName="idCliente"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <!-- <option *ngFor="let cliente of clientes()" [value]="cliente.idCliente">
+                                              {{cliente.nombre}}
+                                          </option> -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del
+                                        pedido
+                                    </h5>
+
+                                    <div class="flex items-center">
+                                        <input id="canon" type="checkbox" value="Pendiente"
+                                            formControlName="estadoPedido"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="canon"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Pendiente
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="cisco" type="checkbox" value="En Proceso"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="cisco"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> En
+                                            Proceso
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="cowon" type="checkbox" value="Terminado"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="cowon"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> Terminado
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="clevo" type="checkbox" value="Incidencia"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="clevo"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Incidencia
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Estado del pago
+                                    </h5>
+
+                                    <div class="flex items-center">
+                                        <input id="dell" type="checkbox" value="Pendiente" formControlName="estadoPago"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="dell"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Pendiente
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="dogfish" type="checkbox" value="50% Pagado"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="dogfish"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 50%
+                                            Pagado
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="dyson" type="checkbox" value="100% Pagado"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" />
+
+                                        <label for="dyson"
+                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"> 100%
+                                            Pagado
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de pedido
+                                    </h5>
+
+                                    <div class="relative max-w-sm">
+                                        <div
+                                            class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input datepicker formControlName="fechaPedido" type="date"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Fecha de pedido">
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h5 class="text-lg font-medium uppercase text-black dark:text-white">Fecha de
+                                        entrega
+                                    </h5>
+
+                                    <div class="relative max-w-sm">
+                                        <div
+                                            class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
+                                        <input datepicker formControlName="fechaEntrega" type="date"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            placeholder="Fecha de pedido">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="flex items-center space-x-4 rounded-b p-4 dark:border-gray-600 md:p-5">
+                        <button type="submit"
+                            class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-700 dark:hover:bg-primary-800 dark:focus:ring-primary-800">Filtrar</button>
+                        <button type="reset"
+                            class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

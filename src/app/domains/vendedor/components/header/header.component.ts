@@ -42,6 +42,24 @@ export class HeaderComponent {
     this.cartService.clearCart();
   }
 
+  openMenus(overlay: string){
+    if(overlay === 'account') {
+      this.isOpenAccount = !this.isOpenAccount; 
+      this.isOpenMenuMovil = false; 
+      this.isOpenCart = false;
+    }
+    if(overlay === 'cart'){
+      this.isOpenCart = !this.isOpenCart; 
+      this.isOpenMenuMovil = false; 
+      this.isOpenAccount = false;
+    } 
+    if(overlay === 'menuMovil'){
+      this.isOpenMenuMovil = !this.isOpenMenuMovil; 
+      this.isOpenAccount = false; 
+      this.isOpenCart = false;
+    } 
+  }
+
   cerrarMenus(){
     if(this.isOpenCart || this.isOpenMenuMovil || this.isOpenAccount){
       this.isOpenCart = false;
