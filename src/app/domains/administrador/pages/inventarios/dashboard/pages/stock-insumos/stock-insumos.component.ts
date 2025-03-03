@@ -4,16 +4,17 @@ import { environment } from '../../../../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { InsumoStock } from '../../../../../../shared/models/inventarios/dto/insumo-stock.dto';
 import { InventariosService } from '../../../../../../shared/models/inventarios/services/inventarios.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { InputComponent } from '../../../../../../shared/components/input/input.component';
 import { DefaultPaginationValue, Pagination } from '../../../../../../shared/models/paginated.interface';
 import { Dropdown, DropdownOptions, InstanceOptions } from 'flowbite';
 import { PaginationComponent } from '../../../../../../shared/components/pagination/pagination.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'stock-insumos',
   standalone: true,
-  imports: [CommonModule, InputComponent, PaginationComponent],
+  imports: [CommonModule, InputComponent, PaginationComponent, RouterLink, OverlayModule],
   templateUrl: './stock-insumos.component.html',
   styles: ``
 })
@@ -33,6 +34,8 @@ export class StockInsumosComponent implements OnInit {
 
   /* Dropdown */
   public dropdown: Dropdown;
+
+  public mostrarDropdown = false;
   
   /* Constructor */
   constructor(
@@ -47,8 +50,12 @@ export class StockInsumosComponent implements OnInit {
   
   ngOnInit(): void {
     this.consultarInsumos();
-    setTimeout(() => this.initDropdown());
+    // setTimeout(() => this.initDropdown());
   }
+
+  // ngAfterViewInit(): void {
+  //   setTimeout(() => this.initDropdown());
+  // }
 
   /* Inicializar Dropdown */
   public initDropdown() {

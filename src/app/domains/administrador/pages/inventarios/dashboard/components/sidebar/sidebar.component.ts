@@ -14,4 +14,6 @@ export class InventarioSidebarComponent {
 
    @Input()
     public inventarioName: string;
+
+    public isSidebarOpen = false;
 }

@@ -99,7 +99,7 @@ export class CartComponent {
         import('pdfmake/build/vfs_fonts').then(pdfFontsModule => {
           const pdfMake = pdfMakeModule.default;
           pdfMake.vfs = pdfFontsModule.vfs;
-          const fecha = new Date().toLocaleDateString();
+          const fecha = new Date().toISOString().slice(0, 10); 
           generatePDF(this.cart(), fecha, this.cartService);
         });
       });

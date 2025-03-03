@@ -25,7 +25,7 @@
                     </a>
                     
                     <div class="flex items-center space-x-3 w-full md:w-auto">
-                        <button #buttonFilterDropdown id="buttonFilterDropdown" data-dropdown-target="filterDropdown" data-dropdown-toggle="filterDropdown"
+                        <!-- <button #buttonFilterDropdown id="buttonFilterDropdown" data-dropdown-target="filterDropdown" data-dropdown-toggle="filterDropdown"
                             class="w-full md:w-auto flex items-center justify-center py-2 px-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                             type="button">
 
@@ -35,7 +35,7 @@
                                 <path clip-rule="evenodd" fill-rule="evenodd"
                                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                             </svg>
-                        </button>
+                        </button> -->
 
                         <div #filterDropdown id="filterDropdown"
                             class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
@@ -85,25 +85,18 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            <th scope="col" class="px-4 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
                             <th scope="col" class="px-4 py-3">Id insumo</th>
                             <th scope="col" class="px-4 py-3">Nombre</th>
                             <th scope="col" class="px-4 py-3">Descripción</th>
                             <th scope="col" class="px-4 py-3">Tipo</th>
                             <th scope="col" class="px-4 py-3">Unidad de medida</th>
-                            <th scope="col" class="px-4 py-3">
-                                <span class="sr-only">Actions</span>
-                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let insumo of this.pagination.data; let i = index" class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ insumo.idInsumo }}
-                            </td>
-                            <td class="px-4 py-3">{{ insumo.nombre }}</td>
-                            <td class="px-4 py-3">{{ insumo.descripcion }}</td>
-                            <td class="px-4 py-3">{{ insumo.tipo }}</td>
-                            <td class="px-4 py-3">{{ insumo.unidadMedida }}</td>
                             <td class="px-4 py-3 flex items-center justify-end">
                                 <button #dropdownButton [id]="insumo.idInsumo + '-button'"
                                     [attr.data-dropdown-toggle]="insumo.idInsumo + '-dropdown'"
@@ -129,6 +122,13 @@
                                     </a>
                                 </div>
                             </div>
+                            <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ insumo.idInsumo }}
+                            </td>
+                            <td class="px-4 py-3">{{ insumo.nombre }}</td>
+                            <td class="px-4 py-3">{{ insumo.descripcion }}</td>
+                            <td class="px-4 py-3">{{ insumo.tipo }}</td>
+                            <td class="px-4 py-3">{{ insumo.unidadMedida }}</td>
                         </tr>
                     </tbody>
                 </table>

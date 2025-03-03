@@ -3,16 +3,17 @@ import { Component } from '@angular/core';
 import { ProductoStock } from '../../../../../../shared/models/inventarios/dto/producto-stock.dto';
 import { InventariosService } from '../../../../../../shared/models/inventarios/services/inventarios.service';
 import { CookieService } from 'ngx-cookie-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { environment } from '../../../../../../../../environments/environment';
 import { DefaultPaginationValue, Pagination } from '../../../../../../shared/models/paginated.interface';
 import { PaginationComponent } from '../../../../../../shared/components/pagination/pagination.component';
 import { InputComponent } from '../../../../../../shared/components/input/input.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-stock-productos',
   standalone: true,
-  imports: [CommonModule, InputComponent, PaginationComponent],
+  imports: [CommonModule, InputComponent, PaginationComponent, RouterLink, OverlayModule],
   templateUrl: './stock-productos.component.html',
   styles: ``
 })
@@ -22,6 +23,7 @@ export class StockProductosComponent {
   public page: number = 1;
   public searchTerm: string = '';
   public sortBy: string = '';
+  public mostrarDropdown = false;
 
   /* Constructor */
   constructor(

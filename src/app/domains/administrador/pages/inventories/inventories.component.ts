@@ -106,12 +106,6 @@ export class InventoriesComponent {
     console.log('Editar producto:', producto);
   }
 
-  deleteProducto(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-      console.log('Eliminar producto con ID:', id);
-    }
-  }
-
   /* Buscar Productos */
   searchProductos(search: string): void {
     this.searchTerm = search;

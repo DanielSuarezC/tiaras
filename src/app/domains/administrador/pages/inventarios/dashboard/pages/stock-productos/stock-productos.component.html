@@ -3,21 +3,34 @@
     <div class="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
         <div>
             <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl flex items-center">
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4.07141 14v6h5.99999v-6H4.07141Zm4.5-4h6.99999l-3.5-6-3.49999 6Zm7.99999 10c1.933 0 3.5-1.567 3.5-3.5s-1.567-3.5-3.5-3.5-3.5 1.567-3.5 3.5 1.567 3.5 3.5 3.5Z"/>
+                <svg class="w-8 h-w-8 text-gray-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
                 </svg>
 
                 <span class="ml-1">Productos</span>
             </h2>
         </div>
+        
+        <div class="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+            <button [routerLink]="['/administrador/inventarios/', idInventario, 'addStockProducto']"
+                class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                <svg class="h-3.5 w-3.5 mr-2 text-white font-medium dark:text-white" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5 12h14m-7 7V5" />
+                </svg>
+                Añadir Productos
+            </button>
 
-        <div class="flex items-center space-x-4">
             <div class="w-80">
                 <app-input [placeholder]="'Buscar Producto...'" (onDebounce)="searchProducto($event)" class=""></app-input>
             </div>
 
-            <button id="sortDropdownButton1" data-dropdown-toggle="dropdownSort1" type="button"
-                class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">
+            <button cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+            (click)="mostrarDropdown = !mostrarDropdown" type="button"
+                class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white p-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">
                 <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                     height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -30,77 +43,104 @@
                         d="m19 9-7 7-7-7" />
                 </svg>
             </button>
-            <div id="dropdownSort1"
-                class="z-50 hidden w-40 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
+            <ng-template 
+            cdkConnectedOverlay
+            [cdkConnectedOverlayOrigin]="trigger"
+            [cdkConnectedOverlayOpen]="mostrarDropdown"
+            (detach)="mostrarDropdown = false">
+            <div 
+                class="z-50 w-40 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
                 data-popper-placement="bottom">
                 <ul class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400"
-                    aria-labelledby="sortDropdownButton">
+                    aria-labelledby="buttonDropdown">
                     <li>
-                        <a href="#"
+                        <button type="button" (click)="ordenarPor('stock:DESC')"
                             class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
-                            Máx Existencias</a>
+                            Máx Existencias
+                        </button>
                     </li>
                     <li>
-                        <a href="#"
+                        <button type="button" (click)="ordenarPor('stock:ASC')"
                             class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
-                            Pocas Existencias</a>
+                            Pocas Existencias
+                        </button>
                     </li>
                 </ul>
             </div>
+            </ng-template>
+            <!-- <button #buttonDropdown id="buttonDropdown" data-dropdown-target="sortDropdown"
+                data-dropdown-toggle="sortDropdown" type="button"
+                class="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white p-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700 sm:w-auto">
+                <svg class="-ms-0.5 me-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 4v16M7 4l3 3M7 4 4 7m9-3h6l-6 6h6m-6.5 10 3.5-7 3.5 7M14 18h4" />
+                </svg>
+                Ordenar
+                <svg class="-me-0.5 ms-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 9-7 7-7-7" />
+                </svg>
+            </button>
+
+            <div #sortDropdown id="sortDropdown"
+                class="z-50 hidden w-40 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
+                data-popper-placement="bottom">
+                <ul class="p-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400"
+                    aria-labelledby="buttonDropdown">
+                    <li>
+                        <button type="button" (click)="ordenarPor('stock:DESC')"
+                            class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
+                            Máx Existencias
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" (click)="ordenarPor('stock:ASC')"
+                            class="group inline-flex w-full items-center rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
+                            Pocas Existencias
+                        </button>
+                    </li>
+                </ul>
+            </div> -->
         </div>
     </div>
 
     <!-- Listado de Productos -->
     <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-        <div *ngFor="let productoStock of pagination.data" class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div *ngFor="let productoStock of pagination!.data"
+            class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <div class="w-full">
-                <a href="#">
+                <a>
                     <img class="mx-auto max-h-48 dark:hidden"
-                        [src]="'http://localhost:3000/tiaras/api/uploads/' + productoStock.producto.imagenes?.[0]" alt="" />
+                        [src]="'http://localhost:3000/tiaras/api/uploads/' + productoStock.producto.imagenes[0]" alt="" />
                     <img class="mx-auto hidden max-h-48 dark:block"
-                        [src]="'http://localhost:3000/tiaras/api/uploads/' + productoStock.producto.imagenes?.[0]" alt="" />
+                        [src]="'http://localhost:3000/tiaras/api/uploads/' + productoStock.producto.imagenes[0]" alt="" />
                 </a>
             </div>
             <div class="pt-6">
-                <div class="mb-4 flex items-center justify-end gap-4">
-                    <div class="flex items-center justify-end gap-1">
-                        <button type="button" data-tooltip-target="tooltip-quick-look"
-                            class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            <span class="sr-only"> Quick look </span>
-                            <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                height="24" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-width="2"
-                                    d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                                <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                        </button>
-                        <div id="tooltip-quick-look" role="tooltip"
-                            class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
-                            data-popper-placement="top">
-                            Quick look
-                            <div class="tooltip-arrow" data-popper-arrow=""></div>
-                        </div>
-                    </div>
-                </div>
+            
 
-                <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">{{ productoStock.producto.nombre }}</a>
+                <a class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+                    {{ productoStock.producto.nombre | uppercase }}
+                </a>
 
                 <div class="items-center justify-between gap-4">
-                    <p class="text-xl mb-2 font-extrabold leading-tight text-gray-900 dark:text-white">Stock: {{ productoStock.stock }} Unidad(es)</p>
+                    <p class="text-lg mb-2 font-extrabold leading-tight text-gray-900 dark:text-white">
+                       Stock: {{ productoStock.stock }}
+                    </p>
+                    <p class="text-lg mb-2 font-extrabold leading-tight text-gray-900 dark:text-white">
+                       Precio {{productoStock.producto.precio | currency:'symbol':'$':'1.0'}}
+                    </p>
+                    <a class="text-sm font-semibold leading-tight text-gray-900 hover:underline dark:text-white">
+                        {{ productoStock.producto.descripcion }}
+                    </a>
 
-                    <button type="button"
-                        class="inline-flex w-full justify-center items-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6" />
-                        </svg>
-                        Añadir Inventario
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <app-pagination (page)="cambiarPagina($event)" [currentPage]="this.page" [meta]="this.pagination.meta"></app-pagination>
+    <app-pagination (page)="cambiarPagina($event)" [currentPage]="this.page"
+        [meta]="this.pagination.meta"></app-pagination>
 </div>

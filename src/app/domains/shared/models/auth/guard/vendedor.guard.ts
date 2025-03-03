@@ -31,10 +31,11 @@ export const vendedorGuard: CanActivateFn = (route, state) => {
     return false;
   }
 
-  if (payload?.rol !== 'VENDEDOR') {
+  if (state.url === '/vendedor/orders-history') {
+    return true;
+  } else if (payload?.rol !== 'VENDEDOR') {
     mensaje.showMessage('Advertencia', 'Sólo el vendedor puede acceder a esta página', 'warning');
     return false;
   }
-
   return true;
 };

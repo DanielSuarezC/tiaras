@@ -42,23 +42,23 @@ const generatePDF = (
         },
         { text: "\n" },
 
-        // Contenido del producto
+        /* Contenido del producto */
         {
           columns: [
-            // Imágenes del producto
+            /* Imágenes del producto */
             {
               stack: [
                 { image: `image${i}_1`, width: 300, height: 300, margin: [10, 10, 10, 10] },
                 ],
                 alignment: "center",
             },
-            // Información del producto
+            /* Información del producto */
             {
                 stack: [
                     { image: `image${i}_2`, width: 150, height: 150, alignment:"center", margin: [10, 10, 10, 10] },
                     { text: product.nombre, style: "productTitle", alignment: "center" },
                     { text: product.descripcion, style: "texto", alignment: "justify", margin: [0, 10] },
-                    { text: `Precio: $${product.precio}`, style: "precio", alignment: "center", margin: [0, 10] },
+                    { text: `Precio: $${product.precio} - Cantidad deseada: ${cartService.cantidadEspecifica(product.idProducto)}`, style: "precio", alignment: "center", margin: [0, 10] },
                 ],
                 width: "auto",
             },
@@ -149,13 +149,14 @@ const generatePDF = (
         },
       ],
     }),
+    
     pageMargins: [40, 60, 40, 60],
   };
 
   docDefinition.images = { ...docDefinition.images, ...images };
 
-//   pdfMake.createPdf(docDefinition).download(`Catalogo_Tiaras_${fecha}.pdf`);
-    pdfMake.createPdf(docDefinition).open();
+  pdfMake.createPdf(docDefinition).download(`Catalogo_Tiaras_${fecha}.pdf`);
+  pdfMake.createPdf(docDefinition).open();
 };
 
 export default generatePDF;
