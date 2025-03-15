@@ -133,8 +133,9 @@ export class OrderComponent {
       this.createPedidoDto.fechaEntrega = new Date(fechaEntrega.value);
       this.createPedidoDto.valorTotal = this.form1.get('valorTotal')?.value;
       this.createPedidoDto.direccion = this.form1.get('direccion')?.value;
-      this.createPedidoDto.items = this.createItemDto(); //se asocian los items al pedido
-      console.log(this.createPedidoDto.fechaEntrega.toISOString());
+      console.log('signal',this.createItemDto());
+      this.createPedidoDto.items = this.createItemDto();
+      console.log('objeto',this.createPedidoDto.items); //se asocian los items al pedido
       if(fechaEntrega.value <= this.fechaPedido){
         this.mensaje.showMessage('Advertencia', 'La fecha de entrega no puede ser menor o igual a la fecha de pedido', 'warning');
         this.blockUI?.stop();
@@ -161,12 +162,7 @@ export class OrderComponent {
       },
       error: (error) => {
         console.error(error);
-        this.dialog.open(MensajeComponent, {
-          data: {
-            titulo: 'Error',
-            mensaje: 'Error. ' + error.message, textoBoton: 'Aceptar'
-          }
-        });
+        this.mensaje.showMessage('Error', 'Error.' + error.error.message, 'error');
         this.blockUI?.stop();
       }
     });
