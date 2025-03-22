@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PedidosService } from '../../../shared/models/pedidos/services/pedidos.service';
 import { MensajeService } from '../../../shared/mensaje/mensaje.service';
 import { CookieService } from 'ngx-cookie-service';
-import { pedido } from '../../../shared/models/pedidos/entities/pedido';
 import { environment } from '../../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -14,6 +13,7 @@ import { Pedido } from '../../../shared/models/pedidos/entities/Pedido.interface
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { Dropdown, InstanceOptions, Modal, ModalOptions } from 'flowbite';
 import { SearchArray } from '../../../shared/models/SearchArray.interface';
+import { APIResponse } from '../../../shared/models/response';
 
 @Component({
   selector: 'app-orders-history',
@@ -122,8 +122,8 @@ export class OrdersHistoryComponent implements OnInit, AfterViewInit {
 
   private getPedidos() {
     this.pedidosService.filter(this.token, this.page, this.terminos, this.sortBy).subscribe({
-      next: (data: Pagination<Pedido>) => {
-        this.pagination = data;
+      next: (data: APIResponse<Pagination<Pedido>>) => {
+        this.pagination = data.data;
         setTimeout(() => this.inicializarDropdowns()); 
       },
       error: (error) => this.mensaje.showMessage('Error', `Error de obtención de datos.  ${error.message}`, 'error')

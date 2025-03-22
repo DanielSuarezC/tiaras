@@ -20,6 +20,7 @@ import { CreateReembolsoDto } from '../../../../shared/models/reembolsos/dto/Cre
 import { paylod } from '../../../../shared/models/paylod';
 import { jwtDecode } from 'jwt-decode';
 import { ReembolsoService } from '../../../../shared/models/reembolsos/services/Reembolso.service';
+import { APIResponse } from '../../../../shared/models/response';
 
 @Component({
   selector: 'app-detail-order',
@@ -100,12 +101,14 @@ export class DetailOrderComponent {
     if (this.id) {
       this.pedidosService.findOne(this.id, this.token)
         .subscribe({
-          next: (dato: Pedido) => {
-            let pedido = dato;
+          next: (dato: APIResponse<Pedido>) => {
+            let pedido = dato.data;
+            console.log(pedido);
+
             // pedido.valorPagado = Number(dato.valorPagado);
-            pedido.valorPagado = +dato.valorPagado;
+            pedido.valorPagado = +pedido.valorPagado;
             // pedido.valorTotal = Number(dato.valorTotal);
-            pedido.valorTotal = +dato.valorTotal;
+            pedido.valorTotal = +pedido.valorTotal;
             this.pedido.set(pedido);
           }
         }
