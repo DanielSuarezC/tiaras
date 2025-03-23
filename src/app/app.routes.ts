@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './domains/shared/pages/login/login.component';
 import { LayoutComponent } from './domains/administrador/components/layout/layout.component';
-import { InventoriesComponent } from './domains/administrador/pages/inventories/inventories.component';
 import { ClientsComponent } from './domains/administrador/pages/clients/clients.component';
 
 import { CatalogComponent } from './domains/vendedor/pages/catalog/catalog.component';
