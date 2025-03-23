@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './domains/shared/pages/login/login.component';
 import { LayoutComponent } from './domains/administrador/components/layout/layout.component';
-import { InventoriesComponent } from './domains/administrador/pages/inventories/inventories.component';
 import { ClientsComponent } from './domains/administrador/pages/clients/clients.component';
 
 import { CatalogComponent } from './domains/vendedor/pages/catalog/catalog.component';
@@ -22,7 +21,7 @@ import { InsumosComponent } from './domains/administrador/pages/insumos/insumos.
 import { CategoryComponent } from './domains/administrador/pages/category/category.component';
 import { AddcategoryComponent } from './domains/administrador/pages/category/addcategory/addcategory.component';
 import { AddinsumosComponent } from './domains/administrador/pages/insumos/addinsumos/addinsumos.component';
-import { CrearProductoComponent } from './domains/administrador/pages/inventories/crear-producto/crear-producto.component';
+import { CrearProductoComponent } from './domains/administrador/pages/productos/crear-producto/crear-producto.component';
 import { vendedorGuard } from './domains/shared/models/auth/guard/vendedor.guard';
 import { administradorGuard } from './domains/shared/models/auth/guard/administrador.guard';
 import { InventariosComponent } from './domains/administrador/pages/inventarios/inventarios.component';
@@ -34,6 +33,7 @@ import { TransferenciasFormComponent } from './domains/administrador/pages/inven
 import { TransferenciaDetailsComponent } from './domains/administrador/pages/inventarios/dashboard/pages/transferencias/details/details.component';
 import { AddStockInsumosComponent } from './domains/administrador/pages/inventarios/dashboard/components/addStockInsumos/addStockInsumos.component';
 import { AddStockProductoComponent } from './domains/administrador/pages/inventarios/dashboard/components/addStockProducto/addStockProducto.component';
+import { ProductosComponent } from './domains/administrador/pages/productos/productos.component';
 
 export const routes: Routes = [
     {
@@ -65,7 +65,7 @@ export const routes: Routes = [
             },
             {
                 path: 'inventories',
-                component: InventoriesComponent,
+                component: ProductosComponent,
             },
             {
                 path: 'inventories/:idProducto',

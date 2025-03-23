@@ -13,13 +13,13 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
-  selector: 'app-inventories',
+  selector: 'app-productos',
   standalone: true,
   imports: [CommonModule, OverlayModule, RouterModule, InputComponent, PaginationComponent],
-  templateUrl: './inventories.component.html',
-  styleUrl: './inventories.component.css'
+  templateUrl: './productos.component.html',
+  styleUrl: './productos.component.css'
 })
-export class InventoriesComponent {
+export class ProductosComponent {
   public pagination: Pagination<Producto> = DefaultPaginationValue;
 
   /* ButtonFilterDropdown */

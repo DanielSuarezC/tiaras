@@ -9,7 +9,7 @@ export interface Pedido {
     valorPagado: number;
     estadoPago: string;
     estadoPedido: string;
-    __items__: ItemPedido[];
+    items: ItemPedido[];
 }
 
 export interface ItemPedido {

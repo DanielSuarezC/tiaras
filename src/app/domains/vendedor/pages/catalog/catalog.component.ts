@@ -122,24 +122,24 @@ export class CatalogComponent implements OnInit{
     });
   }
 
-  buscarCategoria(dato: string) {
-    if (dato.trim().length > 0) {
-      this.categorias.set([]);
-      this.nombreCategoria = dato;
-      this.getCategoriesByName();
-      this.size.set(this.categorias().length);
-      
-      if (this.categorias().length > 0 && this.categorias().length <= 5) {
-        const selectElement = document.getElementById('categoria') as HTMLSelectElement;
-      
-        if (selectElement) {
-          selectElement.size = this.categorias().length;
+    buscarCategoria(dato: string) {
+      if (dato.trim().length > 0) {
+        this.categorias.set([]);
+        this.nombreCategoria = dato;
+        this.getCategoriesByName();
+        this.size.set(this.categorias().length);
+        
+        if (this.categorias().length > 0 && this.categorias().length <= 5) {
+          const selectElement = document.getElementById('categoria') as HTMLSelectElement;
+        
+          if (selectElement) {
+            selectElement.size = this.categorias().length;
+          }
         }
+      } else {
+        this.categorias.set([]);
       }
-    } else {
-      this.categorias.set([]);
     }
-  }
 
     
     agregarCategoria(categoria: Categoria) {

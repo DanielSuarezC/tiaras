@@ -8,7 +8,7 @@
                         <label for="simple-search" class="sr-only">Search</label>
                         <div class="relative w-full">
 
-                                <app-input [placeholder]="'Buscar Cliente por cédula...'" (onDebounce)="searchCliente($event)"></app-input>
+                                <app-input [placeholder]="'Buscar cliente por cédula...'" (onDebounce)="searchCliente($event)"></app-input>
                         </div>
                     </form>
                 </div>
@@ -89,9 +89,9 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-4 py-3">
+                            <!-- <th scope="col" class="px-4 py-3">
                                 <span class="sr-only">Actions</span>
-                            </th>
+                            </th> -->
                             <th scope="col" class="px-4 py-3">Id cliente</th>
                             <th scope="col" class="px-4 py-3">Cédula</th>
                             <th scope="col" class="px-4 py-3">Nombre</th>
@@ -105,7 +105,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let cliente of pagination.data; let i = index" class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 flex items-center justify-end">
+                            <!-- <td class="px-4 py-3 flex items-center justify-end">
                                 <button (click)="toggleDropdown(i)" cdkOverlayOrigin #dropdownOverlay="cdkOverlayOrigin"
                                     type="button"
                                     class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100">
@@ -118,7 +118,6 @@
                             </td>
                             <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="dropdownOverlay"
                                 [cdkConnectedOverlayOpen]="openDropdownIndex === i" (backdropClick)="closeDropdown()">
-                                <!-- Este evento cierra el overlay cuando se hace clic fuera -->
                                 <div id="apple-imac-20-dropdown"
                                     class="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                     <div class="py-1">
@@ -132,12 +131,12 @@
                                         </a>
                                     </div>
                                 </div>
-                            </ng-template>
+                            </ng-template> -->
                             <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ cliente.idCliente }}
                             </td>
                             <td class="px-4 py-3">{{ cliente.cedula }}</td>
-                            <td class="px-4 py-3">{{ cliente.nombre }}</td>
+                            <td class="px-4 py-3">{{ cliente.nombre | titlecase }}</td>
                             <td class="px-4 py-3">{{ cliente.apellidos }}</td>
                             <td class="px-4 py-3">{{ cliente.email }}</td>
                             <td class="px-4 py-3">{{ cliente.telefono }}</td>

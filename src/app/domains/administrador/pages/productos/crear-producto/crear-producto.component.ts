@@ -68,7 +68,7 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
     idInsumo: [''],
     cantidadInsumo: [''],
     insumoSearch: [''],
-    insumoStock: ['', [Validators.min(1)]]
+    insumoStock: ['']
   });
 
   /* Variables */
@@ -76,7 +76,7 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
   fileUploaded2 = false;
   fileName1 = '';
   fileName2 = '';
-  selectedFile2: File[] = [];
+  // selectedFile2: File[] = [];
 
   ngOnInit() {
     this.token = this.cookieService.get(environment.nombreCookieToken);
@@ -88,9 +88,17 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
           this.createProductoForm.patchValue({
             nombre: data.nombre,
             descripcion: data.descripcion,
-            precio: data.precio.toString()
+            precio: data.precio.toString(),
           });
 
+          if(data.imagenes.length > 0){
+            this.fileName1 = data.imagenes[0];
+            this.fileUploaded1 = true;
+          }
+          if(data.imagenes.length > 1){
+            this.fileName2 = data.imagenes[1];
+            this.fileUploaded2 = true;
+          }
           this.categoriasAgregadas.set([...data.categorias]);
         },
         error: (error) => {
@@ -106,9 +114,13 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
 
   /* Enviar Formulario */
   async onSubmit() {
+    console.log('invalid form', this.createProductoForm.invalid);
+    console.log('signal category',this.categoriasAgregadas().length === 0);
+    console.log('selecte file',this.idProducto === undefined && this.selectedFile.length === 0);
+    this.createProductoForm.clearValidators();
     if (this.createProductoForm.invalid ||
       this.categoriasAgregadas().length === 0 ||
-      this.selectedFile.length === 0
+      (this.idProducto === undefined && this.selectedFile.length === 0)
     ) {
       this.marcarErrores();
       return;
@@ -155,6 +167,10 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
 
   /* Modificar Producto */
   private editarProducto() {
+    this.createProductoForm.get('imagen1')?.clearValidators();
+    this.createProductoForm.get('imagen2')?.clearValidators();
+    this.createProductoForm.get('')?.clearValidators;
+
     const productoData: CreateProductoDto = {
       nombre: this.createProductoForm.value.nombre!,
       descripcion: this.createProductoForm.value.descripcion!,
@@ -184,7 +200,7 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
     }
   }
 
-  onFileSelect(event: Event, index: number) {
+  public onFileSelect(event: Event, index: number) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile.push(input.files[0]);
@@ -197,7 +213,6 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
       }
       this.createProductoForm.get('imagen1')?.updateValueAndValidity();
       this.createProductoForm.get('imagen2')?.updateValueAndValidity();
-      console.log(this.selectedFile);
     }
   }
 
@@ -213,35 +228,6 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
     this.selectedFile = [];
     this.fileUploaded1 = false;
     this.fileUploaded2 = false;
-  }
-
-  // Modificar método agregarCategoria
-  agregarCategoria(categoria: Categoria) {
-    this.categoriasAgregadas.update(cats => [...cats, categoria]);
-    console.log(this.categoriasAgregadas());
-  }
-
-  /* Verificar si una categoria existe en el arreglo de Categorias */
-  existCategoria(categoria: Categoria): boolean {
-    return this.categoriasAgregadas().includes(categoria);
-  }
-
-  // Obtener nombre de categoría
-  getNombreCategoria(idCategoria: number | undefined): string {
-    if (!idCategoria) {
-      return 'Categoría desconocida';
-    }
-    this.categoriaService.findOne(idCategoria, this.token).subscribe({
-      next: (data) => {
-        console.log(data);
-        return data.nombre || 'Categoría desconocida';
-      },
-      error: (error) => {
-        console.log(error);
-        return 'Categoría desconocida';
-      }
-    });
-    return 'Categoría desconocida';
   }
 
   private getCategoriesByName() {
@@ -260,6 +246,42 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
+  buscarCategoria(dato: string) {
+      if (dato.trim().length > 0) {
+        this.createProductoForm.get('idCategoria')?.setValue('');
+        this.categorias.set([]);
+        this.nombreCategoria = dato;
+        this.getCategoriesByName();
+        this.size.set(this.categorias().length);
+  
+        if (this.categorias().length > 0 && this.categorias().length <= 5) {
+          const selectElement = document.getElementById('categoria') as HTMLSelectElement;
+  
+          if (selectElement) {
+            selectElement.size = this.categorias().length;
+          }
+        }
+      } else {
+        this.categorias.set([]);
+      }
+  }
+
+  // Modificar método agregarCategoria
+  agregarCategoria(categoria: Categoria) {
+    this.categoriasAgregadas.update(cats => [...cats, categoria]);
+  }
+
+  /* Verificar si una categoria existe en el arreglo de Categorias */
+  existCategoria(categoria: Categoria): boolean {
+    return this.categoriasAgregadas().includes(categoria);
+  }
+
+  quitarCategoria(categoria: Categoria) {
+    this.categoriasAgregadas.update(cats => cats.filter(cat => cat !== categoria));
+  }
+
+  
 
   private mostrarError(error: any) {
     let mensaje = 'Error desconocido';
@@ -273,26 +295,6 @@ export class CrearProductoComponent implements OnInit, OnDestroy {
     }
 
     Swal.fire('Error', mensaje, 'error');
-  }
-
-  buscarCategoria(dato: string) {
-    if (dato.trim().length > 0) {
-      this.createProductoForm.get('idCategoria')?.setValue('');
-      this.categorias.set([]);
-      this.nombreCategoria = dato;
-      this.getCategoriesByName();
-      this.size.set(this.categorias().length);
-
-      if (this.categorias().length > 0 && this.categorias().length <= 5) {
-        const selectElement = document.getElementById('categoria') as HTMLSelectElement;
-
-        if (selectElement) {
-          selectElement.size = this.categorias().length;
-        }
-      }
-    } else {
-      this.categorias.set([]);
-    }
   }
 
   hasErrors(controlName: string, errorType: string) {

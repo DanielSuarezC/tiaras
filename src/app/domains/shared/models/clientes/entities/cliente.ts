@@ -1,4 +1,4 @@
-import { pedido } from "../../pedidos/entities/pedido";
+
 
 export class cliente {
     idCliente: number;
@@ -10,5 +10,4 @@ export class cliente {
     direccion: string;
     pais: string; 
     ciudad: string;
-    pedidos: Promise<pedido[]>;
 }
