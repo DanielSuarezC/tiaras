@@ -1,5 +1,3 @@
-
-
 export class cliente {
     idCliente: number;
     cedula: number;
