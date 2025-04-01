@@ -99,6 +99,7 @@ export class LoginComponent implements OnInit {
     }, error => {
       this.blockUI?.stop();
       this.mensaje.showMessage('Error de validacion', error.error.message, 'error');
+      console.log(error);
     });
   }
 
