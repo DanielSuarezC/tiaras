@@ -2,12 +2,31 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+/* Develop */
+/* export const environment = {
   production: true,
   urlServices: 'http://localhost:3000/tiaras/api/',
   nombreCookieToken: 'tiaras_colombia',
   duracionMinutosCookieToken: 60,
   urlAplicacion: 'http://localhost:4200/'
+}; */
+
+/* Version 1 */
+/* export const environment = {
+  production: true,
+  urlServices: 'http://localhost:3000/athena/api/v1/',
+  nombreCookieToken: 'tiaras_colombia',
+  duracionMinutosCookieToken: 60,
+  urlAplicacion: 'http://localhost:4200/'
+}; */
+
+/* Desplegada en aws */
+export const environment = {
+  production: true,
+  urlServices: '3.148.202.56/tiaras/api/v1',
+  nombreCookieToken: 'tiaras_colombia',
+  duracionMinutosCookieToken: 60,
+  urlAplicacion: 'https://tiaras.pages.dev/'
 };
 
 /*
