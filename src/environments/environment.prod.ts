@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  urlServices: 'http://aplicativoswebconsult-ing.com.co:8080/admindoc_back/',
-  nombreCookieToken: 'token_consulting_admindoc',
-  duracionMinutosCookieToken: 60,
-  urlAplicacion: 'http://aplicativoswebconsult-ing.com.co:8080/admindoc/'
+  urlServices: '3.148.202.56/tiaras/api/v1',
+  nombreCookieToken: 'tiaras_colombia',
+  duracionMinutosCookieToken: 1440,
+  urlAplicacion: 'https://tiaras.pages.dev/'
 };
